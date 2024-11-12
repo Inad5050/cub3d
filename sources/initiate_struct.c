@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   initiate_struct.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 16:27:23 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/12 20:04:25 by dangonz3         ###   ########.fr       */
+/*   Created: 2024/11/12 19:24:06 by dangonz3          #+#    #+#             */
+/*   Updated: 2024/11/12 20:02:30 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-//void mlx_loop(mlx_t* mlx);
+//mlx_init(int32_t width, int32_t height, const char* title, bool resize);
 
-int	main(int argc, char **argv)
+void	initiate_cube(t_cube *c)
 {
-	t_cube	*c;
-	
-	if (!initiate_cube(c))
-		return (1);
+	c = ft_calloc(1, sizeof(t_cube));
+	if (!c)
+		c_error("Error in mlx_init");
+	c->mlx = mlx_init(500, 500, "SUPER CUB3D", 1);
+	if (!c->mlx)
+		c_error("Error in mlx_init");
 		
-	set_hooks(c);
-	load_images(c);
-	
-	mlx_loop(c->mlx);
-	free_memory(c);
-	return (0);
+	c->time = mlx_get_time();
+
+
 }
