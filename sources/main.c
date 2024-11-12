@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:27:23 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/12 20:04:25 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/12 20:36:48 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,11 @@ int	main(int argc, char **argv)
 {
 	t_cube	*c;
 	
-	if (!initiate_cube(c))
+	c = ft_calloc(1, sizeof(t_cube));
+	if (!c)
 		return (1);
+
+	initiate_cube(c);
 		
 	set_hooks(c);
 	load_images(c);
