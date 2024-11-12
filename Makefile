@@ -6,7 +6,7 @@
 #    By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 16:11:59 by dangonz3          #+#    #+#              #
-#    Updated: 2024/11/12 17:53:29 by dangonz3         ###   ########.fr        #
+#    Updated: 2024/11/12 18:01:35 by dangonz3         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,13 +48,13 @@ $(LIBFT_LIB):
 	
 clean:
 	@rm -f $(OBJ)
-	@rm -rf $(LIBMLX)/build
+	@rm -rf $(MLX_DIR)/build
 	@$(MAKE) -C $(LIBFT_DIR) clean -s
 	@echo "$(COLOR_GREEN)------------ MESSAGE: CLEANING COMPLETED ------------ $(COLOR_RESET)"
 	
 fclean:
 	@rm -f $(OBJ)
-	@rm -rf $(LIBMLX)/build
+	@rm -rf $(MLX_DIR)/build
 	@$(MAKE) -C $(LIBFT_DIR) clean -s
 	@$(MAKE) -C $(LIBFT_DIR) fclean -s
 	@rm -f $(NAME)
