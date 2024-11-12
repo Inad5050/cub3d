@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   set_hooks.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 16:27:23 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/12 20:36:48 by dangonz3         ###   ########.fr       */
+/*   Created: 2024/11/12 19:44:08 by dangonz3          #+#    #+#             */
+/*   Updated: 2024/11/12 19:53:00 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-//void mlx_loop(mlx_t* mlx);
+//void void mlx_key_hook(mlx_t* mlx, mlx_keyfunc func, void* param);
+//void mlx_close_hook(mlx_t* mlx, mlx_closefunc func, void* param);
+//bool mlx_loop_hook(mlx_t* mlx, void (*f)(void*), void* param);
 
-int	main(int argc, char **argv)
+void	set_hooks(t_cube *c)
 {
-	t_cube	*c;
+	/* mlx_key_hook(c->mlx, mlx_keyfunc func, void* param); */
 	
-	c = ft_calloc(1, sizeof(t_cube));
-	if (!c)
-		return (1);
+	/* void mlx_close_hook(mlx_t* mlx, mlx_closefunc func, void* param); */
 
-	initiate_cube(c);
-		
-	set_hooks(c);
-	load_images(c);
+	/* bool mlx_loop_hook(mlx_t* mlx, void (*f)(void*), void* param); */
+
+
+
+
 	
-	mlx_loop(c->mlx);
-	free_memory(c);
-	return (0);
 }
