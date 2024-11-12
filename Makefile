@@ -6,7 +6,7 @@
 #    By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 16:11:59 by dangonz3          #+#    #+#              #
-#    Updated: 2024/11/12 17:39:29 by dangonz3         ###   ########.fr        #
+#    Updated: 2024/11/12 17:53:29 by dangonz3         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,36 +29,35 @@ LIBFT_LIB = $(LIBFT_DIR)/libft.a
 MLX_DIR = ./mlx
 MLX_LIB = $(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
-all: $(LIBFT_LIB) libmlx $(NAME)
+all:libmlx $(LIBFT_LIB) $(NAME)
 	@echo "$(COLOR_GREEN)------------ PROCESS FINISHED ------------ $(COLOR_RESET)"
 
 $(NAME): $(OBJ)
 	$(CC) $(OBJ) $(LIBFT_LIB) $(MLX_LIB) -o $(NAME)
 
-$(LIBFT_LIB):
-	$(MAKE) -C $(LIBFT_DIR) -s
-
 libmlx:
 	@cmake $(MLX_DIR) -B $(MLX_DIR)/build && $(MAKE) -C $(MLX_DIR)/build -j4 -s
 	@echo "$(COLOR_GREEN)------------ MESSAGE: MLX COMPILED ------------ $(COLOR_RESET)"
-# cmake genera un Makefile en el directorio indicado (-B $(MLX_DIR)/build)
-	
+
+$(LIBFT_LIB):
+	$(MAKE) -C $(LIBFT_DIR) -s
+
 %.o: %.c
 	$(CC) $(CCFLAGS) -c $< $(HEADERS) -o $@
 	@echo "$(COLOR_GREEN)------------ MESSAGE: $@ COMPILED ------------ $(COLOR_RESET)"
 	
 clean:
-	rm -f $(OBJ)
-	$(MAKE) -C $(LIBFT_DIR) clean -s
-	$(MAKE) -C $(MLX_DIR)/build clean -s
+	@rm -f $(OBJ)
+	@rm -rf $(LIBMLX)/build
+	@$(MAKE) -C $(LIBFT_DIR) clean -s
 	@echo "$(COLOR_GREEN)------------ MESSAGE: CLEANING COMPLETED ------------ $(COLOR_RESET)"
 	
 fclean:
-	rm -f $(OBJ)
-	$(MAKE) -C $(LIBFT_DIR) clean -s
-	$(MAKE) -C $(MLX_DIR)/build clean -s
-	$(MAKE) -C $(LIBFT_DIR) fclean -s
-	rm -f $(NAME)
+	@rm -f $(OBJ)
+	@rm -rf $(LIBMLX)/build
+	@$(MAKE) -C $(LIBFT_DIR) clean -s
+	@$(MAKE) -C $(LIBFT_DIR) fclean -s
+	@rm -f $(NAME)
 	@echo "$(COLOR_GREEN)------------ MESSAGE: CLEANING COMPLETED ------------ $(COLOR_RESET)"
 
 re: fclean all

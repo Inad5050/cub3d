@@ -1,4 +1,4 @@
-# Install script for directory: /home/dangonz3/cub3d_NOV12/mlx
+# Install script for directory: /home/dangonz3/cub3dPRUEBITA/mlx
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -51,11 +51,11 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/local/include" TYPE DIRECTORY FILES "/home/dangonz3/cub3d_NOV12/mlx/./include/MLX42" FILES_MATCHING REGEX "/MLX42\\.h$")
+  file(INSTALL DESTINATION "/usr/local/include" TYPE DIRECTORY FILES "/home/dangonz3/cub3dPRUEBITA/mlx/./include/MLX42" FILES_MATCHING REGEX "/MLX42\\.h$")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/home/dangonz3/cub3d_NOV12/mlx/build/libmlx42.a")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/home/dangonz3/cub3dPRUEBITA/mlx/build/libmlx42.a")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -66,5 +66,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/dangonz3/cub3d_NOV12/mlx/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/dangonz3/cub3dPRUEBITA/mlx/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
