@@ -6,7 +6,7 @@
 #    By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 16:11:59 by dangonz3          #+#    #+#              #
-#    Updated: 2024/11/12 18:01:35 by dangonz3         ###   ########.fr        #
+#    Updated: 2024/11/13 20:51:06 by dangonz3         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,10 +42,17 @@ libmlx:
 $(LIBFT_LIB):
 	$(MAKE) -C $(LIBFT_DIR) -s
 
+# %.o: %.c
+#	$(CC) $(CCFLAGS) -c $< $(HEADERS) -o $@
+#	@echo "$(COLOR_GREEN)------------ MESSAGE: $@ COMPILED ------------ $(COLOR_RESET)"
+
+# PARA PRUEBAS
+
 %.o: %.c
-	$(CC) $(CCFLAGS) -c $< $(HEADERS) -o $@
+	$(CC) -c $< $(HEADERS) -o $@
 	@echo "$(COLOR_GREEN)------------ MESSAGE: $@ COMPILED ------------ $(COLOR_RESET)"
-	
+
+
 clean:
 	@rm -f $(OBJ)
 	@rm -rf $(MLX_DIR)/build
@@ -55,7 +62,6 @@ clean:
 fclean:
 	@rm -f $(OBJ)
 	@rm -rf $(MLX_DIR)/build
-	@$(MAKE) -C $(LIBFT_DIR) clean -s
 	@$(MAKE) -C $(LIBFT_DIR) fclean -s
 	@rm -f $(NAME)
 	@echo "$(COLOR_GREEN)------------ MESSAGE: CLEANING COMPLETED ------------ $(COLOR_RESET)"
