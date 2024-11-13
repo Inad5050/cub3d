@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:27:23 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/12 20:36:48 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/13 18:50:17 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,16 @@
 
 int	main(int argc, char **argv)
 {
+	(void)argc;
+	
 	t_cube	*c;
 	
-	c = ft_calloc(1, sizeof(t_cube));
-	if (!c)
-		return (1);
-
-	initiate_cube(c);
+	c = initiate_cube(argv);
 		
-	set_hooks(c);
-	load_images(c);
+	image_load(c);
 	
-	mlx_loop(c->mlx);
+	loops(c);
+	
 	free_memory(c);
-	return (0);
+	return (EXIT_SUCCESS);
 }
