@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:24:06 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/13 20:45:03 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/13 21:09:17 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,20 @@ t_cube	*initiate_cube(char **argv)
 	c = ft_calloc(1, sizeof(t_cube));
 	if (!c)
 		return (ft_printf("Couldn`t alloc t_cube c"), exit(EXIT_FAILURE), NULL);
+	
+	ft_printf("OLABEBE1\n");
+	
 	c->mlx = mlx_init(WIN_WIDHT, WIN_HEIGHT, "SUPER CUB3D", true);
 	if (!c->mlx)
 		c_error("Error in mlx_init", c);
 	
-	read_map_PROVISIONAL(argv, c);  //copia + pega so_long no funciona con cube
+	ft_printf("OLABEBE2\n");
+
+/* 	read_map_PROVISIONAL(argv, c);  //copia + pega so_long no funciona con cube
 	
 	c->time_initial = mlx_get_time();
 
-	get_png_route(c);
+	get_png_route(c); */
 
 	//..
 
