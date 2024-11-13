@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:24:06 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/13 19:17:14 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/13 20:45:03 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_cube	*initiate_cube(char **argv)
 	
 	c->time_initial = mlx_get_time();
 
-	get_png(c);
+	get_png_route(c);
 
 	//..
 
@@ -58,7 +58,7 @@ void	read_map_PROVISIONAL(char **argv, t_cube *c) //copia + pega so_long no func
 		c->map_axis_y++;
 	}
 	close(map_fd);
-	c->map_all = ft_split(map_temp, '\n');
+	c->map = ft_split(map_temp, '\n');
 	c->map_bool = 1;
 	free(map_temp);
 }
@@ -92,12 +92,12 @@ char	*sl_strjoin(char *s1, const char *s2) //copia + pega so_long
 	return (result);
 }
 
-void	get_png(t_cube *c)
+void	get_png_route(t_cube *c)
 {
-	c->png_floor = ft_strdup("./textures/xpm/floor.xpm");
+	c->png_floor = ft_strdup("./textures/png/backrooms/default/floor.png");
 	if (!c->png_floor)
 		c_error("Couldn't alloc in initiate_cube", c);
-	c->png_wall = ft_strdup("./textures/xpm/wall.xpm");
+	c->png_wall = ft_strdup("./textures/png/backrooms/default/wall.png");
 	if (!c->png_wall)
 		c_error("Couldn't alloc in initiate_cube", c);
 
