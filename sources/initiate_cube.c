@@ -3,42 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   initiate_cube.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dani <dani@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:24:06 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/13 21:09:17 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/14 22:31:26 by dani             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-//mlx_init(int32_t width, int32_t height, const char* title, bool resize);
-
 t_cube	*initiate_cube(char **argv)
 {
+	(void)argv;
+	
 	t_cube	*c;
 	
 	c = ft_calloc(1, sizeof(t_cube));
 	if (!c)
 		return (ft_printf("Couldn`t alloc t_cube c"), exit(EXIT_FAILURE), NULL);
 	
-	ft_printf("OLABEBE1\n");
-	
 	c->mlx = mlx_init(WIN_WIDHT, WIN_HEIGHT, "SUPER CUB3D", true);
 	if (!c->mlx)
 		c_error("Error in mlx_init", c);
 	
-	ft_printf("OLABEBE2\n");
-
-/* 	read_map_PROVISIONAL(argv, c);  //copia + pega so_long no funciona con cube
-	
 	c->time_initial = mlx_get_time();
+	get_png_route(c);
 
-	get_png_route(c); */
-
+	read_map_PROVISIONAL(argv, c);  //copia + pega so_long no funciona con cube
+	
 	//..
 
 	return (c);
+}
+
+void	get_png_route(t_cube *c)
+{
+	c->png_floor = ft_strdup("./textures/png/backrooms/default/floor.png");
+	if (!c->png_floor)
+		c_error("Couldn't alloc in initiate_cube", c);
+	c->png_wall = ft_strdup("./textures/png/backrooms/default/wall.png");
+	if (!c->png_wall)
+		c_error("Couldn't alloc in initiate_cube", c);
+
+	//...
+	
 }
 
 void	read_map_PROVISIONAL(char **argv, t_cube *c) //copia + pega so_long no funciona con cube
@@ -95,17 +103,4 @@ char	*sl_strjoin(char *s1, const char *s2) //copia + pega so_long
 	result[len_s1 + i] = '\0';
 	free(s1);
 	return (result);
-}
-
-void	get_png_route(t_cube *c)
-{
-	c->png_floor = ft_strdup("./textures/png/backrooms/default/floor.png");
-	if (!c->png_floor)
-		c_error("Couldn't alloc in initiate_cube", c);
-	c->png_wall = ft_strdup("./textures/png/backrooms/default/wall.png");
-	if (!c->png_wall)
-		c_error("Couldn't alloc in initiate_cube", c);
-
-	//...
-	
 }

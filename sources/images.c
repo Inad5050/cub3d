@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   images.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dani <dani@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 20:04:37 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/13 20:41:09 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/14 22:22:46 by dani             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 void	image_load(t_cube *c)
 {
+
+	ft_printf("image_load\n");
+	
 	c->texture_floor = mlx_load_png(c->png_floor);
 	if (!c->texture_floor)
 		c_error_img(c->png_floor, c);
@@ -27,6 +30,7 @@ void	image_load(t_cube *c)
 	c->img_wall = mlx_texture_to_image(c->mlx, c->texture_wall);
 	if (!c->img_wall)
 		c_error("Couldn't mlx_texture_to_image in image_load", c);
+	
 		
 // ...
 
@@ -37,6 +41,9 @@ void	image_load(t_cube *c)
 
 void	map_render(t_cube *c)
 {
+	
+	ft_printf("map_render\n");
+	
 	int	y;
 	int	x;
 
@@ -56,6 +63,9 @@ void	map_render(t_cube *c)
 
 void	map_identify(int y, int x, t_cube *c)
 {
+	
+	ft_printf("map_identify y = %i, x = %i\n", x, y);
+	
 	if (c->map[y][x] == 0)
 		image_print(c->img_floor, y, x, c);
 	if (c->map[y][x] == 1)

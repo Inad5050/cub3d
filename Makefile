@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+         #
+#    By: dani <dani@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 16:11:59 by dangonz3          #+#    #+#              #
-#    Updated: 2024/11/13 20:51:06 by dangonz3         ###   ########.fr        #
+#    Updated: 2024/11/14 22:15:24 by dani             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,16 +42,9 @@ libmlx:
 $(LIBFT_LIB):
 	$(MAKE) -C $(LIBFT_DIR) -s
 
-# %.o: %.c
-#	$(CC) $(CCFLAGS) -c $< $(HEADERS) -o $@
-#	@echo "$(COLOR_GREEN)------------ MESSAGE: $@ COMPILED ------------ $(COLOR_RESET)"
-
-# PARA PRUEBAS
-
-%.o: %.c
-	$(CC) -c $< $(HEADERS) -o $@
+ %.o: %.c
+	$(CC) $(CCFLAGS) -c $< $(HEADERS) -o $@
 	@echo "$(COLOR_GREEN)------------ MESSAGE: $@ COMPILED ------------ $(COLOR_RESET)"
-
 
 clean:
 	@rm -f $(OBJ)

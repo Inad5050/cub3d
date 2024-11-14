@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loops.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dani <dani@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:44:08 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/13 20:41:33 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/14 22:28:51 by dani             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	loops(t_cube *c)
 {
-	mlx_loop_hook(c->mlx, (void (*)(void *))key_hooks, c->mlx);
+	/* mlx_loop_hook(c->mlx, (void (*)(void *))key_hooks, c->mlx); */
 
 	//...
 
