@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/27 16:31:19 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/27 16:49:09 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 
 # define WIN_WIDHT 1280
 # define WIN_HEIGHT 1280
-# define IMG_WIDHT 128
-# define IMG_HEIGHT 128
+# define IMG_WIDHT 64
+# define IMG_HEIGHT 64
 
 typedef struct s_cube
 {
@@ -62,7 +62,6 @@ void	image_print(mlx_image_t *img, int y, int x, t_cube *c);
 t_cube	*initiate_cube(char **argv);
 void	read_map_PROVISIONAL(char **argv, t_cube *c); //copia + pega so_long no funciona con cube
 char	*sl_strjoin(char *s1, const char *s2); //copia + pega so_long
-void	get_png_route(t_cube *c);
 
 //loops
 void	loops(t_cube *c);
