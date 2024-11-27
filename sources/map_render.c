@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 18:58:55 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/27 20:06:08 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/27 20:07:35 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	map_render(t_cube *c)
 			map_identify(y, x, c);
 			x++;
 		}
-	/* ft_printf("c->map[%i] = %s\n", y, c->map[y]); */
 	y++;		
 	}	
 }
