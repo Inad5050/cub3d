@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/27 19:31:35 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:41:23 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ typedef struct s_cube
 	int				map_axis_x;
 	char			**map;
 	int				map_bool;
+
+	int				player_y;
+	int				player_x;
 
 	char			*png_floor;
 	mlx_texture_t	*texture_floor;
@@ -71,7 +74,8 @@ char	*sl_strjoin(char *s1, const char *s2);
 void	map_render(t_cube *c);
 void	map_identify(int i, int x, t_cube *c);
 
-//player_movement
-void	player_movement(t_cube *c);
+//player_move
+void	player_move(t_cube *c);
+void 	move(t_cube *c, int n);
 
 #endif

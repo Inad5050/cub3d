@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 18:58:55 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/27 19:14:49 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/27 20:06:08 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	map_render(t_cube *c)
 			map_identify(y, x, c);
 			x++;
 		}
-		ft_printf("c->map[y][x] = %s\n", c->map[y]);
+	/* ft_printf("c->map[%i] = %s\n", y, c->map[y]); */
 	y++;		
 	}	
 }
@@ -47,6 +47,8 @@ void	map_identify(int y, int x, t_cube *c)
 	}
 	if (c->map[y][x] == 'N')
 	{
+		c->player_y = y;
+		c->player_x = x;
 		if (mlx_image_to_window(c->mlx, c->img_player, x * IMG_WIDHT, y * IMG_HEIGHT) < 1)
 			c_error("Couldn't image_print", c);
 	}

@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:03:26 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/27 19:03:59 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:44:00 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	map_read(char **argv, t_cube *c)
 	close(map_fd);
 	c->map = ft_split(map_temp, '\n');
 	c->map_bool = 1;
-	free(map_temp);	
+	free(map_temp);
 }
 
 char	*sl_strjoin(char *s1, const char *s2) //copia + pega so_long

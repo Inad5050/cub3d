@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:27:23 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/27 19:25:32 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:34:35 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (ft_printf("I need a map!\n"), EXIT_FAILURE);
-
 	c = ft_calloc(1, sizeof(t_cube));
 	if (!c)
 		return (ft_printf("Couldn`t alloc t_cube c"), EXIT_FAILURE);
-
 	map_read(argv, c);
 	initiate_mlx(c);	
 	image_load(c);
