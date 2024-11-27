@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/13 20:36:11 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/27 16:31:19 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include <stdbool.h>
 # include <math.h>
 
-# define WIN_WIDHT 512
-# define WIN_HEIGHT 512
+# define WIN_WIDHT 1280
+# define WIN_HEIGHT 1280
 # define IMG_WIDHT 128
 # define IMG_HEIGHT 128
 
@@ -29,8 +29,6 @@ typedef struct s_cube
 
 	int				player_x;
 	int				player_y;
-	
-	double			time_initial;
 
 	int				map_axis_y; //copia + pega so_long no funciona con cube
 	char			**map; //copia + pega so_long no funciona con cube
@@ -68,6 +66,6 @@ void	get_png_route(t_cube *c);
 
 //loops
 void	loops(t_cube *c);
-void	key_hooks(t_cube *c);
+void	key_hooks(void *c_void);
 
 #endif

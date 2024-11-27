@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:21:23 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/13 18:52:53 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/15 19:43:32 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,12 @@ void	free_memory(t_cube *c)
 {
 	mlx_close_window(c->mlx);
 	mlx_terminate(c->mlx);
-	if (c->mlx) //tal vez no sea necesario con mlx_terminate
-		free(c->mlx);
 	
 	//...
 	
 	free_img(c);
 	if (c)
-		free(c);	
+		free(c);
 }
 
 void	free_img(t_cube *c)
@@ -38,5 +36,5 @@ void	free_img(t_cube *c)
 		free(c->png_wall);
 
 	//...
-	
+
 }
