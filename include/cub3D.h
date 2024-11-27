@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/27 18:33:02 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:31:35 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 # include <stdbool.h>
 # include <math.h>
 
-# define WIN_WIDHT 1280
-# define WIN_HEIGHT 1280
 # define IMG_WIDHT 64
 # define IMG_HEIGHT 64
 
@@ -27,12 +25,10 @@ typedef struct s_cube
 {
 	mlx_t			*mlx;
 
-	int				player_x;
-	int				player_y;
-
-	int				map_axis_y; //copia + pega so_long no funciona con cube
-	char			**map; //copia + pega so_long no funciona con cube
-	int				map_bool; //copia + pega so_long no funciona con cube
+	int				map_axis_y;
+	int				map_axis_x;
+	char			**map;
+	int				map_bool;
 
 	char			*png_floor;
 	mlx_texture_t	*texture_floor;
@@ -41,6 +37,10 @@ typedef struct s_cube
 	char			*png_wall;
 	mlx_texture_t	*texture_wall;	
 	mlx_image_t		*img_wall;
+
+	char			*png_player;
+	mlx_texture_t	*texture_player;	
+	mlx_image_t		*img_player;
 
 } t_cube;
 
@@ -52,18 +52,26 @@ void	free_img(t_cube *c);
 void	c_error(char *str, t_cube *c);
 void	c_error_img(char *str, t_cube *c);
 
-//images
+//image_load
 void	image_load(t_cube *c);
-void	map_render(t_cube *c);
-void	map_identify(int i, int x, t_cube *c);
 
-//initiate_cube
-t_cube	*initiate_cube(char **argv);
-void	read_map_PROVISIONAL(char **argv, t_cube *c); //copia + pega so_long no funciona con cube
-char	*sl_strjoin(char *s1, const char *s2); //copia + pega so_long
+//initiate_mlx
+void	initiate_mlx(t_cube *c);
+void	map_axis_x(t_cube *c);
 
 //loops
 void	loops(t_cube *c);
 void	key_hooks(void *c_void);
+
+//map_read
+void	map_read(char **argv, t_cube *c);
+char	*sl_strjoin(char *s1, const char *s2);
+
+//map_render
+void	map_render(t_cube *c);
+void	map_identify(int i, int x, t_cube *c);
+
+//player_movement
+void	player_movement(t_cube *c);
 
 #endif

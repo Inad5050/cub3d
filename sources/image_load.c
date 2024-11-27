@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   images.c                                           :+:      :+:    :+:   */
+/*   image_load.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 20:04:37 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/27 18:56:44 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:15:47 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	image_load(t_cube *c)
 {
+	//floor
 	c->png_floor = ft_strdup("./textures/png/wolfestein/grey_wall.png");
 	if (!c->png_floor)
 		c_error("Couldn't alloc in initiate_cube", c);
@@ -23,7 +24,9 @@ void	image_load(t_cube *c)
 	c->img_floor = mlx_texture_to_image(c->mlx, c->texture_floor);
 	if (!c->img_floor)
 		c_error("Couldn't mlx_texture_to_image in image_load", c);
+	mlx_image_to_window(c->mlx, c->img_floor, 0, 0); //por que es necesaria?
 
+	//wall
 	c->png_wall = ft_strdup("./textures/png/wolfestein/steel_wall.png");
 	if (!c->png_wall)
 		c_error("Couldn't alloc in initiate_cube", c);	
@@ -33,48 +36,20 @@ void	image_load(t_cube *c)
 	c->img_wall = mlx_texture_to_image(c->mlx, c->texture_wall);
 	if (!c->img_wall)
 		c_error("Couldn't mlx_texture_to_image in image_load", c);
-	
-	mlx_image_to_window(c->mlx, c->img_floor, 0, 0); //por que son necesarias?
-	mlx_image_to_window(c->mlx, c->img_wall, 0, 0);	//por que son necesarias?
+	mlx_image_to_window(c->mlx, c->img_wall, 0, 0);	//por que es necesaria?
+
+	//player
+	c->png_player = ft_strdup("./textures/png/wolfestein/brick_wall.png");
+	if (!c->png_player)
+		c_error("Couldn't alloc in initiate_cube", c);	
+	c->texture_player = mlx_load_png(c->png_player);
+	if (!c->texture_player)
+		c_error_img(c->png_player, c);
+	c->img_player = mlx_texture_to_image(c->mlx, c->texture_player);
+	if (!c->img_player)
+		c_error("Couldn't mlx_texture_to_image in image_load", c);
+	mlx_image_to_window(c->mlx, c->img_player, 0, 0);	//por que es necesaria?
 	
 // ...
 
-	map_render(c);
-}
-
-void	map_render(t_cube *c)
-{
-	int	y;
-	int	x;
-
-	y = 0;
-
-	while (c->map[y])
-	{
-		x = 0;
-		while (c->map[y][x])
-		{
-			map_identify(y, x, c);
-			x++;
-		}
-	y++;		
-	}	
-}
-
-void	map_identify(int y, int x, t_cube *c)
-{
-	
-	if (c->map[y][x] == '0')
-	{
-		if (mlx_image_to_window(c->mlx, c->img_floor, x * IMG_WIDHT, y * IMG_HEIGHT) < 1)
-			c_error("Couldn't image_print", c);
-	}
-	if (c->map[y][x] == '1')
-	{
-		if (mlx_image_to_window(c->mlx, c->img_wall, x * IMG_WIDHT, y * IMG_HEIGHT) < 1)
-			c_error("Couldn't image_print", c);
-	}
-
-	// ...
-	
 }

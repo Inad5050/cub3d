@@ -1,37 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   initiate_cube.c                                    :+:      :+:    :+:   */
+/*   map_read.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 19:24:06 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/27 16:48:59 by dangonz3         ###   ########.fr       */
+/*   Created: 2024/11/27 19:03:26 by dangonz3          #+#    #+#             */
+/*   Updated: 2024/11/27 19:03:59 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-t_cube	*initiate_cube(char **argv)
-{
-	(void)argv;
-	
-	t_cube	*c;
-	
-	c = ft_calloc(1, sizeof(t_cube));
-	if (!c)
-		return (ft_printf("Couldn`t alloc t_cube c"), exit(EXIT_FAILURE), NULL);
-	c->mlx = mlx_init(WIN_WIDHT, WIN_HEIGHT, "SUPER CUB3D", true);
-	if (!c->mlx)
-		c_error("Error in mlx_init", c);
-	read_map_PROVISIONAL(argv, c);
-	
-	//..
-
-	return (c);
-}
-
-void	read_map_PROVISIONAL(char **argv, t_cube *c)
+void	map_read(char **argv, t_cube *c)
 {
 	char	*map_temp;
 	char	*line_temp;

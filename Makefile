@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dani <dani@student.42.fr>                  +#+  +:+       +#+         #
+#    By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 16:11:59 by dangonz3          #+#    #+#              #
-#    Updated: 2024/11/14 22:15:24 by dani             ###   ########.fr        #
+#    Updated: 2024/11/27 19:21:03 by dangonz3         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ fclean:
 	@rm -rf $(MLX_DIR)/build
 	@$(MAKE) -C $(LIBFT_DIR) fclean -s
 	@rm -f $(NAME)
-	@echo "$(COLOR_GREEN)------------ MESSAGE: CLEANING COMPLETED ------------ $(COLOR_RESET)"
+	@echo "$(COLOR_GREEN)------------ MESSAGE: FCLEANING COMPLETED ------------ $(COLOR_RESET)"
 
 re: fclean all
 

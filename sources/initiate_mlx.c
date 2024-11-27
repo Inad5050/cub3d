@@ -1,38 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   loops.c                                            :+:      :+:    :+:   */
+/*   initiate_mlx.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 19:44:08 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/27 19:31:59 by dangonz3         ###   ########.fr       */
+/*   Created: 2024/11/27 19:24:20 by dangonz3          #+#    #+#             */
+/*   Updated: 2024/11/27 19:33:35 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-void	loops(t_cube *c)
+void	initiate_mlx(t_cube *c)
 {
-	mlx_loop_hook(c->mlx, key_hooks, c);
-
-	//...
-
-	mlx_loop(c->mlx);
+	map_axis_x(c);	
+	
+	c->mlx = mlx_init(c->map_axis_x * IMG_WIDHT, c->map_axis_y * IMG_HEIGHT, \
+	"SUPER CUB3D", true);
+	if (!c->mlx)
+		c_error("Error in mlx_init", c);	
 }
 
-void	key_hooks(void *c_void)
+void	map_axis_x(t_cube *c)
 {
-	t_cube *c;
+	int	i;
 
-	c = c_void;	
-	if (mlx_is_key_down(c->mlx, MLX_KEY_ESCAPE))
+	i = 0;
+	while (i < c->map_axis_y)
 	{
-		free_memory(c);
-		exit(EXIT_FAILURE);
+		if ((int)ft_strlen(c->map[i]) > c->map_axis_x)
+			c->map_axis_x = (int)ft_strlen(c->map[i]);
+		i++;
 	}
-	/* player_movement(c); */
-	
-	//...
-
 }
