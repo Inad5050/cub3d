@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:44:08 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/28 17:33:54 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/28 18:33:11 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	key_hooks(void *c_void)
 		exit(EXIT_FAILURE);
 	}
 	player_move(c);
-	map_render(c);
+	/* map_render(c); */
 	
 	//...
 

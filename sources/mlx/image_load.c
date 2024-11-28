@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 20:04:37 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/28 17:33:45 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/28 18:31:34 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,5 @@ void	image_load(t_cub *c)
 	
 // ...
 
+	mlx_image_to_window(c->mlx, c->img_floor, 0, 0); //por que es necesaria?
 }

@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/28 17:35:51 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/28 18:12:05 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ typedef struct s_cub
 	char			**map;
 	int				map_bool;
 
-	int				player_y;
-	int				player_x;
+	int				p_y;
+	int				p_x;
 
 	char			*png_floor;
 	mlx_texture_t	*texture_floor;
