@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   initiate_mlx.c                                     :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/27 19:24:20 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/27 19:34:26 by dangonz3         ###   ########.fr       */
+/*   Created: 2024/11/12 16:27:23 by dangonz3          #+#    #+#             */
+/*   Updated: 2024/11/28 17:35:28 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D.h"
+#include "../../include/cub3D.h"
 
-void	initiate_mlx(t_cube *c)
+//void mlx_loop(mlx_t* mlx);
+
+int	main(int argc, char **argv)
 {
-	map_axis_x(c);	
-	c->mlx = mlx_init(c->map_axis_x * IMG_WIDHT, c->map_axis_y * IMG_HEIGHT, \
-	"SUPER CUB3D", true);
-	if (!c->mlx)
-		c_error("Error in mlx_init", c);	
-}
+	t_cub	*c;
 
-void	map_axis_x(t_cube *c)
-{
-	int	i;
-
-	i = 0;
-	while (i < c->map_axis_y)
-	{
-		if ((int)ft_strlen(c->map[i]) > c->map_axis_x)
-			c->map_axis_x = (int)ft_strlen(c->map[i]);
-		i++;
-	}
+	if (parser(argc, argv))
+		return (EXIT_FAILURE);
+	c = ft_calloc(1, sizeof(t_cub));
+	if (!c)
+		return (ft_printf("Couldn`t alloc t_cube c"), EXIT_FAILURE);
+	map_read(argv, c);
+	initiate_mlx(c);	
+	image_load(c);
+	map_render(c);
+	loops(c);
+	free_memory(c);
+	return (EXIT_SUCCESS);
 }

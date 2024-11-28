@@ -6,13 +6,13 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 18:58:55 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/27 20:07:35 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:34:08 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D.h"
+#include "../../include/cub3D.h"
 
-void	map_render(t_cube *c)
+void	map_render(t_cub *c)
 {
 	int	y;
 	int	x;
@@ -31,7 +31,7 @@ void	map_render(t_cube *c)
 	}	
 }
 
-void	map_identify(int y, int x, t_cube *c)
+void	map_identify(int y, int x, t_cub *c)
 {
 	
 	if (c->map[y][x] == '0')

@@ -1,27 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   free_memory.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 20:30:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/27 18:37:42 by dangonz3         ###   ########.fr       */
+/*   Created: 2024/11/12 19:21:23 by dangonz3          #+#    #+#             */
+/*   Updated: 2024/11/28 17:33:43 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D.h"
+#include "../../include/cub3D.h"
 
-void	c_error(char *str, t_cube *c)
+void	free_memory(t_cub *c)
 {
-	ft_printf("%s\n", str);
-	free_memory(c);
-	exit (EXIT_FAILURE);
+	mlx_close_window(c->mlx);
+	mlx_terminate(c->mlx);
+	
+	//...
+	
+	free_img(c);
+	if (c)
+		free(c);
 }
 
-void	c_error_img(char *str, t_cube *c)
+void	free_img(t_cub *c)
 {
-	ft_printf("Couldn't load image: %s\n", str);
-	free_memory(c);
-	exit (EXIT_FAILURE);
+	if (c->texture_floor)
+		mlx_delete_texture(c->texture_floor);
+	if (c->png_floor)
+		free(c->png_floor);
+	if (c->texture_wall)
+		mlx_delete_texture(c->texture_wall);
+	if (c->png_wall)
+		free(c->png_wall);
+
+	//...
+
 }

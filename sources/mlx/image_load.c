@@ -6,13 +6,13 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 20:04:37 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/27 19:15:47 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:33:45 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D.h"
+#include "../../include/cub3D.h"
 
-void	image_load(t_cube *c)
+void	image_load(t_cub *c)
 {
 	//floor
 	c->png_floor = ft_strdup("./textures/png/wolfestein/grey_wall.png");

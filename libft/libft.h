@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dani <dani@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: otboumeh <otboumeh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:16:24 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/08/11 18:52:40 by dani             ###   ########.fr       */
+/*   Updated: 2024/11/26 09:44:18 by otboumeh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <fcntl.h>
 # include <stdarg.h>
 # include <limits.h>
+# define HEXL "0123456789abcdef"
+# define HEXU "0123456789ABCDEF"
 
 /* LIBFT */
 
@@ -48,6 +50,11 @@ int			ft_tolower(int c);
 int			ft_toupper(int c);
 void		*ft_memmove(void *dest, const void *src, size_t n);
 char		*ft_strrchr(const char *str, int character);
+char		*ft_puthexa_str(size_t n);
+char		*ft_putaddress_str(unsigned long p);
+char		*str_or_null(const char *str);
+char		*ft_sprintf(char const *container, ...);
+
 
 /* PART 2 */
 

@@ -1,40 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_memory.c                                      :+:      :+:    :+:   */
+/*   loops.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 19:21:23 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/15 19:43:32 by dangonz3         ###   ########.fr       */
+/*   Created: 2024/11/12 19:44:08 by dangonz3          #+#    #+#             */
+/*   Updated: 2024/11/28 17:33:54 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D.h"
+#include "../../include/cub3D.h"
 
-void	free_memory(t_cube *c)
+void	loops(t_cub *c)
 {
-	mlx_close_window(c->mlx);
-	mlx_terminate(c->mlx);
-	
+	mlx_loop_hook(c->mlx, key_hooks, c);
+
 	//...
-	
-	free_img(c);
-	if (c)
-		free(c);
+
+	mlx_loop(c->mlx);
 }
 
-void	free_img(t_cube *c)
+void	key_hooks(void *c_void)
 {
-	if (c->texture_floor)
-		mlx_delete_texture(c->texture_floor);
-	if (c->png_floor)
-		free(c->png_floor);
-	if (c->texture_wall)
-		mlx_delete_texture(c->texture_wall);
-	if (c->png_wall)
-		free(c->png_wall);
+	t_cub *c;
 
+	c = c_void;	
+	if (mlx_is_key_down(c->mlx, MLX_KEY_ESCAPE))
+	{
+		free_memory(c);
+		exit(EXIT_FAILURE);
+	}
+	player_move(c);
+	map_render(c);
+	
 	//...
 
 }

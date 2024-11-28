@@ -14,7 +14,7 @@ ft_strlcpy ft_strlen ft_strncmp ft_strnstr ft_strrchr \
 ft_strtrim ft_substr ft_tolower ft_toupper ft_lstmap_bonus \
 ft_lstnew_bonus ft_lstadd_front_bonus ft_lstsize_bonus ft_lstlast_bonus ft_lstadd_back_bonus \
 ft_lstdelone_bonus ft_lstclear_bonus ft_lstiter_bonus ft_printf ptf_auxiliars \
-ptf_printer get_next_line gnl_bonus gnl_utils_bonus gnl_utils
+ptf_printer get_next_line gnl_bonus gnl_utils_bonus gnl_utils print_p utils_print
 SRC = $(addsuffix .c, $(SRC_FILES))
 OBJS = $(SRC:.c=.o)
 

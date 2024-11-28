@@ -6,13 +6,13 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:17:26 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/27 20:05:33 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:34:12 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D.h"
+#include "../../include/cub3D.h"
 
-void	player_move(t_cube *c)
+void	player_move(t_cub *c)
 {
 	if (mlx_is_key_down(c->mlx, MLX_KEY_RIGHT) || mlx_is_key_down(c->mlx, MLX_KEY_D))
 		move(c, 1);
@@ -25,7 +25,7 @@ void	player_move(t_cube *c)
 	c->map[c->player_y][c->player_x] = 'N';
 }
 
-void 	move(t_cube *c, int n)
+void 	move(t_cub *c, int n)
 {
 	if (n == 1 && c->map[c->player_y][c->player_x + 1] == '0')
 	{
