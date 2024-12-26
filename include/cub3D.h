@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dani <dani@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/12/26 20:10:43 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/12/26 23:09:49 by dani             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ void	map_identify(int i, int x, t_cub *c);
 //player_move
 void	player_move(t_cub *c);
 void	move(t_cub *c, int move_x, int move_y);
+int		map_limits(t_cub *c, int move_x, int move_y);
 
 // ---------------------- PARSER ----------------------
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_render.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dani <dani@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 18:58:55 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/12/26 19:44:46 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/12/26 23:37:33 by dani             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,11 @@ void	map_identify(int y, int x, t_cub *c) //identifica cada elemento del mapa y 
 	}
 	if (c->map[y][x] == 'N')
 	{
-		c->p_y = (double)y;
-		c->p_x = (double)x;
+		if (!c->p_y && !c->p_x)
+		{
+			c->p_y = (double)y;
+			c->p_x = (double)x;
+		}
 		
 		printf("OLAOLA c->p_y = %f c->p_x = %f\n", c->p_y, c->p_x);
 		
