@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tshiki <tshiki@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 14:34:23 by otboumeh          #+#    #+#             */
-/*   Updated: 2024/11/28 17:44:10 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/29 09:54:57 by tshiki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	array_len(char **array)
 /* Printing error msg and exit the program */
 void error_exit()
 {
-	printf("Error!");
+	printf("Error!\n");
 	exit(1);
 }
 /* Verificate the color string if valid or not */

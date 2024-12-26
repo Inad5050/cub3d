@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   freedom.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tshiki <tshiki@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 14:28:55 by otboumeh          #+#    #+#             */
-/*   Updated: 2024/11/28 17:32:34 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/11/29 09:54:34 by tshiki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	free_content(t_cube *cube)
 		}
 		free(cube->map);
 	}
-	printf("CLosing program");
+	printf("CLosing program\n");
 }
 /* Function to free arrays */
 void	array_free(char **array)

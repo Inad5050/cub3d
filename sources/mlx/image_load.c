@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 20:04:37 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/28 18:31:34 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/12/26 17:57:33 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 void	image_load(t_cub *c)
 {
 	//floor
-	c->png_floor = ft_strdup("./textures/png/wolfestein/grey_wall.png");
+	c->png_floor = ft_strdup("./textures/png/wolfestein/grey_wall.png"); //almacena el nombre y la ruta de la imagen
 	if (!c->png_floor)
 		c_error("Couldn't alloc in initiate_cube", c);
-	c->texture_floor = mlx_load_png(c->png_floor);
+	c->texture_floor = mlx_load_png(c->png_floor); //inicializa la imagen para que MLX pueda usarla
 	if (!c->texture_floor)
 		c_error_img(c->png_floor, c);
-	c->img_floor = mlx_texture_to_image(c->mlx, c->texture_floor);
+	c->img_floor = mlx_texture_to_image(c->mlx, c->texture_floor); //usa la imagen para crear una textura
 	if (!c->img_floor)
 		c_error("Couldn't mlx_texture_to_image in image_load", c);
-	mlx_image_to_window(c->mlx, c->img_floor, 0, 0); //por que es necesaria?
+	mlx_image_to_window(c->mlx, c->img_floor, 0, 0); //imprime la imagen en la pantalla
 
 	//wall
 	c->png_wall = ft_strdup("./textures/png/wolfestein/steel_wall.png");

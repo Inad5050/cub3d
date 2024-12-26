@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:44:08 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/28 18:33:11 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/12/26 18:00:33 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	loops(t_cub *c)
 {
-	mlx_loop_hook(c->mlx, key_hooks, c);
+	mlx_loop_hook(c->mlx, key_hooks, c); //define los loops que el programa tendra que repetir
 
 	//...
 
-	mlx_loop(c->mlx);
+	mlx_loop(c->mlx); //realiza los loops
 }
 
 void	key_hooks(void *c_void)
@@ -26,12 +26,12 @@ void	key_hooks(void *c_void)
 	t_cub *c;
 
 	c = c_void;	
-	if (mlx_is_key_down(c->mlx, MLX_KEY_ESCAPE))
+	if (mlx_is_key_down(c->mlx, MLX_KEY_ESCAPE)) //si se presiona ESCAPE cierra el programa
 	{
 		free_memory(c);
 		exit(EXIT_FAILURE);
 	}
-	player_move(c);
+	player_move(c); 
 	/* map_render(c); */
 	
 	//...

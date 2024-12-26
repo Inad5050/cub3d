@@ -6,17 +6,17 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:03:26 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/28 18:11:30 by dangonz3         ###   ########.fr       */
+/*   Updated: 2024/12/26 17:44:39 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3D.h"
 
-void	map_read(char **argv, t_cub *c)
+void	map_read(char **argv, t_cub *c) //lee el mapa
 {
-	char	*map_temp;
-	char	*line_temp;
-	int		map_fd;
+	char	*map_temp; //almacena los valores del mapa pre split()
+	char	*line_temp; //buffer de get_next_line 
+	int		map_fd; //necesario para usar open()
 
 	map_fd = open(argv[1], O_RDONLY);
 	if (map_fd == -1)
@@ -42,7 +42,7 @@ void	map_read(char **argv, t_cub *c)
 	
 }
 
-char	*sl_strjoin(char *s1, const char *s2)
+char	*sl_strjoin(char *s1, const char *s2) // sl_strjoin personalizado del so_long
 {
 	int		i;
 	int		len_s1;
