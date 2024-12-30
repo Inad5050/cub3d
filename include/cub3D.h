@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dani <dani@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/12/26 23:09:49 by dani             ###   ########.fr       */
+/*   Updated: 2024/12/30 21:00:59 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,104 +14,93 @@
 # define CUBE3D_H
 
 # include "../libft/libft.h"
-# include "../mlx/include/MLX42/MLX42.h"
+# include "../minilibx-linux/mlx.h"
 # include <stdbool.h>
 # include <math.h>
 
+# define WIN_WIDHT 1300
+# define WIN_HEIGHT 800
 # define IMG_WIDHT 64
 # define IMG_HEIGHT 64
 # define STEP_SIZE 8
 
+# define ROUTE_CEILING "./textures/xpm/space/blue.xpm"
+# define ROUTE_FlOOR "./textures/xpm/floor.xpm"
+# define ROUTE_NORTH "./textures/xpm/wolfestein/blue_wall.xpm"
+# define ROUTE_SHOUT "./textures/xpm/wolfestein/brick_wall.xpm"
+# define ROUTE_WEST "./textures/xpm/wolfestein/grey_wall.xpm"
+# define ROUTE_EAST "./textures/xpm/wolfestein/steel_wall.xpm"
+
 // ---------------------- MLX ----------------------
+
+typedef struct s_player
+{
+	/* double			player_angle; */
+	double	p_y;
+	double	p_x;
+	int		p_y_floor;
+	int		p_x_floor;
+	int		p_y_ceil;
+	int		p_x_ceil;
+/* 	int		w_flag;
+	int		s_flag;
+	int		a_flag;
+	int		d_flag;
+	int		r_flag;
+	int		l_flag;
+	int		colition;
+	float	col_x;
+	float	col_y; */
+} t_plyr;
+
+typedef struct s_image
+{
+	void	*img_ptr;
+	int		height;
+	int		width;
+	void	*addr; //puntero a la dirección de memoria inicial donde están almacenados los datos de los píxeles de la imagen.
+	int		bpp; //(bits_per_pixel) el número de bits utilizados para representar cada píxel de la imagen.
+	int		line_len; //el tamaño (en bytes) de cada fila de la imagen.
+	int		endian; //el orden de los bytes (endianness) usado para representar los colores.
+} t_img;
 
 typedef struct s_cub
 {
-	mlx_t			*mlx;
+	void	*mlx;
+	void	*win;
+	char	**map;
+/* 	char	**map_cop;
+	char	*no;
+	char	*so;
+	char	*we;
+	char	*ea;
+	char	*t_f;
+	char	*t_c;
+	int		rgb_up[3];
+	int		rgb_down[3]; */
+	int		map_axis_y;
+	int		map_axis_x;
+	int		map_bool;
 
-	int				map_axis_y;
-	int				map_axis_x;
-	char			**map;
-	int				map_bool;
+	t_plyr	*p;
 
-	double			p_y;
-	double			p_x;
-	int				p_y_floor;
-	int				p_x_floor;
-	int				p_y_ceil;
-	int				p_x_ceil;
-
-	char			*png_floor;
-	mlx_texture_t	*texture_floor;
-	mlx_image_t		*img_floor;
-	
-	char			*png_wall;
-	mlx_texture_t	*texture_wall;	
-	mlx_image_t		*img_wall;
-
-	char			*png_player;
-	mlx_texture_t	*texture_player;	
-	mlx_image_t		*img_player;
-
-} t_cub;
-
-// ---------------------- PARSER ----------------------
-
-typedef struct s_player_position
-{
-	int		x;
-	int		y;
-	int		pos_x;
-	int		pos_y;
-	char	orientation;
-
-}			t_player_position;
-
-typedef struct s_cube
-{
-	// mlx_t			*mlx;
-	char		**map;
-	int				player_x;
-	int				player_y;
-	char		*north_texture;
-	char		*south_texture;
-	char		*west_texture;
-	char		*east_texture;
-	int			floor_color[3];
-	int			ceiling_color[3];
-	int 		max_y;
-	int 		max_x;
-	// double			time_initial;
-
-	// int				map_axis_y; //copia + pega so_long no funciona con cube
-	// char				**map; //copia + pega so_long no funciona con cube
-	// int				map_bool; //copia + pega so_long no funciona con cube
-
-	// char				*png_floor;
-	// mlx_texture_t	*texture_floor;
-	// mlx_image_t		*img_floor;
-	
-	// char			*png_wall;
-	// mlx_texture_t	*texture_wall;	
-	// mlx_image_t		*img_wall;
-
-} t_cube;
+	t_img	*ceiling;
+	t_img	*floor;
+	t_img	*wall_n;
+	t_img	*wall_s;
+	t_img	*wall_w;
+	t_img	*wall_e;
+}	t_cub;
 
 // ---------------------- MLX ----------------------
 
 //errors
-void	free_memory(t_cub *c);
-void	free_img(t_cub *c);
-
-//free_memory
 void	c_error(char *str, t_cub *c);
-void	c_error_img(char *str, t_cub *c);
+void	free_memory(t_cub *c);
 
-//image_load
-void	image_load(t_cub *c);
-
-//initiate_mlx
-void	initiate_mlx(t_cub *c);
-void	map_axis_x(t_cub *c);
+//init_game
+int		init_game(t_cub *c);
+int		init_image(t_cub *c, t_img **c_img_ptr, char *route);
 
 //loops
 void	loops(t_cub *c);
@@ -123,52 +112,10 @@ char	*sl_strjoin(char *s1, const char *s2);
 
 //map_render
 void	map_render(t_cub *c);
-void	map_identify(int i, int x, t_cub *c);
+void	map_select_element(int y, int x, t_cub *c);
+void	map_print(int y, int x, t_img *c_img, t_cub *c);
 
 //player_move
 void	player_move(t_cub *c);
-void	move(t_cub *c, int move_x, int move_y);
-int		map_limits(t_cub *c, int move_x, int move_y);
-
-// ---------------------- PARSER ----------------------
-
-//parsing.c
-int		parse_line(char *line, t_cube *cube);
-char	*line_verification(char *line);
-int		parse_colors(char *line, int color[3]);
-void	parse_map(char *line, t_cube *cube);
-
-//check_map.c
-void	check_extension(char *argv1, t_cube *cube);
-int		read_file(char *file, t_cube *cube);
-
-//freedom.c
-void	free_line(char *line, t_cube *cube);
-void	free_content(t_cube *cube);
-void	array_free(char **array);
-
-//main.c
-void	check_arg_number(int argc);
-int		verification_start(t_cube *cube,\
-			t_player_position *player_position, char **argv);
-int		parser(int argc, char **argv);
-
-//util_map.c
-void	delete_tab(char ***map, int i);
-int		last_verification(t_cube *cube, t_player_position *player_position);
-int		validate_file(t_cube *cube);
-
-//utils.c
-int		space_verification(char c);
-int		array_len(char **array);
-void 	error_exit();
-int		is_number(const char *str);
-void	set_initial_position(t_player_position *player_position, int x, int y,
-		char orientation);
-//print
-char	*ft_sprintf(char const *container, ...);
-
-//map_parsing
-int	validate_map(t_cube *cube, t_player_position *player_position);
 
 #endif
