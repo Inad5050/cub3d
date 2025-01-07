@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 20:30:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/12/30 21:09:04 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/07 14:38:41 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,20 @@
 void	c_error(char *str, t_cub *c)
 {
 	ft_printf("%s\n", str);
+	mlx_destroy_window(c->mlx, c->win_mlx);	
 	free_memory(c);
 	exit (EXIT_FAILURE);
 }
 
+int	c_close(t_cub *c)
+{
+	mlx_destroy_window(c->mlx, c->win_mlx);	
+	free_memory(c);
+	return (exit (EXIT_FAILURE), 0);
+}
+
 void	free_memory(t_cub *c) //libera toda la memoria
 {
-	ft_printf("OLA\n");
-	
-	mlx_destroy_window(c->mlx, c->win);
-
-	ft_printf("OLA\n");
-	
 	if (c->p)
 		free(c->p);
 	if (c->ceiling)
@@ -42,7 +44,6 @@ void	free_memory(t_cub *c) //libera toda la memoria
 	if (c->wall_e)	
 		free(c->wall_e);
 	
-	ft_printf("OLA\n");
 	//...
 	
 	if (c)

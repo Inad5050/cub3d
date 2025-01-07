@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:03:26 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/12/30 21:02:34 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:04:31 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	map_read(char **argv, t_cub *c) //lee el mapa
 	c->map_bool = 1;
 	free(map_temp);
 	c->map_axis_y--; //necesario?
+	get_map_axix_x(c);
 }
 
 char	*sl_strjoin(char *s1, const char *s2) // sl_strjoin personalizado del so_long
@@ -67,4 +68,17 @@ char	*sl_strjoin(char *s1, const char *s2) // sl_strjoin personalizado del so_lo
 	result[len_s1 + i] = '\0';
 	free(s1);
 	return (result);
+}
+
+void	get_map_axix_x(t_cub *c)
+{
+	int	i;
+
+	i = 0;
+	while (i < c->map_axis_y)
+	{
+		if ((int)ft_strlen((const char *)c->map[i]) > (c->map_axis_x))
+			(c->map_axis_x) = (int)ft_strlen((const char *)c->map[i]);
+		i++;
+	}	
 }

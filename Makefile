@@ -6,7 +6,7 @@
 #    By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 16:11:59 by dangonz3          #+#    #+#              #
-#    Updated: 2024/12/30 20:52:03 by dangonz3         ###   ########.fr        #
+#    Updated: 2025/01/07 13:06:01 by dangonz3         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ $(NAME): $(OBJ) $(MLX_LIB) $(LIBFT_LIB)
 	@echo "$(COLOR_GREEN)------------ MESSAGE: $@ COMPILED ------------ $(COLOR_RESET)"
 
 $(MLX_LIB):
-	@make -C $(MLX_DIR) -s
+	@make -C $(MLX_DIR) -s 2> /dev/null
 	@echo "$(COLOR_GREEN)------------ MESSAGE: MLX COMPILED ------------ $(COLOR_RESET)"
 
 $(LIBFT_LIB):

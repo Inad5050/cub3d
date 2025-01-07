@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/12/30 21:00:59 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/07 19:25:04 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,37 @@
 # include <stdbool.h>
 # include <math.h>
 
+//sizes
 # define WIN_WIDHT 1300
 # define WIN_HEIGHT 800
 # define IMG_WIDHT 64
 # define IMG_HEIGHT 64
-# define STEP_SIZE 8
+# define STEP_SIZE 32
 
+//keybinds
+# define KEY_W			119
+# define KEY_S			115
+# define KEY_A			97
+# define KEY_D			100
+# define KEY_UP  		65362
+# define KEY_DOWN  		65364
+# define KEY_LEFT  		65361
+# define KEY_RIGHT 		65363
+# define KEY_ESC  		65307
+
+//events
+# define ON_KEYDOWN		2
+# define ON_DESTROY	   	17
+# define ON_EXPOSE  	12
+
+//routes
 # define ROUTE_CEILING "./textures/xpm/space/blue.xpm"
-# define ROUTE_FlOOR "./textures/xpm/floor.xpm"
-# define ROUTE_NORTH "./textures/xpm/wolfestein/blue_wall.xpm"
-# define ROUTE_SHOUT "./textures/xpm/wolfestein/brick_wall.xpm"
-# define ROUTE_WEST "./textures/xpm/wolfestein/grey_wall.xpm"
-# define ROUTE_EAST "./textures/xpm/wolfestein/steel_wall.xpm"
+# define ROUTE_FlOOR "./textures/xpm/backrooms/default/floor.xpm"
+# define ROUTE_NORTH "./textures/xpm/grey_wall.xpm"
+# define ROUTE_SHOUT "./textures/xpm/grey_wall.xpm"
+# define ROUTE_WEST "./textures/xpm/grey_wall.xpm"
+# define ROUTE_EAST "./textures/xpm/grey_wall.xpm"
+# define ROUTE_PLAYER "./textures/xpm/player.xpm"
 
 // ---------------------- MLX ----------------------
 
@@ -51,7 +70,7 @@ typedef struct s_player
 	int		colition;
 	float	col_x;
 	float	col_y; */
-} t_plyr;
+} t_player;
 
 typedef struct s_image
 {
@@ -67,7 +86,7 @@ typedef struct s_image
 typedef struct s_cub
 {
 	void	*mlx;
-	void	*win;
+	void	*win_mlx;
 	char	**map;
 /* 	char	**map_cop;
 	char	*no;
@@ -82,7 +101,7 @@ typedef struct s_cub
 	int		map_axis_x;
 	int		map_bool;
 
-	t_plyr	*p;
+	t_player	*p;
 
 	t_img	*ceiling;
 	t_img	*floor;
@@ -90,32 +109,35 @@ typedef struct s_cub
 	t_img	*wall_s;
 	t_img	*wall_w;
 	t_img	*wall_e;
+	t_img	*player_img;
 }	t_cub;
 
 // ---------------------- MLX ----------------------
 
-//errors
+//exit
 void	c_error(char *str, t_cub *c);
+int		c_close(t_cub *c);
 void	free_memory(t_cub *c);
 
 //init_game
 int		init_game(t_cub *c);
 int		init_image(t_cub *c, t_img **c_img_ptr, char *route);
+int		init_player_image(t_cub *c, t_img **c_img_ptr, char *route);
 
-//loops
-void	loops(t_cub *c);
-void	key_hooks(void *c_void);
+//key_hooks
+int		key_hooks(int keysym, t_cub *c);
+int		is_in_wall(int y, int x, t_cub *c);
 
 //map_read
 void	map_read(char **argv, t_cub *c);
 char	*sl_strjoin(char *s1, const char *s2);
+void	get_map_axix_x(t_cub *c);
 
 //map_render
 void	map_render(t_cub *c);
 void	map_select_element(int y, int x, t_cub *c);
 void	map_print(int y, int x, t_img *c_img, t_cub *c);
-
-//player_move
-void	player_move(t_cub *c);
+void	player_print(double y, double x, t_img *c_img, t_cub *c);
+void	locate_player(int y, int x, t_cub *c);
 
 #endif
