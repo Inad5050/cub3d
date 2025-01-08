@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:03:26 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/07 15:04:31 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/08 13:02:47 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	map_read(char **argv, t_cub *c) //lee el mapa
 	}
 	close(map_fd);
 	c->map = ft_split(map_temp, '\n');
-	c->map_bool = 1;
 	free(map_temp);
 	c->map_axis_y--; //necesario?
 	get_map_axix_x(c);
