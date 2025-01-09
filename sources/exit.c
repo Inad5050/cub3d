@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dani <dani@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 20:30:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/07 14:38:41 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/09 12:04:28 by dani             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ int	c_close(t_cub *c)
 
 void	free_memory(t_cub *c) //libera toda la memoria
 {
-	if (c->p)
-		free(c->p);
 	if (c->ceiling)
 		free(c->ceiling);
 	if (c->floor)

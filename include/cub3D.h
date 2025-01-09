@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dani <dani@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/08 18:52:21 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/09 12:31:34 by dani             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,15 @@
 # define PLAYER_WIDHT 16
 # define PLAYER_HEIGHT 16
 # define STEP_SIZE 16
-# define FIELD_OF_VIEW 0.66 //tipico campo de vision humano (?)
+# define FIELD_OF_VIEW 0.66
 # define PI 3.1415926535
 # define ANGLE_ROTATION_SIZE 5
-/* # define LINE_WIDTH 128
-# define LINE_HEIGHT 128 */
+
+//cardinal directions
+# define EAST 0
+# define NORTH 1
+# define WEST 2
+# define SOUTH 3
 
 //keybinds
 # define KEY_ESC  		65307
@@ -63,7 +67,9 @@ typedef struct s_image
 	int		bpp; //(bits_per_pixel) el número de bits utilizados para representar cada píxel de la imagen.
 	int		line_len; //el tamaño (en bytes) de cada fila de la imagen.
 	int		endian; //el orden de los bytes (endianness) usado para representar los colores.
+	char	*buffer;
 } t_img;
+
 
 typedef struct s_cub
 {
@@ -81,7 +87,6 @@ typedef struct s_cub
 	t_img	*wall_w;
 	t_img	*wall_e;
 	t_img	*player_img;
-	t_img	*line_img;
 
 	double	p_y; //coordenadas del jugador sobre el eje vertical
 	double	p_x; //coordenadas del jugador sobre el eje horizontal
@@ -103,6 +108,15 @@ typedef struct s_cub
 	int		step_y; //step_y: Si el rayo avanza hacia arriba, será 1. Si avanza hacia abajo, será -1
 	double	side_dist_x;
 	double	side_dist_y;
+	double	map_x;
+	double	map_y;
+	int		side;
+	double	wall_dist;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+	double	wall_x;
+	int		cardinal_direction;
 }	
 t_cub;
 
@@ -115,6 +129,8 @@ void	free_memory(t_cub *c);
 int		init_game(t_cub *c);
 int		init_image(t_cub *c, t_img **c_img_ptr, char *route);
 int		init_ply_image(t_cub *c, t_img **c_img_ptr, char *route);
+void	locate_player(t_cub *c);
+void	init_player(int y, int x, t_cub *c);
 
 //key_hooks
 int		key_hooks(int keysym, t_cub *c);
@@ -131,9 +147,10 @@ void	map_render(t_cub *c);
 void	map_select_element(int y, int x, t_cub *c);
 void	map_print(int y, int x, t_img *c_img, t_cub *c);
 void	player_print(double y, double x, t_img *c_img, t_cub *c);
-void	locate_player(int y, int x, t_cub *c);
 
 //ray_caster
-
+void	ray_direction(t_cub *c);
+void	delta_distance(t_cub *c);
+void	steps(t_cub *c);
 
 #endif
