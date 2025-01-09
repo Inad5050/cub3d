@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dani <dani@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/09 12:31:34 by dani             ###   ########.fr       */
+/*   Updated: 2025/01/09 20:18:51 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,15 @@ typedef struct s_cub
 	int		step_y; //step_y: Si el rayo avanza hacia arriba, será 1. Si avanza hacia abajo, será -1
 	double	side_dist_x;
 	double	side_dist_y;
-	double	map_x;
-	double	map_y;
+	int		map_x;
+	int		map_y;
 	int		side;
 	double	wall_dist;
 	int		line_height;
 	int		draw_start;
 	int		draw_end;
-	double	wall_x;
+	double	wall_height;
+	
 	int		cardinal_direction;
 }	
 t_cub;
@@ -129,7 +130,7 @@ void	free_memory(t_cub *c);
 int		init_game(t_cub *c);
 int		init_image(t_cub *c, t_img **c_img_ptr, char *route);
 int		init_ply_image(t_cub *c, t_img **c_img_ptr, char *route);
-void	locate_player(t_cub *c);
+void	*locate_player(t_cub *c);
 void	init_player(int y, int x, t_cub *c);
 
 //key_hooks
@@ -151,6 +152,8 @@ void	player_print(double y, double x, t_img *c_img, t_cub *c);
 //ray_caster
 void	ray_direction(t_cub *c);
 void	delta_distance(t_cub *c);
-void	steps(t_cub *c);
+void	initial_distance(t_cub *c);
+void	digital_differential_analysis(t_cub *c);
+void	wall_distance(t_cub *c);
 
 #endif

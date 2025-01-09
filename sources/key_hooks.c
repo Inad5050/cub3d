@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:44:08 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/08 18:20:08 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/09 18:15:52 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	key_hooks(int keysym, t_cub *c)
 	else if ((keysym == KEY_RIGHT))
 		rotate_player(1, c);
 	map_render(c);
+	ray_direction(c);
 	return (0);
 }
 

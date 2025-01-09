@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dani <dani@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 17:35:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/09 09:00:28 by dani             ###   ########.fr       */
+/*   Updated: 2025/01/09 18:07:56 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	init_ply_image(t_cub *c, t_img **c_img_ptr, char *route) //inicializa la est
 	return (EXIT_SUCCESS);
 }
 
-void	locate_player(t_cub *c) //localiza la posición inicial del jugador y coloca suelo '0' en su lugar
+void	*locate_player(t_cub *c) //localiza la posición inicial del jugador y coloca suelo '0' en su lugar
 {
 	int	y;
 	int	x;
@@ -81,11 +81,12 @@ void	locate_player(t_cub *c) //localiza la posición inicial del jugador y coloc
 		{
 			if (c->map[y][x] == 'N' || c->map[y][x] == 'S' || \
 			c->map[y][x] == 'W' || c->map[y][x] == 'E')
-				return (initiate_player(y, x, c), c->map[y][x] = '0');
+				return (init_player(y, x, c), c->map[y][x] = '0', NULL);
 			x++;
 		}
 		y++;
 	}
+	return (NULL);
 }
 
 void	init_player(int y, int x, t_cub *c) //inicializa la dirección del jugador y su perpendicular, los valores no mencionados permanecen en cero
