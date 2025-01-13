@@ -12,24 +12,32 @@
 
 #include "../include/cub3D.h"
 
-void	ray_direction(t_cub *c)
-{
-	printf("RAY_DIRECTION\n");
-	
-	int	ray_index; //indice del rayo en la pantalla, iremos creando rayos verticales (sobre el eje x) hasta cubrir la anchura("0 ray_index = %d\n", ray_index);
+/* Todos los rayos empiezan en la posición del jugador y se esparcen en todas direcciones a lo largo de la pantalla. Hay tantos rayos como pixeles en el eje X de la pantalla del juego (WIN_WIDHT), ese es literalmente numero maximo de direcciones posibles. Proyectaremos un rayo desde el jugador a cada uno de esos pixeles.
+El jugador puede ver 60 grados (lo habitual en juegos 3D). Esa "camara" va cambiando a medida que el jugador se desplaza sobre el mapa 2D y a medida que el jugador rota el angulo de su orientación sobre los ejes X, Y del mapa 2D. 
+c->camera_x y c->camera_y: en init_game calculamos los ejes de esa camara. Se calculan como las tangentes de los componentes X e Y del angulo actual del jugador sobre los ejes del mapa.
+c->relative_ray_index: indice relativo a la anchura de la camara (WIN_WIDHT) de los rayos que vamos a proyectar. Su valor va desde -1 a 1.
+c->ray_dx y c->ray_dy: son la delta del angulo del rayo. Hereda el angulo del jugador, acrecentado por por su propio angulo relativo a la camara. De forma que cada rayo en pantalla tendra su propio angulo para llegar al pixel (de entre los 1300 de WIN_WIDHT) que tiene que alcanzar. 
+
+
+*/
+void	ray_direction(t_cub *c) 
+{	
+	int	ray_index; //indice del rayo en la pantalla, iremos creando rayos verticales (sobre el eje x) hasta cubrir la anchura("0 x = %d\n", x);
 
 	ray_index = 0;
-/* 	while (ray_index < WIN_WIDHT)
+/* 	while (ray_index < WIN_WIDHT) //por cada uno de los 1300 bytes del juego en el eje x proyectamos un rayo
 	{ */
-		c->ray_camera = 2 * ray_index / (double)WIN_WIDHT - 1; //camera_x varia entre -1 (izq del todo) y 1 (derecha del todo). SI es 0 está en el centro
-		printf("c->ray_camera %lf = 2 * ray_index %d / (double)WIN_WIDHT %lf - 1\n", c->ray_camera, ray_index, (double)WIN_WIDHT - 1);
+		c->relative_ray_index = (2 * ray_index / (double)WIN_WIDHT) - 1; //ray_camera varia entre -1 (izq del todo) y 1 (derecha del todo). Si es 0 está en el centro
+		c->ray_dx = c->p_angle_x + c->camera_x * c->relative_ray_index;
+		c->ray_dy = c->p_angle_y + c->camera_y * c->relative_ray_index;
 		
-		c->ray_dx = c->p_dx + c->plane_x * c->ray_camera;
-		printf("c->ray_dx %lf = c->p_dx %lf + c->plane_x %lf * c->ray_camera %lf\n", c->ray_dx, c->p_dx, c->plane_x, c->ray_camera);
-		
-		c->ray_dy = c->p_dy + c->plane_y * c->ray_camera;
-		printf("c->ray_dy %lf = c->p_dy %lf + c->plane_y %lf * c->ray_camera %lf\n", c->ray_dy, c->p_dy, c->plane_y, c->ray_camera);
-	
+/* 		printf("RAY_DIRECTION\n");
+		printf("x = %d\n", ray_index);
+		printf("c->ray_index = (2 * x / (double)WIN_WIDHT) - 1 \n%lf = (2 * %d / %lf) - 1\n", c->relative_ray_index, ray_index, (double)WIN_WIDHT - 1);
+		printf("c->ray_dx = c->p_angle_x + c->camera_x * c->relative_ray_index \n%lf = %lf + %lf * %lf\n", c->ray_dx, c->p_angle_x, c->camera_x, c->relative_ray_index);
+		printf("c->ray_dy = c->p_angle_y + c->camera_y * c->relative_ray_index \n%lf = %lf + %lf * %lf\n", c->ray_dy, c->p_angle_y, c->camera_y, c->relative_ray_index);
+		printf("\n"); */
+
 		delta_distance(c);
 		initial_distance(c);
 		digital_differential_analysis(c);
@@ -39,116 +47,115 @@ void	ray_direction(t_cub *c)
 }
 
 //fabs() valor absoluto de un punto flotante (decimal)
-
+//c->delta_dist_x y c->delta_dist_y son la distancia relativa (relativa a CELL_WIDHT y CELL_HEIGHT) que el rayo debera recorrer con su angulo actual (tanto en el eje x como en el y) para superar la distancia comprendida por el lado de uno de los rectangulos de la cuadricula del mapa 2D (osease CELL_WIDHT y CELL_HEIGHT para cada uno de sus relativos ejes)
+//c->map_edge_x y c->map_edge_y son los bordes de la cuadricula más cercanos a la posicion actual del jugador
 void	delta_distance(t_cub *c)
 {
-	printf("DELTA_DISTANCE\n");
-	c->map_x = (int)(c->p_x);
-	printf("c->map_x %d = (int)(c->p_x) %d\n", c->map_x, (int)(c->p_x));
-	c->map_y = (int)(c->p_y);
-	printf("c->map_y %d = (int)(c->p_y) %d\n", c->map_y, (int)(c->p_y));
+	c->map_edge_x = (int)floor(c->p_x / CELL_WIDHT) * CELL_WIDHT;
+	c->map_edge_y = (int)floor(c->p_y / CELL_HEIGHT) * CELL_HEIGHT;
 	c->delta_dist_x = fabs(1 / c->ray_dx);
-	printf("c->delta_dist_x %lf = fabs(1 / c->ray_dx %lf);\n", c->delta_dist_x, c->ray_dx);
 	c->delta_dist_y = fabs(1 / c->ray_dy);
-	printf("c->delta_dist_y %lf = fabs(1 / c->ray_dy %lf);\n", c->delta_dist_y, c->ray_dy);
+	
+/* 	printf("DELTA_DISTANCE\n");
+	printf("c->map_edge_x = (int)(c->p_x) \n%d = (int)%lf\n", c->map_edge_x, (c->p_x));
+	printf("c->map_edge_y = (int)(c->p_y) \n%d = (int)%lf\n", c->map_edge_y, (c->p_y));
+	printf("c->delta_dist_x = fabs(1 / c->ray_dx) \n%lf = %lf\n", c->delta_dist_x, c->ray_dx);
+	printf("c->delta_dist_y = fabs(1 / c->ray_dy) \n%lf = %lf\n", c->delta_dist_y, c->ray_dy);
+	printf("\n"); */
 }
 
-/* Mientras que c->ray_dx y c->ray_dy definen la dirección exacta en la que se lanza el rayo, 
-step_x y step_y indican el sentido en el que el rayo debe avanzar en la cuadrícula del mapa (hacia la izquierda o derecha en el eje x,
-y hacia arriba o abajo en el eje y). Cada uno solo puede ser 1 o -1. */
-
-/* c->p_dx delta x del jugador en el mapa, map_x posición de la siguiente celda, 
-delta_dist_x distancia hasta la siguiente celda */
-
-//c->side_dist_x y c->side_dist_y son la distancia hasta el siguiente rectangulo
+//step_x y step_y indican el sentido en el que el rayo debe avanzar en la cuadrícula del mapa (hacia la izquierda o derecha en el eje x y hacia arriba o abajo en el eje y). Cada uno solo puede ser 1 o -1.
+//c->side_dist_x y c->side_dist_y son la distancia absoluta hasta el siguiente rectangulo si el jugador mantiene el rumbo actual. (c->p_x - c->map_edge_x) es la distancia más corta posible hasta el siguiente rectangulo del mapa (es perpendicular al eje al que queremos llegar). Esa distancia inicial se multiplica por c->delta_dist_x, para tener en cuenta que podemos no estar yendo en la dirección ideal
 
 void	initial_distance(t_cub *c)
-{
-	printf("INITIAL_DISTANCE\n");
-	
+{	
 	if (c->ray_dx < 0)
 	{
 		c->step_x = -1;
-		c->side_dist_x = (c->p_dx - c->map_x) * c->delta_dist_x;
+		c->side_dist_x = (c->p_x - c->map_edge_x) * c->delta_dist_x;
 	}
 	else
 	{
 		c->step_x = 1;
-		c->side_dist_x = (c->map_x + 1.0 - c->p_dx) * c->delta_dist_x;
+		c->side_dist_x = (c->map_edge_x + CELL_WIDHT - c->p_x) * c->delta_dist_x;
 	}
 	if (c->ray_dy < 0)
 	{
 		c->step_y = -1;
-		c->side_dist_y = (c->p_dy - c->map_y) * c->delta_dist_y;
+		c->side_dist_y = (c->p_y - c->map_edge_y) * c->delta_dist_y;
 	}
 	else
 	{
 		c->step_y = 1;
-		c->side_dist_y = (c->map_y + 1.0 - c->p_dy) * c->delta_dist_y;
+		c->side_dist_y = (c->map_edge_y + CELL_HEIGHT - c->p_y) * c->delta_dist_y;
 	}
-
-	printf("c->step_x = %d c->step_y %d\n", c->step_x, c->step_y);
+	
+	/* printf("INITIAL_DISTANCE\n");
+	printf("c->step_x = %d\n", c->step_x);
+	printf("c->side_dist_x = (c->p_x - c->map_edge_x) * c->delta_dist_x \n%lf = (%lf - %d) * %lf\n", c->side_dist_x, c->p_x, c->map_edge_x, c->delta_dist_x);
+	printf("c->step_y = %d\n", c->step_y);
+	printf("c->side_dist_y = (c->p_y - c->map_edge_y) * c->delta_dist_y \n%lf = (%lf - %d) * %lf\n", c->side_dist_y, c->p_y, c->map_edge_y, c->delta_dist_y); */
 }
 
 void	digital_differential_analysis(t_cub *c)
 {
 	while (42)
 	{
-		printf("DIGITAL_DIFFERENTIAL_ANALYSIS\n");
+		/* printf("DIGITAL_DIFFERENTIAL_ANALYSIS\n"); */
 
 		if (c->side_dist_x < c->side_dist_y)
 		{
-			printf("c->side_dist_x %lf < c->side_dist_y %lf\n", c->side_dist_x, c->side_dist_y);
+			//printf("c->side_dist_x %lf < c->side_dist_y %lf\n", c->side_dist_x, c->side_dist_y);
 			c->side_dist_x += c->delta_dist_x;
-			printf("c->side_dist_x %lf += c->delta_dist_x %lf \n", c->side_dist_x, c->delta_dist_x);
-			c->map_x += c->step_x;
-			printf("c->map_x %d < c->step_x %d\n", c->map_x, c->step_x);
+			//printf("c->side_dist_x %lf += c->delta_dist_x %lf \n", c->side_dist_x, c->delta_dist_x);
+			c->map_edge_x += c->step_x;
+			//printf("c->map_edge_x %d < c->step_x %d\n", c->map_edge_x, c->step_x);
 			c->side = 0;
-			printf("c->side %d\n", c->side);
+			//printf("c->side %d\n", c->side);
 		}
 		else
 		{
-			printf("c->side_dist_y %lf < c->side_dist_y %lf\n", c->side_dist_y, c->side_dist_y);
+			//printf("c->side_dist_y %lf < c->side_dist_y %lf\n", c->side_dist_y, c->side_dist_y);
 			c->side_dist_y += c->delta_dist_y;
-			printf("c->side_dist_y %lf += c->delta_dist_y %lf \n", c->side_dist_y, c->delta_dist_y);
-			c->map_y += c->step_y;
-			printf("c->map_y %d < c->step_y %d\n", c->map_y, c->step_y);
+			//printf("c->side_dist_y %lf += c->delta_dist_y %lf \n", c->side_dist_y, c->delta_dist_y);
+			c->map_edge_y += c->step_y;
+			//printf("c->map_edge_y %d < c->step_y %d\n", c->map_edge_y, c->step_y);
 			c->side = 1;
-			printf("c->side %d\n", c->side);
+			//printf("c->side %d\n", c->side);
 		}
 
-		if (c->map[(int)c->map_y / CELL_HEIGHT][(int)c->map_x / CELL_WIDHT] == '1')
+		if (c->map[(int)c->map_edge_y / CELL_HEIGHT][(int)c->map_edge_x / CELL_WIDHT] == '1')
 			break;
-/* 		if (c->map[(int)floor(c->map_y / CELL_HEIGHT)][(int)floor(c->map_x / CELL_WIDHT)] == '1')
+/* 		if (c->map[(int)floor(c->map_edge_y / CELL_HEIGHT)][(int)floor(c->map_edge_x / CELL_WIDHT)] == '1')
 			break; */
 	}
 	
-	if (c->side_dist_x < c->side_dist_y)
+/* 	if (c->side_dist_x < c->side_dist_y)
 		{
 			printf("c->side_dist_x %lf < c->side_dist_y %lf\n", c->side_dist_x, c->side_dist_y);
 			printf("c->side_dist_x %lf += c->delta_dist_x %lf \n", c->side_dist_x, c->delta_dist_x);
-			printf("c->map_x %d < c->step_x %d\n", c->map_x, c->step_x);
+			printf("c->map_edge_x %d < c->step_x %d\n", c->map_edge_x, c->step_x);
 			printf("c->side %d\n", c->side);
 		}
 	else
 		{
 			printf("c->side_dist_y %lf < c->side_dist_y %lf\n", c->side_dist_y, c->side_dist_y);
 			printf("c->side_dist_y %lf += c->delta_dist_y %lf \n", c->side_dist_y, c->delta_dist_y);
-			printf("c->map_y %d < c->step_y %d\n", c->map_y, c->step_y);
+			printf("c->map_edge_y %d < c->step_y %d\n", c->map_edge_y, c->step_y);
 			printf("c->side %d\n", c->side);
 		}
-	printf("c->map[%d][%d]\n", (int)c->map_y / CELL_HEIGHT, (int)c->map_x / CELL_WIDHT);
+	printf("c->map[%d][%d]\n", (int)c->map_edge_y / CELL_HEIGHT, (int)c->map_edge_x / CELL_WIDHT); */
 
 }
 
 void	wall_distance(t_cub *c)
 {
-	printf("WALL_DISTANCE\n");
+/* 	printf("WALL_DISTANCE\n"); */
 
 	if (c->side == 0)
-		c->wall_dist = (c->map_x - c->p_x + (1 - c->step_x) / 2) / c->ray_dx;
+		c->wall_dist = (c->map_edge_x - c->p_x + (1 - c->step_x) / 2) / c->ray_dx;
 	else
-		c->wall_dist = (c->map_y - c->p_y + (1 - c->step_y) / 2) / c->ray_dy;
+		c->wall_dist = (c->map_edge_y - c->p_y + (1 - c->step_y) / 2) / c->ray_dy;
 	c->line_height = (int)(WIN_HEIGHT / c->wall_dist);
 	c->draw_start = (int)(-c->line_height / 2 + WIN_HEIGHT / 2);
 	if (c->draw_start < 0)
@@ -162,5 +169,5 @@ void	wall_distance(t_cub *c)
 		c->wall_height = c->p_x + c->wall_dist * c->ray_dy;
 	c->wall_height -= floor(c->wall_height);
 
-	printf("c->wall_height = %lf\n\n", c->wall_height);
+/* 	printf("c->wall_height = %lf\n\n", c->wall_height); */
 }

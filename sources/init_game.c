@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 17:35:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/09 18:07:56 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/13 17:25:34 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,24 +95,24 @@ void	init_player(int y, int x, t_cub *c) //inicializa la dirección del jugador 
 	c->p_x = (double)x * (double)CELL_WIDHT;
 	if (c->map[y][x] == 'N')
 	{
-		c->p_a = PI / 2; //angulo en multiplos de PI
-		c->p_dy = -1;
+		c->p_angle = PI / 2; //angulo en multiplos de PI
+		c->p_angle_y = -1;
 	}
 	if (c->map[y][x] == 'W')
 	{
-		c->p_a = PI;
-		c->p_dx = -1;
+		c->p_angle = PI;
+		c->p_angle_x = -1;
 	}
 	if (c->map[y][x] == 'S')
 	{
-		c->p_a = PI * 3 / 4;
-		c->p_dy = 1;
+		c->p_angle = PI * 3 / 4;
+		c->p_angle_y = 1;
 	}
 	if (c->map[y][x] == 'E')
 	{
-		c->p_a = 2 * PI; //equivalente a 360 grados, se reinicia a cero
-		c->p_dx = 1;
+		c->p_angle = 2 * PI; //equivalente a 360 grados, se reinicia a cero
+		c->p_angle_x = 1;
 	}
-	c->plane_x = c->p_dy * FIELD_OF_VIEW; //los ejes de la camara, son tangentes a los ejes del angulo del jugador, el valor de la tangente del angulo 0.66 (FOV, estático) es más o menos 0.66  
-	c->plane_y = c->p_dx * FIELD_OF_VIEW;
+	c->camera_x = c->p_angle_y * FIELD_OF_VIEW; //los ejes de la camara, son tangentes a los ejes del angulo del jugador, el valor de la tangente de un angulo de 60 grados es más o menos 0.66 (FOV, estático)
+	c->camera_y = c->p_angle_x * FIELD_OF_VIEW;
 }

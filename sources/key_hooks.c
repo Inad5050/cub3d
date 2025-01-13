@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:44:08 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/09 18:15:52 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/13 18:54:26 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ int	is_in_wall(int y, int x, t_cub *c)
 	if (y)
 	{
 		tmp_p_y = (int)floor(c->p_y + (double)(STEP_SIZE * y)) / CELL_HEIGHT;
-		tmp_p_x = floor(c->p_x) / CELL_WIDHT;
+		tmp_p_x = (int)floor(c->p_x) / CELL_WIDHT;
 		if (c->map[tmp_p_y][tmp_p_x] != '0')		
 			return (1);
 	}
 	else if (x)
 	{
-		tmp_p_y = floor(c->p_y) / CELL_HEIGHT;
+		tmp_p_y = (int)floor(c->p_y) / CELL_HEIGHT;
 		tmp_p_x = (int)floor(c->p_x + (double)(STEP_SIZE * x)) / CELL_WIDHT;
 		if (c->map[tmp_p_y][tmp_p_x] != '0')	
 			return (1);
@@ -61,19 +61,19 @@ void	rotate_player(int right_dir, t_cub *c)
 {
 	if (!right_dir)
 	{
-		c->p_a -= 0.1;
-		if (c->p_a < 0)
-			c->p_a += 2*PI; //en C los valores de un angulo van de 0 a 2PI, si sobrepasamos el 0 volvemos a empezar por 0/2PI
+		c->p_angle -= 0.1;
+		if (c->p_angle < 0)
+			c->p_angle += 2*PI; //en C los valores de un angulo van de 0 a 2PI, si sobrepasamos el 0 volvemos a empezar por 0/2PI
 	}
 	if (right_dir)
 	{
-		c->p_a += 0.1;
-		if (c->p_a > 2*PI)
-			c->p_a -= 2*PI; //en C los valores de un angulo van de 0 a 2PI, si sobrepasamos el 0 volvemos a empezar por 0/2PI
+		c->p_angle += 0.1;
+		if (c->p_angle > 2*PI)
+			c->p_angle -= 2*PI; //en C los valores de un angulo van de 0 a 2PI, si sobrepasamos el 0 volvemos a empezar por 0/2PI
 	}
-	c->p_dy = sin(c->p_a) * FIELD_OF_VIEW; //cada vez que cambia el angulo cambian los deltas de cada eje del jugador
-	c->p_dx = cos(c->p_a) * FIELD_OF_VIEW;
-	c->plane_x = c->p_dy * FIELD_OF_VIEW; //cada vez que cambia el angulo cambia el angulo de la camara (es perpendicular a el eje del jugador)
-	c->plane_y = c->p_dx * FIELD_OF_VIEW;
+	c->p_angle_y = sin(c->p_angle) * FIELD_OF_VIEW; //cada vez que cambia el angulo cambian los deltas de cada eje del jugador
+	c->p_angle_x = cos(c->p_angle) * FIELD_OF_VIEW;
+	c->camera_x = c->p_angle_y * FIELD_OF_VIEW; //cada vez que cambia el angulo cambia el angulo de la camara (es perpendicular a el eje del jugador)
+	c->camera_y = c->p_angle_x * FIELD_OF_VIEW;
 }
 

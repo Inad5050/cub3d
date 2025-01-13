@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/09 20:18:51 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/13 19:04:10 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define PLAYER_WIDHT 16
 # define PLAYER_HEIGHT 16
 # define STEP_SIZE 16
-# define FIELD_OF_VIEW 0.66
+# define FIELD_OF_VIEW 0.66 //para que el angulo de vision de la camara sea de aproximadamente 60 grados, lo habitual para un videojuego 3D
 # define PI 3.1415926535
 # define ANGLE_ROTATION_SIZE 5
 
@@ -90,26 +90,27 @@ typedef struct s_cub
 
 	double	p_y; //coordenadas del jugador sobre el eje vertical
 	double	p_x; //coordenadas del jugador sobre el eje horizontal
-	double	p_dy; //delta x
-	double	p_dx; //delta y
-	double	p_a; //angulo del jugador
+	double	p_angle; //angulo del jugador
+	double	p_angle_y; //delta x del angulo del jugador
+	double	p_angle_x;
 
-	double	plane_x; //perpendicular de delta x
-	double	plane_y; //perpendicular de delta y
+	double	camera_x; //eje x del angulo de la camara actual. Son tangentes a los ejes del angulo del jugador [mirar init_player()], el valor de la tangente de un angulo de 60 grados es más o menos 0.66 (FOV, estático)
+	double	camera_y;
 
-	double	ray_camera; //posicion horizontal del rayo sobre el plano de la camara
-	
-	double	ray_dx;
+	double	relative_ray_index; //indice relativo a la anchura de la camara (WIN_WIDHT) de los rayos que vamos a proyectar. Su valor va desde -1 a 1.
+	double	ray_dx; //delta x del angulo del rayo. Dicho de otra forma: componente x del angulo del rayo.
 	double	ray_dy;
 
-	double	delta_dist_x; 
-	double	delta_dist_y; 
-	int		step_x; //indican en qué dirección debe avanzar el rayo a través de la cuadrícula. step_x: Si el rayo avanza hacia la derecha, será 1. Si avanza hacia la izquierda, será -1. 
-	int		step_y; //step_y: Si el rayo avanza hacia arriba, será 1. Si avanza hacia abajo, será -1
-	double	side_dist_x;
+	int		map_edge_x; //borde de la cuadricula más cercano a la posicion actual del jugador
+	int		map_edge_y;
+	double	delta_dist_x; //c->delta_dist_x y c->delta_dist_y son la distancia relativa (relativa a CELL_WIDHT y CELL_HEIGHT) que el rayo debera recorrer con su angulo actual (tanto en el eje x como en el y) para superar la distancia comprendida por el lado de uno de los rectangulos de la cuadricula del mapa 2D (osease CELL_WIDHT y CELL_HEIGHT para cada uno de sus relativos ejes)
+	double	delta_dist_y;
+	
+	int		step_x; //indican en qué sentido debe avanzar el rayo. step_x: Si el rayo avanza hacia la derecha, será 1. Si avanza hacia la izquierda, será -1. Step_y: si el rayo avanza hacia arriba, será -1. Si avanza hacia abajo, será 1
+	int		step_y; 
+	double	side_dist_x; //son la distancia absoluta hasta el siguiente rectangulo si el jugador mantiene el rumbo actual. (c->p_x - c->map_edge_x) es la distancia más corta posible hasta el siguiente rectangulo del mapa (es perpendicular al eje al que queremos llegar). Esa distancia inicial se multiplica por c->delta_dist_x, para tener en cuenta que podemos no estar yendo en la dirección ideal
 	double	side_dist_y;
-	int		map_x;
-	int		map_y;
+	
 	int		side;
 	double	wall_dist;
 	int		line_height;
