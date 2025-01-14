@@ -68,6 +68,9 @@ void	delta_distance(t_cub *c)
 
 void	initial_distance(t_cub *c)
 {	
+	
+	
+	
 	if (c->ray_dx < 0)
 	{
 		c->step_x = -1;
@@ -100,15 +103,16 @@ void	initial_distance(t_cub *c)
 //Despues le suma c->delta_dist_x * CELL_WIDHT, lo que le cuesta cruzar un rectangulo si empieza en el filo
 //Determina la posición del jugador c->map_edge_x += c->step_x * CELL_WIDHT; sumandoles a sus coordenadas una casilla en la dirección adecuada
 //Para luego if (c->map[c->map_edge_x][c->map_edge_y] == '1') com probar si ha llegado a una pared 
-//c->side es un interruptor
+//c->side es un interruptor, inidica contra que eje del cuadrado va a chocar el rayo, si el x o el y
 
 void	digital_differential_analysis(t_cub *c)
 {
 	while (42)
 	{
-		printf("DIGITAL_DIFFERENTIAL_ANALYSIS\n");
+/* 		printf("DIGITAL_DIFFERENTIAL_ANALYSIS\n");
 
-/* 		printf("c->side_dist_x %lf c->side_dist_y %lf \nc->delta_dist_x %lf c->delta_dist_y %lf\n", c->side_dist_x, c->side_dist_y, c->delta_dist_x, c->delta_dist_y);
+		printf("c->side_dist_x %lf c->side_dist_y %lf \nc->delta_dist_x %lf c->delta_dist_y %lf\n", c->side_dist_x, c->side_dist_y, c->delta_dist_x, c->delta_dist_y);
+		printf("c->p_x %lf c->p_y %lf \n", c->p_x, c->p_y);
 		printf("c->map_edge_x %d c->map_edge_y %d \n", c->map_edge_x, c->map_edge_y); */
 
 		if (c->side_dist_x < c->side_dist_y)
@@ -123,35 +127,50 @@ void	digital_differential_analysis(t_cub *c)
 			c->map_edge_y += c->step_y * CELL_HEIGHT;
 			c->side = 1;
 		}	
-		
 		if (c->map[c->map_edge_y / CELL_WIDHT][c->map_edge_x / CELL_HEIGHT] == '1')
 			break;
 	}
 
-	printf("c->side_dist_x %lf c->side_dist_y %lf \nc->delta_dist_x %lf c->delta_dist_y %lf \n", c->side_dist_x, c->side_dist_y, c->delta_dist_x, c->delta_dist_y);
-	printf("c->map_edge_x %d c->map_edge_y %d \n", c->map_edge_x, c->map_edge_y);
+/* 	printf("c->side_dist_x %lf c->side_dist_y %lf \nc->delta_dist_x %lf c->delta_dist_y %lf \n", c->side_dist_x, c->side_dist_y, c->delta_dist_x, c->delta_dist_y);
+	printf("c->map_edge_x %d c->map_edge_y %d \n", c->map_edge_x, c->map_edge_y); */
 }
+
+//c->wall_dist: la ditancia a la pared mas cercana. La pared (c->map_edge_x) - la posicion del jugador (c->p_x)
+// + el ajuste por la desviacion del rayo que soliamos calcular con: * c->delta_dist_x = fabs(1 / c->ray_dx). 
+// Ahora lo calculamos como (CELL_WIDHT * (1 - c->step_x)) / 2) / c->ray_dx, que viene a ser (CELL_WIDHT * (1 - c->step_x)) * (1 / c->ray_dx).
+// (1 - c->step_x) es un interruptor. si va a la izq c->step_x es -1, con lo que CELL_WIDHT * (1 - c->step_x)) / 2 es -CELL_WIDHT. Si va a la derecha es c->step_x es 1, con lo que CELL_WIDHT * (1 - c->step_x)) / 2 es 0. y el angulo no se tiene en cuenta. 
+// Esto ultimo no termino de entenderlo
+// c->line_height: cuanto mas lejos este la linea mas pequeña la calcularemos
+// empezaremos a dibujarla en c->draw_start = (int)(-c->line_height / 2 + WIN_HEIGHT / 2), que viene a ser (WIN_HEIGHT - c->line_height) / 2. El trozo de ventana que no vamos a dibujar es WIN_HEIGHT - c->line_height. Lo dividimos entre 2 para que la pared que vamos a dibujar este centrada sobre el eje y. Tiene tanto espacio vacio abajo como arriba. 
+// c->draw_end viene a ser lo mismo que c->draw_start. Calculamos el espacio encima de la pared.
 
 void	wall_distance(t_cub *c)
 {
 /* 	printf("WALL_DISTANCE\n"); */
 
-	if (c->side == 0)
-		c->wall_dist = (c->map_edge_x - c->p_x + (1 - c->step_x) / 2) / c->ray_dx;
-	else
-		c->wall_dist = (c->map_edge_y - c->p_y + (1 - c->step_y) / 2) / c->ray_dy;
+	if (c->side == 0) //pared mas cercana en el eje x
+		c->wall_dist = (c->map_edge_x - c->p_x + (CELL_WIDHT * (1 - c->step_x)) / 2) / c->ray_dx;
+	else //pared mas cercana en el eje y
+		c->wall_dist = (c->map_edge_y - c->p_y + (CELL_HEIGHT * (1 - c->step_y)) / 2) / c->ray_dy;
+	printf("c->wall_dist = %lf\n", c->wall_dist);
+
 	c->line_height = (int)(WIN_HEIGHT / c->wall_dist);
+	printf("c->line_height = %d\n", c->line_height);
+
 	c->draw_start = (int)(-c->line_height / 2 + WIN_HEIGHT / 2);
 	if (c->draw_start < 0)
 		c->draw_start = 0;
+	printf("c->draw_start = %d\n", c->draw_start);
+
 	c->draw_end = (int)(c->line_height / 2 + WIN_HEIGHT / 2);
 	if (c->draw_end >= WIN_HEIGHT)
-		c->draw_end = WIN_HEIGHT - 1;
-	if (c->side == 0)
-		c->wall_height = c->p_y + c->wall_dist * c->ray_dx; //en el codigo original aparece ray->dy he interpretado que es lo mismo que c->ray_dx, aunque no estoy seguro
+		c->draw_end = WIN_HEIGHT - 1 * CELL_HEIGHT; //DUDA: aqui no estoy tan seguro de que sea * CELL_HEIGHT
+	printf("c->draw_end = %d\n", c->draw_end);
+
+	if (c->side == 0) //pared mas cercana en el eje x
+		c->wall_height = c->p_y + c->wall_dist * c->ray_dx; //DUDA: que es c->wall_height??
 	else
 		c->wall_height = c->p_x + c->wall_dist * c->ray_dy;
 	c->wall_height -= floor(c->wall_height);
-
-/* 	printf("c->wall_height = %lf\n\n", c->wall_height); */
+	printf("c->wall_height = %lf\n\n", c->wall_height);
 }

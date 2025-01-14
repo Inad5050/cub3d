@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/13 19:04:10 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/14 18:14:55 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,14 @@
 # define ROUTE_WEST "./textures/xpm/grey_wall.xpm"
 # define ROUTE_EAST "./textures/xpm/grey_wall.xpm"
 # define ROUTE_PLAYER "./textures/xpm/player_small.xpm"
+
+#define NUM_TEXTURES 4
+
+typedef struct s_data
+{
+	// ...
+	
+} t_data;
 
 typedef struct s_image
 {
@@ -111,14 +119,15 @@ typedef struct s_cub
 	double	side_dist_x; //son la distancia absoluta hasta el siguiente rectangulo si el jugador mantiene el rumbo actual. (c->p_x - c->map_edge_x) es la distancia más corta posible hasta el siguiente rectangulo del mapa (es perpendicular al eje al que queremos llegar). Esa distancia inicial se multiplica por c->delta_dist_x, para tener en cuenta que podemos no estar yendo en la dirección ideal
 	double	side_dist_y;
 	
-	int		side;
-	double	wall_dist;
-	int		line_height;
-	int		draw_start;
-	int		draw_end;
-	double	wall_height;
+	int		side; //c->side es un interruptor, inidica contra que eje del cuadrado va a chocar el rayo, si el x o el y
 	
-	int		cardinal_direction;
+	double	wall_dist; //la ditancia a la pared mas cercana
+	int		line_height; //la altura de la pared
+	int		draw_start; //donde empezamos a dibujar la pared
+	int		draw_end; //donde terminamos de dibujar la pared
+	double	wall_height; //DUDA
+
+	int *texture_buffer[NUM_TEXTURES]; //el n
 }	
 t_cub;
 
