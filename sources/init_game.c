@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 17:35:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/13 17:25:34 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/15 13:11:18 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,13 @@ int	init_game(t_cub *c)
 	c->mlx = mlx_init(c); //inicializa MLX
 	if (!c->mlx)
 		return (c_error("Couldn't initiate c->mlx", c), EXIT_FAILURE);
-	c->win_mlx = mlx_new_window(c->mlx, c->map_axis_x * CELL_WIDHT, \
-	c->map_axis_y * CELL_HEIGHT, "Cube3d"); //crea la ventana
-	if (!c->win_mlx)
-		return (c_error("Couldn't initiate c->win", c), EXIT_FAILURE);
+	c->win_mlx_2D = mlx_new_window(c->mlx, c->map_axis_x * CELL_WIDHT, \
+	c->map_axis_y * CELL_HEIGHT, "Cube3d"); //crea la ventana 2D
+	if (!c->win_mlx_2D)
+		return (c_error("Couldn't initiate c->win2D", c), EXIT_FAILURE);
+	c->win_mlx_3D = mlx_new_window(c->mlx, WIN_WIDHT, WIN_HEIGHT, "Cube3d");
+	if (!c->win_mlx_3D)
+		return (c_error("Couldn't initiate c->win3D", c), EXIT_FAILURE);
 	init_image(c, &c->ceiling, ROUTE_CEILING); //inicializa la estructura de cada imagen
 	init_image(c, &c->floor, ROUTE_FlOOR);
 	init_image(c, &c->wall_n, ROUTE_NORTH);
@@ -29,6 +32,7 @@ int	init_game(t_cub *c)
 	init_image(c, &c->wall_e, ROUTE_EAST);
 	init_ply_image(c, &c->player_img, ROUTE_PLAYER);
 	locate_player(c);
+	init_3D(c);
 	return (EXIT_SUCCESS);
 }
 

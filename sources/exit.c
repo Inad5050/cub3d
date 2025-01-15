@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dani <dani@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 20:30:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/09 12:04:28 by dani             ###   ########.fr       */
+/*   Updated: 2025/01/15 12:41:03 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,16 @@
 void	c_error(char *str, t_cub *c)
 {
 	ft_printf("%s\n", str);
-	mlx_destroy_window(c->mlx, c->win_mlx);	
+	mlx_destroy_window(c->mlx, c->win_mlx_2D);
+	mlx_destroy_window(c->mlx, c->win_mlx_3D);
 	free_memory(c);
 	exit (EXIT_FAILURE);
 }
 
 int	c_close(t_cub *c)
 {
-	mlx_destroy_window(c->mlx, c->win_mlx);	
+	mlx_destroy_window(c->mlx, c->win_mlx_2D);
+	mlx_destroy_window(c->mlx, c->win_mlx_3D);
 	free_memory(c);
 	return (exit (EXIT_FAILURE), 0);
 }

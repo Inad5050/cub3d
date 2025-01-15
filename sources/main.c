@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:27:23 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/07 15:05:16 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/15 13:03:24 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@ int	main(int argc, char **argv)
 
 	map_read(argv, c); //lee el mapa
 	init_game(c); //inicializa estructuras e imagenes
-	map_render(c); //renderiza el mapa	
-	mlx_hook(c->win_mlx, ON_KEYDOWN, 1L << 0, key_hooks, (void *)c); //define los loops que el programa tendra que repetir
-	mlx_hook(c->win_mlx, ON_DESTROY, 1L << 17, c_close, (void *)c);
+	map_render(c); //renderiza el mapa 2D
+	ray_direction(c); //renderiza el mapa 3D
+	mlx_hook(c->win_mlx_2D, ON_KEYDOWN, 1L << 0, key_hooks, (void *)c); //define los loops que el programa tendra que repetir
+	mlx_hook(c->win_mlx_2D, ON_DESTROY, 1L << 17, c_close, (void *)c);
+	mlx_hook(c->win_mlx_3D, ON_DESTROY, 1L << 17, c_close, (void *)c);
 	mlx_loop(c->mlx); //realiza los loops
 	free_memory(c); //libera toda la memoria alojada en el heap
 

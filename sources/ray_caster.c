@@ -21,12 +21,10 @@ c->ray_dx y c->ray_dy: son la delta del angulo del rayo. Hereda el angulo del ju
 */
 void	ray_direction(t_cub *c) 
 {	
-	int	ray_index; //indice del rayo en la pantalla, iremos creando rayos verticales (sobre el eje x) hasta cubrir la anchura("0 x = %d\n", x);
-
-	ray_index = 0;
-/* 	while (ray_index < WIN_WIDHT) //por cada uno de los 1300 bytes del juego en el eje x proyectamos un rayo
-	{ */
-		c->relative_ray_index = (2 * ray_index / (double)WIN_WIDHT) - 1; //ray_camera varia entre -1 (izq del todo) y 1 (derecha del todo). Si es 0 está en el centro
+	c->ray_index = 0;
+	while (c->ray_index < WIN_WIDHT) //por cada uno de los 1300 bytes del juego en el eje x proyectamos un rayo
+	{
+		c->relative_ray_index = (2 * c->ray_index / (double)WIN_WIDHT) - 1; //ray_camera varia entre -1 (izq del todo) y 1 (derecha del todo). Si es 0 está en el centro
 		c->ray_dx = c->p_angle_x + c->camera_x * c->relative_ray_index;
 		c->ray_dy = c->p_angle_y + c->camera_y * c->relative_ray_index;
 		
@@ -41,8 +39,12 @@ void	ray_direction(t_cub *c)
 		initial_distance(c);
 		digital_differential_analysis(c);
 		wall_distance(c);
-/* 		ray_index++;
-	} */
+
+		draw_rays_3Dmap(c->ray_index, c);
+
+		c->ray_index++;
+	}
+	render_3Dmap(c);
 }
 
 //fabs() valor absoluto de un punto flotante (decimal)
@@ -173,4 +175,21 @@ void	wall_distance(t_cub *c)
 		c->wall_height = c->p_x + c->wall_dist * c->ray_dy;
 	c->wall_height -= floor(c->wall_height);
 	printf("c->wall_height = %lf\n\n", c->wall_height);
+}
+
+
+void	draw_rays_3Dmap(int x, t_cub *c)
+{
+	int	y;
+	
+	y = 0;
+	while (y < WIN_HEIGHT)
+	{
+		if (y < c->draw_start)
+			c->map_3D[y][x] = FLOOR;
+		else if (c->draw_start <= y && y <= c->draw_end)
+			c->map_3D[y][x] = WALL; 
+		else if (c->draw_end < y)
+			c->map_3D[y][x] = CEILLING;
+	}
 }

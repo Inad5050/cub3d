@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/14 18:14:55 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/15 13:58:19 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,6 @@
 # define PI 3.1415926535
 # define ANGLE_ROTATION_SIZE 5
 
-//cardinal directions
-# define EAST 0
-# define NORTH 1
-# define WEST 2
-# define SOUTH 3
-
 //keybinds
 # define KEY_ESC  		65307
 # define KEY_W			119
@@ -58,13 +52,21 @@
 # define ROUTE_EAST "./textures/xpm/grey_wall.xpm"
 # define ROUTE_PLAYER "./textures/xpm/player_small.xpm"
 
-#define NUM_TEXTURES 4
+//colors
+# define BLUE 0x000000FF
+# define PURPLE 0x00800080
+# define WHITE 0x00FFFFFF
 
-typedef struct s_data
-{
-	// ...
-	
-} t_data;
+//map_parts
+# define FLOOR 1
+# define WALL 2
+# define CEILLING 3
+
+//cardinal directions
+# define EAST 0
+# define NORTH 1
+# define WEST 2
+# define SOUTH 3
 
 typedef struct s_image
 {
@@ -82,7 +84,8 @@ typedef struct s_image
 typedef struct s_cub
 {
 	void	*mlx; //puntero a la instancia de MLX
-	void	*win_mlx; //puntero a la ventana creada por MLX
+	void	*win_mlx_2D; //puntero a la ventana creada por MLX
+	void	*win_mlx_3D;
 	char	**map; //matriz con los caracteres del mapa
 
 	int		map_axis_y; //cantidad de caracteres del mapa en el eje vertical
@@ -105,6 +108,7 @@ typedef struct s_cub
 	double	camera_x; //eje x del angulo de la camara actual. Son tangentes a los ejes del angulo del jugador [mirar init_player()], el valor de la tangente de un angulo de 60 grados es más o menos 0.66 (FOV, estático)
 	double	camera_y;
 
+	int		ray_index; //indice del rayo en la pantalla, iremos creando rayos verticales (sobre el eje x) hasta cubrir la anchura("0 x = %d\n", x);
 	double	relative_ray_index; //indice relativo a la anchura de la camara (WIN_WIDHT) de los rayos que vamos a proyectar. Su valor va desde -1 a 1.
 	double	ray_dx; //delta x del angulo del rayo. Dicho de otra forma: componente x del angulo del rayo.
 	double	ray_dy;
@@ -127,9 +131,9 @@ typedef struct s_cub
 	int		draw_end; //donde terminamos de dibujar la pared
 	double	wall_height; //DUDA
 
-	int *texture_buffer[NUM_TEXTURES]; //el n
-}	
-t_cub;
+	char	**map_3D; //matriz de cada pixel en pantalla
+
+} t_cub;
 
 //exit
 void	c_error(char *str, t_cub *c);
@@ -165,5 +169,14 @@ void	delta_distance(t_cub *c);
 void	initial_distance(t_cub *c);
 void	digital_differential_analysis(t_cub *c);
 void	wall_distance(t_cub *c);
+void	draw_rays_3Dmap(int x, t_cub *c);
+
+//3D_init
+int		init_3D(t_cub *c);
+
+//3D_render
+void	render_3Dmap(t_cub *c);
+void	select_3Dmap(int y, int x, t_cub *c);
+void	print_3Dmap(int y, int x, int color, t_cub *c);
 
 #endif
