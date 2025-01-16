@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/15 13:58:19 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/16 12:46:37 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,14 @@
 
 //colors
 # define BLUE 0x000000FF
-# define PURPLE 0x00800080
+# define GREEN 0x0000FF00
 # define WHITE 0x00FFFFFF
 
+
 //map_parts
-# define FLOOR 1
-# define WALL 2
-# define CEILLING 3
+# define FLOOR 'f'
+# define WALL 'w'
+# define CEILLING 'c'
 
 //cardinal directions
 # define EAST 0
@@ -80,6 +81,30 @@ typedef struct s_image
 	char	*buffer;
 } t_img;
 
+typedef struct s_ray
+{
+	double	relative_ray_index; //indice relativo a la anchura de la camara (WIN_WIDHT) de los rayos que vamos a proyectar. Su valor va desde -1 a 1.
+	double	ray_dx; //delta x del angulo del rayo. Dicho de otra forma: componente x del angulo del rayo.
+	double	ray_dy;
+
+	int		map_edge_x; //borde de la cuadricula más cercano a la posicion actual del jugador
+	int		map_edge_y;
+	double	delta_dist_x; //c->delta_dist_x y c->delta_dist_y son la distancia relativa (relativa a CELL_WIDHT y CELL_HEIGHT) que el rayo debera recorrer con su angulo actual (tanto en el eje x como en el y) para superar la distancia comprendida por el lado de uno de los rectangulos de la cuadricula del mapa 2D (osease CELL_WIDHT y CELL_HEIGHT para cada uno de sus relativos ejes)
+	double	delta_dist_y;
+	
+	int		step_x; //indican en qué sentido debe avanzar el rayo. step_x: Si el rayo avanza hacia la derecha, será 1. Si avanza hacia la izquierda, será -1. Step_y: si el rayo avanza hacia arriba, será -1. Si avanza hacia abajo, será 1
+	int		step_y; 
+	double	side_dist_x; //son la distancia absoluta hasta el siguiente rectangulo si el jugador mantiene el rumbo actual. (c->p_x - c->map_edge_x) es la distancia más corta posible hasta el siguiente rectangulo del mapa (es perpendicular al eje al que queremos llegar). Esa distancia inicial se multiplica por c->delta_dist_x, para tener en cuenta que podemos no estar yendo en la dirección ideal
+	double	side_dist_y;
+	
+	int		side; //c->side es un interruptor, inidica contra que eje del cuadrado va a chocar el rayo, si el x o el y
+	
+	double	wall_dist; //la ditancia a la pared mas cercana
+	int		line_height; //la altura de la pared
+	int		draw_start; //donde empezamos a dibujar la pared
+	int		draw_end; //donde terminamos de dibujar la pared
+	double	wall_height; //DUDA
+} t_ray;
 
 typedef struct s_cub
 {
@@ -109,7 +134,8 @@ typedef struct s_cub
 	double	camera_y;
 
 	int		ray_index; //indice del rayo en la pantalla, iremos creando rayos verticales (sobre el eje x) hasta cubrir la anchura("0 x = %d\n", x);
-	double	relative_ray_index; //indice relativo a la anchura de la camara (WIN_WIDHT) de los rayos que vamos a proyectar. Su valor va desde -1 a 1.
+	
+/* 	double	relative_ray_index; //indice relativo a la anchura de la camara (WIN_WIDHT) de los rayos que vamos a proyectar. Su valor va desde -1 a 1.
 	double	ray_dx; //delta x del angulo del rayo. Dicho de otra forma: componente x del angulo del rayo.
 	double	ray_dy;
 
@@ -129,11 +155,20 @@ typedef struct s_cub
 	int		line_height; //la altura de la pared
 	int		draw_start; //donde empezamos a dibujar la pared
 	int		draw_end; //donde terminamos de dibujar la pared
-	double	wall_height; //DUDA
+	double	wall_height; //DUDA */
+	t_ray	*rays;
 
-	char	**map_3D; //matriz de cada pixel en pantalla
-
+	char	*map_3D; //matriz de cada pixel en pantalla
 } t_cub;
+
+//3D_init
+int		init_3D(t_cub *c);
+
+//3D_render
+void	render_3Dmap(t_cub *c);
+void	select_3Dmap(int y, int x, t_cub *c);
+void	print_3Dmap(int y, int x, int color, t_cub *c);
+int		modify_alpha(int color, int x, t_cub *c);
 
 //exit
 void	c_error(char *str, t_cub *c);
@@ -165,18 +200,11 @@ void	player_print(double y, double x, t_img *c_img, t_cub *c);
 
 //ray_caster
 void	ray_direction(t_cub *c);
-void	delta_distance(t_cub *c);
-void	initial_distance(t_cub *c);
-void	digital_differential_analysis(t_cub *c);
-void	wall_distance(t_cub *c);
-void	draw_rays_3Dmap(int x, t_cub *c);
-
-//3D_init
-int		init_3D(t_cub *c);
-
-//3D_render
-void	render_3Dmap(t_cub *c);
-void	select_3Dmap(int y, int x, t_cub *c);
-void	print_3Dmap(int y, int x, int color, t_cub *c);
+void	delta_distance(t_cub *c, t_ray *r);
+void	initial_distance(t_cub *c, t_ray *r);
+void	digital_differential_analysis(t_cub *c, t_ray *r);
+void	wall_distance(t_cub *c, t_ray *r);
+void	draw_rays_3Dmap(int x, t_cub *c, t_ray *r);
+void	rays_adjustment_3Dmap(t_ray *r);
 
 #endif

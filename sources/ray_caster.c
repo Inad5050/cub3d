@@ -21,26 +21,29 @@ c->ray_dx y c->ray_dy: son la delta del angulo del rayo. Hereda el angulo del ju
 */
 void	ray_direction(t_cub *c) 
 {	
+	t_ray *r;
+	
 	c->ray_index = 0;
 	while (c->ray_index < WIN_WIDHT) //por cada uno de los 1300 bytes del juego en el eje x proyectamos un rayo
 	{
-		c->relative_ray_index = (2 * c->ray_index / (double)WIN_WIDHT) - 1; //ray_camera varia entre -1 (izq del todo) y 1 (derecha del todo). Si es 0 está en el centro
-		c->ray_dx = c->p_angle_x + c->camera_x * c->relative_ray_index;
-		c->ray_dy = c->p_angle_y + c->camera_y * c->relative_ray_index;
+		r = &c->rays[c->ray_index];
+		r->relative_ray_index = (2 * c->ray_index / (double)WIN_WIDHT) - 1; //ray_camera varia entre -1 (izq del todo) y 1 (derecha del todo). Si es 0 está en el centro
+		r->ray_dx = c->p_angle_x + c->camera_x * r->relative_ray_index;
+		r->ray_dy = c->p_angle_y + c->camera_y * r->relative_ray_index;
 		
 /* 		printf("RAY_DIRECTION\n");
 		printf("x = %d\n", ray_index);
-		printf("c->ray_index = (2 * x / (double)WIN_WIDHT) - 1 \n%lf = (2 * %d / %lf) - 1\n", c->relative_ray_index, ray_index, (double)WIN_WIDHT - 1);
-		printf("c->ray_dx = c->p_angle_x + c->camera_x * c->relative_ray_index \n%lf = %lf + %lf * %lf\n", c->ray_dx, c->p_angle_x, c->camera_x, c->relative_ray_index);
-		printf("c->ray_dy = c->p_angle_y + c->camera_y * c->relative_ray_index \n%lf = %lf + %lf * %lf\n", c->ray_dy, c->p_angle_y, c->camera_y, c->relative_ray_index);
+		printf("r->ray_index = (2 * x / (double)WIN_WIDHT) - 1 \n%lf = (2 * %d / %lf) - 1\n", r->relative_ray_index, ray_index, (double)WIN_WIDHT - 1);
+		printf("r->ray_dx = r->p_angle_x + r->camera_x * r->relative_ray_index \n%lf = %lf + %lf * %lf\n", r->ray_dx, r->p_angle_x, r->camera_x, r->relative_ray_index);
+		printf("r->ray_dy = r->p_angle_y + r->camera_y * r->relative_ray_index \n%lf = %lf + %lf * %lf\n", r->ray_dy, r->p_angle_y, r->camera_y, r->relative_ray_index);
 		printf("\n"); */
 
-		delta_distance(c);
-		initial_distance(c);
-		digital_differential_analysis(c);
-		wall_distance(c);
+		delta_distance(c, r);
+		initial_distance(c, r);
+		digital_differential_analysis(c, r);
+		wall_distance(c, r);
 
-		draw_rays_3Dmap(c->ray_index, c);
+		draw_rays_3Dmap(c->ray_index, c, r);
 
 		c->ray_index++;
 	}
@@ -50,12 +53,12 @@ void	ray_direction(t_cub *c)
 //fabs() valor absoluto de un punto flotante (decimal)
 //c->delta_dist_x y c->delta_dist_y son la distancia relativa (relativa a CELL_WIDHT y CELL_HEIGHT) que el rayo debera recorrer con su angulo actual (tanto en el eje x como en el y) para superar la distancia comprendida por el lado de uno de los rectangulos de la cuadricula del mapa 2D (osease CELL_WIDHT y CELL_HEIGHT para cada uno de sus relativos ejes)
 //c->map_edge_x y c->map_edge_y son los bordes de la cuadricula más cercanos a la posicion actual del jugador
-void	delta_distance(t_cub *c)
+void	delta_distance(t_cub *c, t_ray *r)
 {
-	c->map_edge_x = (int)floor(c->p_x / CELL_WIDHT) * CELL_WIDHT;
-	c->map_edge_y = (int)floor(c->p_y / CELL_HEIGHT) * CELL_HEIGHT;
-	c->delta_dist_x = fabs(1 / c->ray_dx);
-	c->delta_dist_y = fabs(1 / c->ray_dy);
+	r->map_edge_x = (int)floor(c->p_x / CELL_WIDHT) * CELL_WIDHT;
+	r->map_edge_y = (int)floor(c->p_y / CELL_HEIGHT) * CELL_HEIGHT;
+	r->delta_dist_x = fabs(1 / r->ray_dx);
+	r->delta_dist_y = fabs(1 / r->ray_dy);
 	
 /* 	printf("DELTA_DISTANCE\n");
 	printf("c->map_edge_x = (int)(c->p_x) \n%d = (int)%lf\n", c->map_edge_x, (c->p_x));
@@ -68,30 +71,30 @@ void	delta_distance(t_cub *c)
 //step_x y step_y indican el sentido en el que el rayo debe avanzar en la cuadrícula del mapa (hacia la izquierda o derecha en el eje x y hacia arriba o abajo en el eje y). Cada uno solo puede ser 1 o -1.
 //c->side_dist_x y c->side_dist_y son la distancia absoluta hasta el siguiente rectangulo si el jugador mantiene el rumbo actual. (c->p_x - c->map_edge_x) es la distancia más corta posible hasta el siguiente rectangulo del mapa (es perpendicular al eje al que queremos llegar). Esa distancia inicial se multiplica por c->delta_dist_x, para tener en cuenta que podemos no estar yendo en la dirección ideal
 
-void	initial_distance(t_cub *c)
+void	initial_distance(t_cub *c, t_ray *r)
 {	
 	
 	
 	
-	if (c->ray_dx < 0)
+	if (r->ray_dx < 0)
 	{
-		c->step_x = -1;
-		c->side_dist_x = (c->p_x - c->map_edge_x) * c->delta_dist_x;
+		r->step_x = -1;
+		r->side_dist_x = (c->p_x - r->map_edge_x) * r->delta_dist_x;
 	}
 	else
 	{
-		c->step_x = 1;
-		c->side_dist_x = (c->map_edge_x + CELL_WIDHT - c->p_x) * c->delta_dist_x;
+		r->step_x = 1;
+		r->side_dist_x = (r->map_edge_x + CELL_WIDHT - c->p_x) * r->delta_dist_x;
 	}
-	if (c->ray_dy < 0)
+	if (r->ray_dy < 0)
 	{
-		c->step_y = -1;
-		c->side_dist_y = (c->p_y - c->map_edge_y) * c->delta_dist_y;
+		r->step_y = -1;
+		r->side_dist_y = (c->p_y - r->map_edge_y) * r->delta_dist_y;
 	}
 	else
 	{
-		c->step_y = 1;
-		c->side_dist_y = (c->map_edge_y + CELL_HEIGHT - c->p_y) * c->delta_dist_y;
+		r->step_y = 1;
+		r->side_dist_y = (r->map_edge_y + CELL_HEIGHT - c->p_y) * r->delta_dist_y;
 	}
 	
 	/* printf("INITIAL_DISTANCE\n");
@@ -107,7 +110,7 @@ void	initial_distance(t_cub *c)
 //Para luego if (c->map[c->map_edge_x][c->map_edge_y] == '1') com probar si ha llegado a una pared 
 //c->side es un interruptor, inidica contra que eje del cuadrado va a chocar el rayo, si el x o el y
 
-void	digital_differential_analysis(t_cub *c)
+void	digital_differential_analysis(t_cub *c, t_ray *r)
 {
 	while (42)
 	{
@@ -117,19 +120,19 @@ void	digital_differential_analysis(t_cub *c)
 		printf("c->p_x %lf c->p_y %lf \n", c->p_x, c->p_y);
 		printf("c->map_edge_x %d c->map_edge_y %d \n", c->map_edge_x, c->map_edge_y); */
 
-		if (c->side_dist_x < c->side_dist_y)
+		if (r->side_dist_x < r->side_dist_y)
 		{
-			c->side_dist_x += c->delta_dist_x * CELL_WIDHT;
-			c->map_edge_x += c->step_x * CELL_WIDHT;
-			c->side = 0;
+			r->side_dist_x += r->delta_dist_x * CELL_WIDHT;
+			r->map_edge_x += r->step_x * CELL_WIDHT;
+			r->side = 0;
 		}
 		else
 		{
-			c->side_dist_y += c->delta_dist_y * CELL_HEIGHT;
-			c->map_edge_y += c->step_y * CELL_HEIGHT;
-			c->side = 1;
+			r->side_dist_y += r->delta_dist_y * CELL_HEIGHT;
+			r->map_edge_y += r->step_y * CELL_HEIGHT;
+			r->side = 1;
 		}	
-		if (c->map[c->map_edge_y / CELL_WIDHT][c->map_edge_x / CELL_HEIGHT] == '1')
+		if (c->map[r->map_edge_y / CELL_WIDHT][r->map_edge_x / CELL_HEIGHT] == '1')
 			break;
 	}
 
@@ -146,50 +149,60 @@ void	digital_differential_analysis(t_cub *c)
 // empezaremos a dibujarla en c->draw_start = (int)(-c->line_height / 2 + WIN_HEIGHT / 2), que viene a ser (WIN_HEIGHT - c->line_height) / 2. El trozo de ventana que no vamos a dibujar es WIN_HEIGHT - c->line_height. Lo dividimos entre 2 para que la pared que vamos a dibujar este centrada sobre el eje y. Tiene tanto espacio vacio abajo como arriba. 
 // c->draw_end viene a ser lo mismo que c->draw_start. Calculamos el espacio encima de la pared.
 
-void	wall_distance(t_cub *c)
+void	wall_distance(t_cub *c, t_ray *r)
 {
 /* 	printf("WALL_DISTANCE\n"); */
 
-	if (c->side == 0) //pared mas cercana en el eje x
-		c->wall_dist = (c->map_edge_x - c->p_x + (CELL_WIDHT * (1 - c->step_x)) / 2) / c->ray_dx;
+	if (r->side == 0) //pared mas cercana en el eje x
+		r->wall_dist = (r->map_edge_x - c->p_x + (CELL_WIDHT * (1 - r->step_x)) / 2) / r->ray_dx;
 	else //pared mas cercana en el eje y
-		c->wall_dist = (c->map_edge_y - c->p_y + (CELL_HEIGHT * (1 - c->step_y)) / 2) / c->ray_dy;
-	printf("c->wall_dist = %lf\n", c->wall_dist);
+		r->wall_dist = (r->map_edge_y - c->p_y + (CELL_HEIGHT * (1 - r->step_y)) / 2) / r->ray_dy;
+	/* printf("c->wall_dist = %lf\n", c->wall_dist); */
 
-	c->line_height = (int)(WIN_HEIGHT / c->wall_dist);
-	printf("c->line_height = %d\n", c->line_height);
+	r->line_height = (int)(WIN_HEIGHT / r->wall_dist);
+	/* printf("c->line_height = %d\n", c->line_height); */
 
-	c->draw_start = (int)(-c->line_height / 2 + WIN_HEIGHT / 2);
-	if (c->draw_start < 0)
-		c->draw_start = 0;
-	printf("c->draw_start = %d\n", c->draw_start);
+	r->draw_start = (int)(-r->line_height / 2 + WIN_HEIGHT / 2);
+	if (r->draw_start < 0)
+		r->draw_start = 0;
+	/* printf("c->draw_start = %d\n", c->draw_start); */
 
-	c->draw_end = (int)(c->line_height / 2 + WIN_HEIGHT / 2);
-	if (c->draw_end >= WIN_HEIGHT)
-		c->draw_end = WIN_HEIGHT - 1 * CELL_HEIGHT; //DUDA: aqui no estoy tan seguro de que sea * CELL_HEIGHT
-	printf("c->draw_end = %d\n", c->draw_end);
+	r->draw_end = (int)(r->line_height / 2 + WIN_HEIGHT / 2);
+	if (r->draw_end >= WIN_HEIGHT)
+		r->draw_end = WIN_HEIGHT - 1 * CELL_HEIGHT; //DUDA: aqui no estoy tan seguro de que sea * CELL_HEIGHT
+	/* printf("c->draw_end = %d\n", c->draw_end); */
 
-	if (c->side == 0) //pared mas cercana en el eje x
+/* 	if (c->side == 0) //pared mas cercana en el eje x
 		c->wall_height = c->p_y + c->wall_dist * c->ray_dx; //DUDA: que es c->wall_height??
 	else
 		c->wall_height = c->p_x + c->wall_dist * c->ray_dy;
-	c->wall_height -= floor(c->wall_height);
-	printf("c->wall_height = %lf\n\n", c->wall_height);
+	c->wall_height -= floor(c->wall_height); */
+	/* printf("c->wall_height = %lf\n\n", c->wall_height); */
 }
 
-
-void	draw_rays_3Dmap(int x, t_cub *c)
+void	draw_rays_3Dmap(int x, t_cub *c, t_ray *r)
 {
 	int	y;
 	
 	y = 0;
+	rays_adjustment_3Dmap(r);
 	while (y < WIN_HEIGHT)
 	{
-		if (y < c->draw_start)
-			c->map_3D[y][x] = FLOOR;
-		else if (c->draw_start <= y && y <= c->draw_end)
-			c->map_3D[y][x] = WALL; 
-		else if (c->draw_end < y)
-			c->map_3D[y][x] = CEILLING;
+		if (y < r->draw_start)
+			c->map_3D[y * WIN_HEIGHT + x] = FLOOR;
+		else if (r->draw_start <= y && y <= r->draw_end)
+			c->map_3D[y * WIN_HEIGHT + x] = WALL;
+		else if (r->draw_end < y)
+			c->map_3D[y * WIN_HEIGHT + x] = CEILLING;
+		y++;
 	}
 }
+
+void	rays_adjustment_3Dmap(t_ray *r)
+{
+	if (r->draw_start /= 1.5 > 0)
+		r->draw_start /= 1.5;
+	if (r->draw_end *= 1.5 < WIN_HEIGHT)
+		r->draw_end *= 1.5;
+}
+

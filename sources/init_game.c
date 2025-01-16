@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 17:35:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/15 13:11:18 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/15 15:34:02 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	init_game(t_cub *c)
 	init_image(c, &c->wall_e, ROUTE_EAST);
 	init_ply_image(c, &c->player_img, ROUTE_PLAYER);
 	locate_player(c);
-	init_3D(c);
 	return (EXIT_SUCCESS);
 }
 
