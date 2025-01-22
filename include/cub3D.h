@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/16 12:46:37 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/22 18:56:41 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 # define WIN_HEIGHT 800
 # define CELL_WIDHT 64
 # define CELL_HEIGHT 64
-# define PLAYER_WIDHT 16
-# define PLAYER_HEIGHT 16
-# define STEP_SIZE 16
+# define PLAYER_WIDHT 1
+# define PLAYER_HEIGHT 1
+# define STEP_SIZE 4
 # define FIELD_OF_VIEW 0.66 //para que el angulo de vision de la camara sea de aproximadamente 60 grados, lo habitual para un videojuego 3D
-# define PI 3.1415926535
+# define PI 3.14159265
 # define ANGLE_ROTATION_SIZE 5
 
 //keybinds
@@ -57,7 +57,6 @@
 # define GREEN 0x0000FF00
 # define WHITE 0x00FFFFFF
 
-
 //map_parts
 # define FLOOR 'f'
 # define WALL 'w'
@@ -68,6 +67,23 @@
 # define NORTH 1
 # define WEST 2
 # define SOUTH 3
+
+//-------------------------------------------------------
+//sacado de la parte de parse, lo comentado no está en uso
+//MAS ADELANTE ELIMINAR UNO DE LOS VALORES REPETIDOS DE CADA PAREJA
+
+//bools
+# define FALSE 0
+# define TRUE 1
+
+# define TILE_SIZE CELL_WIDHT
+# define WINDOW_WIDTH WIN_WIDHT
+# define WINDOW_HEIGHT WIN_HEIGHT
+# define NUM_RAYS WINDOW_WIDTH
+
+//-------------------------------------------------------
+
+//float ocupa 4 bytes y tiene una capacidad de entre 6/7 decimales. double ocupa 8 y tiene una capacidad de hasta 15/16. Para este proyecto con float vale.
 
 typedef struct s_image
 {
@@ -83,27 +99,40 @@ typedef struct s_image
 
 typedef struct s_ray
 {
-	double	relative_ray_index; //indice relativo a la anchura de la camara (WIN_WIDHT) de los rayos que vamos a proyectar. Su valor va desde -1 a 1.
-	double	ray_dx; //delta x del angulo del rayo. Dicho de otra forma: componente x del angulo del rayo.
-	double	ray_dy;
+	//horientacion del rayo
+	int		isRayFacingDown;
+	int		isRayFacingUp;
+	int		isRayFacingLeft;
+	int		isRayFacingRight;
 
-	int		map_edge_x; //borde de la cuadricula más cercano a la posicion actual del jugador
-	int		map_edge_y;
-	double	delta_dist_x; //c->delta_dist_x y c->delta_dist_y son la distancia relativa (relativa a CELL_WIDHT y CELL_HEIGHT) que el rayo debera recorrer con su angulo actual (tanto en el eje x como en el y) para superar la distancia comprendida por el lado de uno de los rectangulos de la cuadricula del mapa 2D (osease CELL_WIDHT y CELL_HEIGHT para cada uno de sus relativos ejes)
-	double	delta_dist_y;
+	//las coordenadas X e Y donde vamos a tocar la pared, las usamos para calcular la interseccion horizontal y luego la vertical
+	float	xintercept;
+	float	yintercept;
 	
-	int		step_x; //indican en qué sentido debe avanzar el rayo. step_x: Si el rayo avanza hacia la derecha, será 1. Si avanza hacia la izquierda, será -1. Step_y: si el rayo avanza hacia arriba, será -1. Si avanza hacia abajo, será 1
-	int		step_y; 
-	double	side_dist_x; //son la distancia absoluta hasta el siguiente rectangulo si el jugador mantiene el rumbo actual. (c->p_x - c->map_edge_x) es la distancia más corta posible hasta el siguiente rectangulo del mapa (es perpendicular al eje al que queremos llegar). Esa distancia inicial se multiplica por c->delta_dist_x, para tener en cuenta que podemos no estar yendo en la dirección ideal
-	double	side_dist_y;
+	//es la distancia que el rayo debe recorrer en cada eje empezando por el principio de una celda y hasta el final de la siguiente. Nos interesa la diferencia de longitud entre uno y otro. Ejem: Cuando intentamos encontrar el punto de corte horizontal sabemos que el vector en el eje Y es TILE_SIZE, si es así cuanto mide el vector en el eje X hasta el punto de corte horizontal? se calcula con la tangente (en este caso: adyacente (vctor X) = opuesto (ctor Y)/tan(angulo del rayo)). Uno de ellos sera siempre TILE_SIZE (la Y calculando la interseccion horizontal, la X calculando la interseccion vertical). 
+	float	xstep;
+	float	ystep;
+
+	//variables del WHILE
+	float	nextHorzTouchX; //la primera vez sera la distancia entre la posicion del jugador comparada con xintercept e yintercept. Una vez comience el bucle while el rayo estara sobre el eje X de una de las casillas y la distancia hasta el eje X de la siguiente casillas sera siempre la misma: xstep y ystep
+	float	nextHorzTouchY;
+	float	xToCheck; //altera nextHorzTouchX y nextHorzTouchY en funcion de la horientacion del rayo 
+	float	yToCheck;
 	
-	int		side; //c->side es un interruptor, inidica contra que eje del cuadrado va a chocar el rayo, si el x o el y
+	//cuando el rayo choca contra la pared recabamos estos datos
+	float	horizontalWallHitX;
+	float	horizontalWallHitY;
+	char	horizontalWallContent;
+	int		foundHorizontalWallHit;
+
+	float	verticalWallHitX;
+	float	verticalWallHitY;
+	char	verticalWallContent;
+	int		foundVerticalWallHit;
 	
-	double	wall_dist; //la ditancia a la pared mas cercana
-	int		line_height; //la altura de la pared
-	int		draw_start; //donde empezamos a dibujar la pared
-	int		draw_end; //donde terminamos de dibujar la pared
-	double	wall_height; //DUDA
+	float	nextvertouchx;
+	float	nextvertouchy;
+	
 } t_ray;
 
 typedef struct s_cub
@@ -112,6 +141,8 @@ typedef struct s_cub
 	void	*win_mlx_2D; //puntero a la ventana creada por MLX
 	void	*win_mlx_3D;
 	char	**map; //matriz con los caracteres del mapa
+
+	float	player_fov; //ALGORITMO init_game. valor estatico
 
 	int		map_axis_y; //cantidad de caracteres del mapa en el eje vertical
 	int		map_axis_x; //cantidad de caracteres del mapa en el eje horizontal
@@ -123,42 +154,14 @@ typedef struct s_cub
 	t_img	*wall_w;
 	t_img	*wall_e;
 	t_img	*player_img;
-
-	double	p_y; //coordenadas del jugador sobre el eje vertical
-	double	p_x; //coordenadas del jugador sobre el eje horizontal
-	double	p_angle; //angulo del jugador
-	double	p_angle_y; //delta x del angulo del jugador
-	double	p_angle_x;
-
-	double	camera_x; //eje x del angulo de la camara actual. Son tangentes a los ejes del angulo del jugador [mirar init_player()], el valor de la tangente de un angulo de 60 grados es más o menos 0.66 (FOV, estático)
-	double	camera_y;
-
-	int		ray_index; //indice del rayo en la pantalla, iremos creando rayos verticales (sobre el eje x) hasta cubrir la anchura("0 x = %d\n", x);
 	
-/* 	double	relative_ray_index; //indice relativo a la anchura de la camara (WIN_WIDHT) de los rayos que vamos a proyectar. Su valor va desde -1 a 1.
-	double	ray_dx; //delta x del angulo del rayo. Dicho de otra forma: componente x del angulo del rayo.
-	double	ray_dy;
+	float	p_y; //coordenadas del jugador sobre el eje vertical
+	float	p_x; //coordenadas del jugador sobre el eje horizontal
+	
+	float	p_rotationangle; //ALGORITMO //angulo del jugador
 
-	int		map_edge_x; //borde de la cuadricula más cercano a la posicion actual del jugador
-	int		map_edge_y;
-	double	delta_dist_x; //c->delta_dist_x y c->delta_dist_y son la distancia relativa (relativa a CELL_WIDHT y CELL_HEIGHT) que el rayo debera recorrer con su angulo actual (tanto en el eje x como en el y) para superar la distancia comprendida por el lado de uno de los rectangulos de la cuadricula del mapa 2D (osease CELL_WIDHT y CELL_HEIGHT para cada uno de sus relativos ejes)
-	double	delta_dist_y;
-	
-	int		step_x; //indican en qué sentido debe avanzar el rayo. step_x: Si el rayo avanza hacia la derecha, será 1. Si avanza hacia la izquierda, será -1. Step_y: si el rayo avanza hacia arriba, será -1. Si avanza hacia abajo, será 1
-	int		step_y; 
-	double	side_dist_x; //son la distancia absoluta hasta el siguiente rectangulo si el jugador mantiene el rumbo actual. (c->p_x - c->map_edge_x) es la distancia más corta posible hasta el siguiente rectangulo del mapa (es perpendicular al eje al que queremos llegar). Esa distancia inicial se multiplica por c->delta_dist_x, para tener en cuenta que podemos no estar yendo en la dirección ideal
-	double	side_dist_y;
-	
-	int		side; //c->side es un interruptor, inidica contra que eje del cuadrado va a chocar el rayo, si el x o el y
-	
-	double	wall_dist; //la ditancia a la pared mas cercana
-	int		line_height; //la altura de la pared
-	int		draw_start; //donde empezamos a dibujar la pared
-	int		draw_end; //donde terminamos de dibujar la pared
-	double	wall_height; //DUDA */
 	t_ray	*rays;
-
-	char	*map_3D; //matriz de cada pixel en pantalla
+	
 } t_cub;
 
 //3D_init
@@ -178,7 +181,7 @@ void	free_memory(t_cub *c);
 //init_game
 int		init_game(t_cub *c);
 int		init_image(t_cub *c, t_img **c_img_ptr, char *route);
-int		init_ply_image(t_cub *c, t_img **c_img_ptr, char *route);
+int		init_player_image(t_cub *c, t_img **c_img_ptr, char *route);
 void	*locate_player(t_cub *c);
 void	init_player(int y, int x, t_cub *c);
 
@@ -198,13 +201,21 @@ void	map_select_element(int y, int x, t_cub *c);
 void	map_print(int y, int x, t_img *c_img, t_cub *c);
 void	player_print(double y, double x, t_img *c_img, t_cub *c);
 
+//ray_caster_utils
+float	normalizeAngle(float angle);
+int		mapHasWallAt(t_cub *c, float x, float y);
+
+//ray_caster_horizontal
+void	find_horizontal_hit(t_cub *c, t_ray	*r, float rayAngle, int stripid);
+void	find_horizontal_hit_loop(t_cub *c, t_ray *r, float rayAngle, int stripid);
+
+//ray_caster_vertical
+void	find_vertical_hit(t_cub *c, t_ray	*r, float rayAngle, int stripid);
+void	find_vertical_hit_loop(t_cub *c, t_ray *r, float rayAngle, int stripid);
+
 //ray_caster
-void	ray_direction(t_cub *c);
-void	delta_distance(t_cub *c, t_ray *r);
-void	initial_distance(t_cub *c, t_ray *r);
-void	digital_differential_analysis(t_cub *c, t_ray *r);
-void	wall_distance(t_cub *c, t_ray *r);
-void	draw_rays_3Dmap(int x, t_cub *c, t_ray *r);
-void	rays_adjustment_3Dmap(t_ray *r);
+void	cast_all_rays(t_cub *c);
+int		cast_ray_setup(t_cub *c, float rayAngle, int stripid);
+void	reset_ray_struct(t_ray *r, float rayAngle);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 17:35:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/15 15:34:02 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/22 18:45:47 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,11 @@ int	init_game(t_cub *c)
 	init_image(c, &c->wall_s, ROUTE_SHOUT);
 	init_image(c, &c->wall_w, ROUTE_WEST);
 	init_image(c, &c->wall_e, ROUTE_EAST);
-	init_ply_image(c, &c->player_img, ROUTE_PLAYER);
+	init_player_image(c, &c->player_img, ROUTE_PLAYER);
 	locate_player(c);
+
+	c->player_fov = (60 * PI / 180); //CURSO
+	
 	return (EXIT_SUCCESS);
 }
 
@@ -53,7 +56,7 @@ int	init_image(t_cub *c, t_img **c_img_ptr, char *route) //inicializa la estruct
 	return (EXIT_SUCCESS);
 }
 
-int	init_ply_image(t_cub *c, t_img **c_img_ptr, char *route) //inicializa la estructura de la imagen del jugador
+int	init_player_image(t_cub *c, t_img **c_img_ptr, char *route) //inicializa la estructura de la imagen del jugador
 {
 	t_img	*c_img;
 	
@@ -97,25 +100,11 @@ void	init_player(int y, int x, t_cub *c) //inicializa la dirección del jugador 
 	c->p_y = (double)y * (double)CELL_HEIGHT; //posición inicial
 	c->p_x = (double)x * (double)CELL_WIDHT;
 	if (c->map[y][x] == 'N')
-	{
-		c->p_angle = PI / 2; //angulo en multiplos de PI
-		c->p_angle_y = -1;
-	}
+		c->p_rotationangle = PI / 2; //angulo en multiplos de PI
 	if (c->map[y][x] == 'W')
-	{
-		c->p_angle = PI;
-		c->p_angle_x = -1;
-	}
+		c->p_rotationangle = PI;
 	if (c->map[y][x] == 'S')
-	{
-		c->p_angle = PI * 3 / 4;
-		c->p_angle_y = 1;
-	}
+		c->p_rotationangle = PI * 3 / 4;
 	if (c->map[y][x] == 'E')
-	{
-		c->p_angle = 2 * PI; //equivalente a 360 grados, se reinicia a cero
-		c->p_angle_x = 1;
-	}
-	c->camera_x = c->p_angle_y * FIELD_OF_VIEW; //los ejes de la camara, son tangentes a los ejes del angulo del jugador, el valor de la tangente de un angulo de 60 grados es más o menos 0.66 (FOV, estático)
-	c->camera_y = c->p_angle_x * FIELD_OF_VIEW;
+		c->p_rotationangle = 2 * PI; //equivalente a 360 grados, se reinicia a cero
 }

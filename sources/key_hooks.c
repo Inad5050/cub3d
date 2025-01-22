@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:44:08 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/15 13:03:06 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/22 18:44:17 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,19 +61,15 @@ void	rotate_player(int right_dir, t_cub *c)
 {
 	if (!right_dir)
 	{
-		c->p_angle -= 0.1;
-		if (c->p_angle < 0)
-			c->p_angle += 2*PI; //en C los valores de un angulo van de 0 a 2PI, si sobrepasamos el 0 volvemos a empezar por 0/2PI
+		c->p_rotationangle -= 0.1;
+		if (c->p_rotationangle < 0)
+			c->p_rotationangle += 2 * PI; //en C los valores de un angulo van de 0 a 2PI, si sobrepasamos el 0 volvemos a empezar por 0/2PI
 	}
 	if (right_dir)
 	{
-		c->p_angle += 0.1;
-		if (c->p_angle > 2*PI)
-			c->p_angle -= 2*PI; //en C los valores de un angulo van de 0 a 2PI, si sobrepasamos el 0 volvemos a empezar por 0/2PI
+		c->p_rotationangle += 0.1;
+		if (c->p_rotationangle > 2 * PI)
+			c->p_rotationangle -= 2 * PI; //en C los valores de un angulo van de 0 a 2PI, si sobrepasamos el 0 volvemos a empezar por 0/2PI
 	}
-	c->p_angle_y = sin(c->p_angle) * FIELD_OF_VIEW; //cada vez que cambia el angulo cambian los deltas de cada eje del jugador
-	c->p_angle_x = cos(c->p_angle) * FIELD_OF_VIEW;
-	c->camera_x = c->p_angle_y * FIELD_OF_VIEW; //cada vez que cambia el angulo cambia el angulo de la camara (es perpendicular a el eje del jugador)
-	c->camera_y = c->p_angle_x * FIELD_OF_VIEW;
 }
 
