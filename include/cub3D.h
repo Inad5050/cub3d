@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/22 18:56:41 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/22 20:15:19 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "../minilibx-linux/mlx.h"
 # include <stdbool.h>
 # include <math.h>
+# include <limits.h>
 
 //sizes
 # define WIN_WIDHT 1300
@@ -124,14 +125,21 @@ typedef struct s_ray
 	float	horizontalWallHitY;
 	char	horizontalWallContent;
 	int		foundHorizontalWallHit;
-
 	float	verticalWallHitX;
 	float	verticalWallHitY;
 	char	verticalWallContent;
 	int		foundVerticalWallHit;
+
+	//comprobamos que distancia es más corta	
+	float	horizontalHitDistance;
+	float	verticalHitDistance;
 	
-	float	nextvertouchx;
-	float	nextvertouchy;
+	//elegimos que datos vamos a usar (los del hit horizontal o vertical) y los almacenamos
+	float	distance;
+	float	wallHitX;
+	float	wallHitY;
+	float	wallHitContent;
+	float	wasHitVertical;
 	
 } t_ray;
 
@@ -204,18 +212,20 @@ void	player_print(double y, double x, t_img *c_img, t_cub *c);
 //ray_caster_utils
 float	normalizeAngle(float angle);
 int		mapHasWallAt(t_cub *c, float x, float y);
+float	distanceBetweenPoints(float x1, float y1, float x2, float y2);
 
 //ray_caster_horizontal
-void	find_horizontal_hit(t_cub *c, t_ray	*r, float rayAngle, int stripid);
-void	find_horizontal_hit_loop(t_cub *c, t_ray *r, float rayAngle, int stripid);
+void	find_horizontal_hit(t_cub *c, t_ray	*r, float rayAngle);
+void	find_horizontal_hit_loop(t_cub *c, t_ray *r, float rayAngle);
 
 //ray_caster_vertical
-void	find_vertical_hit(t_cub *c, t_ray	*r, float rayAngle, int stripid);
-void	find_vertical_hit_loop(t_cub *c, t_ray *r, float rayAngle, int stripid);
+void	find_vertical_hit(t_cub *c, t_ray	*r, float rayAngle);
+void	find_vertical_hit_loop(t_cub *c, t_ray *r, float rayAngle);
 
 //ray_caster
-void	cast_all_rays(t_cub *c);
-int		cast_ray_setup(t_cub *c, float rayAngle, int stripid);
-void	reset_ray_struct(t_ray *r, float rayAngle);
+void	ray_caster(t_cub *c);
+int		cast_ray(t_cub *c, float rayAngle, int stripid);
+void	init_ray_struct(t_ray *r, float rayAngle);
+void	choose_hit(t_cub *c, t_ray *r, float rayAngle);
 
 #endif

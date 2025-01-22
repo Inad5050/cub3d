@@ -6,13 +6,13 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:19:39 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/22 18:19:37 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/22 19:41:03 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-void	find_horizontal_hit(t_cub *c, t_ray *r, float rayAngle, int stripid)
+void	find_horizontal_hit(t_cub *c, t_ray *r, float rayAngle)
 {
 	//CURSO find the y coordinate of the closest horizontal grid intersection
 	
@@ -44,10 +44,10 @@ void	find_horizontal_hit(t_cub *c, t_ray *r, float rayAngle, int stripid)
 		r->xstep *= -1;
 	if (r->isRayFacingRight && r->xstep < 0)
 		r->xstep *= -1;
-	find_horizontal_hit_loop(c, r, rayAngle, stripid);
+	find_horizontal_hit_loop(c, r, rayAngle);
 }
 
-void	find_horizontal_hit_loop(t_cub *c, t_ray *r, float rayAngle, int stripid)
+void	find_horizontal_hit_loop(t_cub *c, t_ray *r, float rayAngle)
 {
 	//vamos a aumentar la longitud del rayo progresivamente. Cada vez cruzara TILE_SIZE distancia en el eje Y. Asi obtendremos todos los puntos de corte horizontales. En cada punto de corte comprobaremos si la siguiente celda tiene una pared.
 	//Debemos empezar por el principio en el eje Y de una celda. Por lo que nuestro punto de partida es el primer punto de corte que ya hemos calculado: xintercept e yintercept

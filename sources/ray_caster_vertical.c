@@ -6,30 +6,13 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:20:20 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/22 18:21:04 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/22 19:41:25 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-/* void	find_vertical_hit(t_cub *c, t_ray	*r, float rayAngle, int stripid)
-{	
-	rayAngle = normalizeAngle(rayAngle);
-	
-	r->isRayFacingDown = (rayAngle > 0 && rayAngle < PI);
-	r->isRayFacingUp = !r->isRayFacingDown;
-	r->isRayFacingRight = (rayAngle < 0.5 * PI) || (rayAngle > 1.5 * PI);
-	r->isRayFacingLeft = !r->isRayFacingRight;
-
-	r->foundVerticalWallHit = FALSE;
-	r->verticalWallHitX = 0;
-	r->verticalWallHitY = 0;
-	r->verticalWallContent = 0;
-
-	find_vertical_hit_aux(c, r, rayAngle, stripid);
-} */
-
-void	find_vertical_hit(t_cub *c, t_ray *r, float rayAngle, int stripid)
+void	find_vertical_hit(t_cub *c, t_ray *r, float rayAngle)
 {
 	r->xintercept = floor(c->p_x / TILE_SIZE) * TILE_SIZE;
 	if (r->isRayFacingRight)
@@ -43,10 +26,10 @@ void	find_vertical_hit(t_cub *c, t_ray *r, float rayAngle, int stripid)
 		r->ystep *= -1;
 	if (r->isRayFacingDown && r->xstep < 0)
 		r->ystep *= -1;
-	find_vertical_hit_loop(c, r, rayAngle, stripid);
+	find_vertical_hit_loop(c, r, rayAngle);
 }
 
-void	find_vertical_hit_loop(t_cub *c, t_ray *r, float rayAngle, int stripid)
+void	find_vertical_hit_loop(t_cub *c, t_ray *r, float rayAngle)
 {
 	r->nextHorzTouchX = r->xintercept;
 	r->nextHorzTouchY = r->yintercept;

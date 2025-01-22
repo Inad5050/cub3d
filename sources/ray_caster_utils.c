@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 16:42:54 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/22 16:43:48 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/22 19:31:29 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,9 @@ int	mapHasWallAt(t_cub *c, float x, float y) //detecta si la coordenada es suelo
 		return (0);
 	tile = c->map[map_grid_index_y][map_grid_index_x];
 	return (tile != '0');
+}
+
+float	distanceBetweenPoints(float x1, float y1, float x2, float y2)
+{
+	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))); //toerema de pitagoras	
 }
