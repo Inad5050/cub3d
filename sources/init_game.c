@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 17:35:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/22 18:45:47 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/23 13:19:31 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,7 @@ int	init_game(t_cub *c)
 	init_image(c, &c->wall_e, ROUTE_EAST);
 	init_player_image(c, &c->player_img, ROUTE_PLAYER);
 	locate_player(c);
-
 	c->player_fov = (60 * PI / 180); //CURSO
-	
 	return (EXIT_SUCCESS);
 }
 

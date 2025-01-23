@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/22 20:15:19 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/23 13:20:36 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # define PLAYER_WIDHT 1
 # define PLAYER_HEIGHT 1
 # define STEP_SIZE 4
-# define FIELD_OF_VIEW 0.66 //para que el angulo de vision de la camara sea de aproximadamente 60 grados, lo habitual para un videojuego 3D
 # define PI 3.14159265
 # define ANGLE_ROTATION_SIZE 5
 
@@ -69,23 +68,17 @@
 # define WEST 2
 # define SOUTH 3
 
-//-------------------------------------------------------
-//sacado de la parte de parse, lo comentado no está en uso
-//MAS ADELANTE ELIMINAR UNO DE LOS VALORES REPETIDOS DE CADA PAREJA
-
 //bools
 # define FALSE 0
 # define TRUE 1
 
+//ray_caster
 # define TILE_SIZE CELL_WIDHT
 # define WINDOW_WIDTH WIN_WIDHT
 # define WINDOW_HEIGHT WIN_HEIGHT
 # define NUM_RAYS WINDOW_WIDTH
 
-//-------------------------------------------------------
-
 //float ocupa 4 bytes y tiene una capacidad de entre 6/7 decimales. double ocupa 8 y tiene una capacidad de hasta 15/16. Para este proyecto con float vale.
-
 typedef struct s_image
 {
 	void	*img_ptr; 
@@ -100,6 +93,8 @@ typedef struct s_image
 
 typedef struct s_ray
 {
+	float	rayangle; //el angulo del rayo, su valor depende de la horientacion de la vision del jugador. Lo incrementamos con cada rayo sucesivo que lanzamos
+
 	//horientacion del rayo
 	int		isRayFacingDown;
 	int		isRayFacingUp;
@@ -139,8 +134,7 @@ typedef struct s_ray
 	float	wallHitX;
 	float	wallHitY;
 	float	wallHitContent;
-	float	wasHitVertical;
-	
+	float	wasHitVertical;	
 } t_ray;
 
 typedef struct s_cub
@@ -149,12 +143,9 @@ typedef struct s_cub
 	void	*win_mlx_2D; //puntero a la ventana creada por MLX
 	void	*win_mlx_3D;
 	char	**map; //matriz con los caracteres del mapa
-
-	float	player_fov; //ALGORITMO init_game. valor estatico
-
+	float	player_fov; //init_game. valor estatico. Lo usamos durante el casteo para determinar el angulo de los rayos
 	int		map_axis_y; //cantidad de caracteres del mapa en el eje vertical
 	int		map_axis_x; //cantidad de caracteres del mapa en el eje horizontal
-
 	t_img	*ceiling;
 	t_img	*floor;
 	t_img	*wall_n;
@@ -162,24 +153,14 @@ typedef struct s_cub
 	t_img	*wall_w;
 	t_img	*wall_e;
 	t_img	*player_img;
-	
 	float	p_y; //coordenadas del jugador sobre el eje vertical
 	float	p_x; //coordenadas del jugador sobre el eje horizontal
-	
-	float	p_rotationangle; //ALGORITMO //angulo del jugador
-
+	float	p_rotationangle; //angulo del jugador, lo usamos durante el casteo para determinar el angulo de los rayos
 	t_ray	*rays;
-	
 } t_cub;
 
 //3D_init
 int		init_3D(t_cub *c);
-
-//3D_render
-void	render_3Dmap(t_cub *c);
-void	select_3Dmap(int y, int x, t_cub *c);
-void	print_3Dmap(int y, int x, int color, t_cub *c);
-int		modify_alpha(int color, int x, t_cub *c);
 
 //exit
 void	c_error(char *str, t_cub *c);
@@ -214,18 +195,17 @@ float	normalizeAngle(float angle);
 int		mapHasWallAt(t_cub *c, float x, float y);
 float	distanceBetweenPoints(float x1, float y1, float x2, float y2);
 
-//ray_caster_horizontal
+//ray_caster_hit_wall
 void	find_horizontal_hit(t_cub *c, t_ray	*r, float rayAngle);
 void	find_horizontal_hit_loop(t_cub *c, t_ray *r, float rayAngle);
-
-//ray_caster_vertical
 void	find_vertical_hit(t_cub *c, t_ray	*r, float rayAngle);
 void	find_vertical_hit_loop(t_cub *c, t_ray *r, float rayAngle);
 
 //ray_caster
 void	ray_caster(t_cub *c);
-int		cast_ray(t_cub *c, float rayAngle, int stripid);
+void	cast_ray(t_cub *c, float rayAngle, int stripid);
 void	init_ray_struct(t_ray *r, float rayAngle);
-void	choose_hit(t_cub *c, t_ray *r, float rayAngle);
+void	choose_ray_hit(t_cub *c, t_ray *r, float rayAngle);
+void	store_ray_values(t_cub *c, t_ray *r, float rayAngle, int s);
 
 #endif
