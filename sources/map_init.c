@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_read.c                                         :+:      :+:    :+:   */
+/*   map_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:03:26 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/08 13:02:47 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/23 15:42:07 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-void	map_read(char **argv, t_cub *c) //lee el mapa
+void	map_init(char **argv, t_cub *c) //lee el mapa
 {
 	char	*map_temp; //almacena los valores del mapa pre split()
 	char	*line_temp; //buffer de get_next_line

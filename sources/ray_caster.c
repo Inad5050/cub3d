@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:52:48 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/23 13:05:47 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/23 14:24:49 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,18 @@ void	cast_ray(t_cub *c, float rayAngle, int stripid)
 	choose_ray_hit(c, r, rayAngle);
 }
 
-void	init_ray_struct(t_ray *r, float rayAngle)
+void	init_ray_struct(t_ray *r, float rayAngle) //pone a cero todos los valores de la estructura para que podamos volver a usarla. Almacena el valor del actual angulo del rayo y les da valor a las flags 
 {
+	ft_memset(r, 0, sizeof(t_ray));
 	rayAngle = normalizeAngle(rayAngle); //hace que el angulo sea positivo y menor a 360 grados
 	r->rayangle = rayAngle;	
-	ft_memset(r, 0, sizeof(t_ray));
 	r->isRayFacingDown = (rayAngle > 0 && rayAngle < PI); //si el angulo es positivo (depende unicamente de la rotacion, para ser positivo debe ser rotacion antihoraria) && y el angulo es menor a 180 (PI) grados
 	r->isRayFacingUp = !r->isRayFacingDown;
 	r->isRayFacingRight = (rayAngle < 0.5 * PI) || (rayAngle > 1.5 * PI);
 	r->isRayFacingLeft = !r->isRayFacingRight;
 }
 
-void	choose_ray_hit(t_cub *c, t_ray *r, float rayAngle)
+void	choose_ray_hit(t_cub *c, t_ray *r, float rayAngle) //en que eje ha golpeado antes el rayo en el horizontal o en el vertical. Una vez hayamos elegido almacenamos los valores de uno o de otro
 {
 	if (r->foundHorizontalWallHit)
 		r->horizontalHitDistance = distanceBetweenPoints(c->p_x, c->p_y, r->horizontalWallHitX, r->horizontalWallHitY);
@@ -67,14 +67,6 @@ void	choose_ray_hit(t_cub *c, t_ray *r, float rayAngle)
 	else  
 		r->verticalHitDistance = INT_MAX;
 	if (r->verticalHitDistance < r->horizontalHitDistance)
-		store_ray_values(c, r, rayAngle, TRUE);
-	else
-		store_ray_values(c, r, rayAngle, FALSE);
-}
-
-void	store_ray_values(t_cub *c, t_ray *r, float rayAngle, int s)
-{
-	if (s)
 	{
 		r->distance = r->verticalHitDistance;
 		r->wallHitX = r->verticalWallHitX;
@@ -88,6 +80,6 @@ void	store_ray_values(t_cub *c, t_ray *r, float rayAngle, int s)
 		r->wallHitX = r->horizontalWallHitX;
 		r->wallHitY = r->horizontalWallHitY;
 		r->wallHitContent = r->horizontalWallContent;
-		r->wasHitVertical = FALSE;		
+		r->wasHitVertical = FALSE;	
 	}
 }

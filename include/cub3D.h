@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/23 13:20:36 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/23 15:42:31 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,17 @@
 typedef struct s_image
 {
 	void	*img_ptr; 
-	int		height;
-	int		width;
 	void	*addr; //puntero a la dirección de memoria inicial donde están almacenados los datos de los píxeles de la imagen.
 	int		bpp; //(bits_per_pixel) el número de bits utilizados para representar cada píxel de la imagen.
 	int		line_len; //el tamaño (en bytes) de cada fila de la imagen.
 	int		endian; //el orden de los bytes (endianness) usado para representar los colores.
 	char	*buffer;
+	
+	int		height; //para que lo usa Izaro? Le otorgan el valor del tamaño de la ventana
+	int		width;
+
+	int		img_height; //tamaño de la imagen, se correspondera con CELL_WIDHT y CELL_HEIGHT
+	int		img_width;
 } t_img;
 
 typedef struct s_ray
@@ -146,17 +150,19 @@ typedef struct s_cub
 	float	player_fov; //init_game. valor estatico. Lo usamos durante el casteo para determinar el angulo de los rayos
 	int		map_axis_y; //cantidad de caracteres del mapa en el eje vertical
 	int		map_axis_x; //cantidad de caracteres del mapa en el eje horizontal
-	t_img	*ceiling;
-	t_img	*floor;
+	t_img	*ceiling; //son necesarias??
+	t_img	*floor; //son necesarias??
 	t_img	*wall_n;
 	t_img	*wall_s;
 	t_img	*wall_w;
 	t_img	*wall_e;
-	t_img	*player_img;
+	t_img	*player_img; 
 	float	p_y; //coordenadas del jugador sobre el eje vertical
 	float	p_x; //coordenadas del jugador sobre el eje horizontal
 	float	p_rotationangle; //angulo del jugador, lo usamos durante el casteo para determinar el angulo de los rayos
-	t_ray	*rays;
+	t_ray	*rays; //estructura correpondiente a cada rayo
+	
+	t_img	*render;	
 } t_cub;
 
 //3D_init
@@ -164,7 +170,7 @@ int		init_3D(t_cub *c);
 
 //exit
 void	c_error(char *str, t_cub *c);
-int		c_close(t_cub *c);
+void	c_close(t_cub *c);
 void	free_memory(t_cub *c);
 
 //init_game
@@ -179,13 +185,14 @@ int		key_hooks(int keysym, t_cub *c);
 int		is_in_wall(int y, int x, t_cub *c);
 void	rotate_player(int right_dir, t_cub *c);
 
-//map_read
-void	map_read(char **argv, t_cub *c);
+//map_init
+void	map_init(char **argv, t_cub *c);
 char	*sl_strjoin(char *s1, const char *s2);
 void	get_map_axix_x(t_cub *c);
 
-//map_render
-void	map_render(t_cub *c);
+//map_2d_render
+void	render_maps(t_cub *c);
+void	map_2d_render(t_cub *c);
 void	map_select_element(int y, int x, t_cub *c);
 void	map_print(int y, int x, t_img *c_img, t_cub *c);
 void	player_print(double y, double x, t_img *c_img, t_cub *c);
@@ -206,6 +213,5 @@ void	ray_caster(t_cub *c);
 void	cast_ray(t_cub *c, float rayAngle, int stripid);
 void	init_ray_struct(t_ray *r, float rayAngle);
 void	choose_ray_hit(t_cub *c, t_ray *r, float rayAngle);
-void	store_ray_values(t_cub *c, t_ray *r, float rayAngle, int s);
 
 #endif

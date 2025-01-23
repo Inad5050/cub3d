@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:44:08 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/22 18:44:17 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/23 15:31:38 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ int	key_hooks(int keysym, t_cub *c)
 		rotate_player(0, c);
 	else if ((keysym == KEY_RIGHT))
 		rotate_player(1, c);
-	map_render(c);
-	ray_direction(c);
 	return (0);
 }
 
@@ -59,15 +57,15 @@ int	is_in_wall(int y, int x, t_cub *c)
 
 void	rotate_player(int right_dir, t_cub *c)
 {
-	if (!right_dir)
+	if (right_dir)
 	{
-		c->p_rotationangle -= 0.1;
+		c->p_rotationangle -= 2;
 		if (c->p_rotationangle < 0)
 			c->p_rotationangle += 2 * PI; //en C los valores de un angulo van de 0 a 2PI, si sobrepasamos el 0 volvemos a empezar por 0/2PI
 	}
-	if (right_dir)
+	if (!right_dir)
 	{
-		c->p_rotationangle += 0.1;
+		c->p_rotationangle += 2;
 		if (c->p_rotationangle > 2 * PI)
 			c->p_rotationangle -= 2 * PI; //en C los valores de un angulo van de 0 a 2PI, si sobrepasamos el 0 volvemos a empezar por 0/2PI
 	}

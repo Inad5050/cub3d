@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 17:35:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/23 13:19:31 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/23 15:38:37 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	init_game(t_cub *c)
 	init_image(c, &c->wall_e, ROUTE_EAST);
 	init_player_image(c, &c->player_img, ROUTE_PLAYER);
 	locate_player(c);
-	c->player_fov = (60 * PI / 180); //CURSO
+	c->player_fov = (60 * PI / 180); //para un Field of View (FOV) de 60 grados
 	return (EXIT_SUCCESS);
 }
 
@@ -44,8 +44,16 @@ int	init_image(t_cub *c, t_img **c_img_ptr, char *route) //inicializa la estruct
 	if (!*c_img_ptr)
 		return (c_error("Couldn't alloc *c_img_ptr", c), EXIT_FAILURE);
 	c_img = *c_img_ptr;
-	c_img->height = CELL_HEIGHT; //guardamos el valor en ints para referenciarlos en mlx_get_data_addr
-	c_img->width = CELL_WIDHT;
+	c_img->img_height = CELL_HEIGHT; //guardamos el valor en ints para referenciarlos en mlx_get_data_addr
+	c_img->img_width = CELL_WIDHT;
+	
+	//--------------------------
+	//por que Izaro hace esto? para que le damos valor a c_img->img_ptr si luego lo vamos a sustituir inmediatamente? es como con la libreria de CODAM que por algun motivo necesitas usar new_image para poder renderizarlo?
+	c_img->img_height = WIN_HEIGHT;
+	c_img->img_width = WIN_WIDHT;
+	c_img->img_ptr = mlx_new_image(c->mlx, WIN_HEIGHT, WIN_WIDHT);
+	//--------------------------
+	
 	c_img->img_ptr = mlx_xpm_file_to_image(c->mlx, route, &(c_img->width), &(c_img->height)); //accedemos a la imagen desde la ruta correspondiente y obtenemos un puntero a la misma
 	if (!c_img->img_ptr)
 		return (c_error("Couldn't mlx_xpm_file_to_image", c), EXIT_FAILURE);
