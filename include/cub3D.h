@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/23 15:42:31 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/24 17:40:26 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,12 @@
 # define ROUTE_PLAYER "./textures/xpm/player_small.xpm"
 
 //colors
+# define RED 0xFFFF0000 //los primeros dos hexadecimales FF o 00
 # define BLUE 0x000000FF
 # define GREEN 0x0000FF00
 # define WHITE 0x00FFFFFF
+# define PURPLE 0x800080FF
+# define ORANGE 0xFFA500FF
 
 //map_parts
 # define FLOOR 'f'
@@ -98,7 +101,8 @@ typedef struct s_image
 typedef struct s_ray
 {
 	float	rayangle; //el angulo del rayo, su valor depende de la horientacion de la vision del jugador. Lo incrementamos con cada rayo sucesivo que lanzamos
-
+	int		ray_index;
+	
 	//horientacion del rayo
 	int		isRayFacingDown;
 	int		isRayFacingUp;
@@ -138,7 +142,11 @@ typedef struct s_ray
 	float	wallHitX;
 	float	wallHitY;
 	float	wallHitContent;
-	float	wasHitVertical;	
+	float	wasHitVertical;
+
+	//MEDIUM BLOG
+	float	distance_medium; //parte del codigo del blog medium para renderizar los rayos
+	int		flag; //identifica la horientacion de la pared a la que estamos casteando
 } t_ray;
 
 typedef struct s_cub
@@ -160,9 +168,7 @@ typedef struct s_cub
 	float	p_y; //coordenadas del jugador sobre el eje vertical
 	float	p_x; //coordenadas del jugador sobre el eje horizontal
 	float	p_rotationangle; //angulo del jugador, lo usamos durante el casteo para determinar el angulo de los rayos
-	t_ray	*rays; //estructura correpondiente a cada rayo
-	
-	t_img	*render;	
+	t_ray	*rays; //estructuras correpondientes a cada rayo
 } t_cub;
 
 //3D_init
@@ -177,6 +183,13 @@ void	free_memory(t_cub *c);
 int		init_game(t_cub *c);
 int		init_image(t_cub *c, t_img **c_img_ptr, char *route);
 int		init_player_image(t_cub *c, t_img **c_img_ptr, char *route);
+
+//init_map
+void	init_map(char **argv, t_cub *c);
+char	*sl_strjoin(char *s1, const char *s2);
+void	get_map_axix_x(t_cub *c);
+
+//init_player
 void	*locate_player(t_cub *c);
 void	init_player(int y, int x, t_cub *c);
 
@@ -185,33 +198,40 @@ int		key_hooks(int keysym, t_cub *c);
 int		is_in_wall(int y, int x, t_cub *c);
 void	rotate_player(int right_dir, t_cub *c);
 
-//map_init
-void	map_init(char **argv, t_cub *c);
-char	*sl_strjoin(char *s1, const char *s2);
-void	get_map_axix_x(t_cub *c);
-
-//map_2d_render
+//main
 void	render_maps(t_cub *c);
-void	map_2d_render(t_cub *c);
-void	map_select_element(int y, int x, t_cub *c);
-void	map_print(int y, int x, t_img *c_img, t_cub *c);
-void	player_print(double y, double x, t_img *c_img, t_cub *c);
+
+//ray_caster_hit_wall
+void	find_horizontal_hit(t_cub *c, t_ray	*r, float rayAngle);
+void	find_horizontal_hit_loop(t_cub *c, t_ray *r);
+void	find_vertical_hit(t_cub *c, t_ray	*r, float rayAngle);
+void	find_vertical_hit_loop(t_cub *c, t_ray *r);
 
 //ray_caster_utils
 float	normalizeAngle(float angle);
 int		mapHasWallAt(t_cub *c, float x, float y);
 float	distanceBetweenPoints(float x1, float y1, float x2, float y2);
 
-//ray_caster_hit_wall
-void	find_horizontal_hit(t_cub *c, t_ray	*r, float rayAngle);
-void	find_horizontal_hit_loop(t_cub *c, t_ray *r, float rayAngle);
-void	find_vertical_hit(t_cub *c, t_ray	*r, float rayAngle);
-void	find_vertical_hit_loop(t_cub *c, t_ray *r, float rayAngle);
-
 //ray_caster
 void	ray_caster(t_cub *c);
-void	cast_ray(t_cub *c, float rayAngle, int stripid);
-void	init_ray_struct(t_ray *r, float rayAngle);
-void	choose_ray_hit(t_cub *c, t_ray *r, float rayAngle);
+void	cast_ray(t_cub *c, t_ray *r, int ray_index, float rayAngle);
+void	init_ray_struct(t_ray *r, int ray_index, float rayAngle);
+void	choose_ray_hit(t_cub *c, t_ray *r);
+
+//ray_render_utils
+float 	nor_angle(float angle);
+void 	my_mlx_pixel_put(t_cub *c, int x, int y, int color);
+
+//ray_render
+void 	render_wall(t_cub *c, t_ray *r);
+void 	draw_wall(t_cub *c, t_ray *r, int top_pixel, int bottom_pixel);
+int 	get_color(t_cub *c, t_ray *r, int flag);
+void 	draw_floor_ceiling(t_cub *c, int ray, int top_pixel, int bottom_pixel);
+
+//map_2d_render
+void	render_2Dmap(t_cub *c);
+void	map_select_element(int y, int x, t_cub *c);
+void	map_print(int y, int x, t_img *c_img, t_cub *c);
+void	player_print(double y, double x, t_img *c_img, t_cub *c);
 
 #endif

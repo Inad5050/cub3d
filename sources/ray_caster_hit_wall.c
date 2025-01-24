@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:19:39 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/23 13:11:30 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/24 16:46:55 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ void	find_horizontal_hit(t_cub *c, t_ray *r, float rayAngle)
 		r->xstep *= -1;
 	if (r->isRayFacingRight && r->xstep < 0)
 		r->xstep *= -1;
-	find_horizontal_hit_loop(c, r, rayAngle);
+	find_horizontal_hit_loop(c, r);
 }
 
-void	find_horizontal_hit_loop(t_cub *c, t_ray *r, float rayAngle)
+void	find_horizontal_hit_loop(t_cub *c, t_ray *r)
 {
 	//vamos a aumentar la longitud del rayo progresivamente. Cada vez cruzara TILE_SIZE distancia en el eje Y. Asi obtendremos todos los puntos de corte horizontales. En cada punto de corte comprobaremos si la siguiente celda tiene una pared.
 	//Debemos empezar por el principio en el eje Y de una celda. Por lo que nuestro punto de partida es el primer punto de corte que ya hemos calculado: xintercept e yintercept
@@ -60,7 +60,7 @@ void	find_horizontal_hit_loop(t_cub *c, t_ray *r, float rayAngle)
 		r->xToCheck = r->nextHorzTouchX;
 		r->yToCheck = r->nextHorzTouchY; //lo ajustamos para estar en el proximo cuadrado y no en el borde de la interseccion
 		if (r->isRayFacingUp)
-			r->yToCheck - 1;
+			r->yToCheck -= 1;
 		if (mapHasWallAt(c, r->xToCheck, r->yToCheck)) //ME FALTA LA FUNCION
 		{
 			//encontramos muro
@@ -92,10 +92,10 @@ void	find_vertical_hit(t_cub *c, t_ray *r, float rayAngle)
 		r->ystep *= -1;
 	if (r->isRayFacingDown && r->xstep < 0)
 		r->ystep *= -1;
-	find_vertical_hit_loop(c, r, rayAngle);
+	find_vertical_hit_loop(c, r);
 }
 
-void	find_vertical_hit_loop(t_cub *c, t_ray *r, float rayAngle)
+void	find_vertical_hit_loop(t_cub *c, t_ray *r)
 {
 	r->nextHorzTouchX = r->xintercept;
 	r->nextHorzTouchY = r->yintercept;
@@ -104,7 +104,7 @@ void	find_vertical_hit_loop(t_cub *c, t_ray *r, float rayAngle)
 	{
 		r->xToCheck = r->nextHorzTouchX;
 		if (r->isRayFacingLeft)
-			r->xToCheck - 1;
+			r->xToCheck -= 1;
 		r->yToCheck = r->nextHorzTouchY;
 		if (mapHasWallAt(c, r->xToCheck, r->yToCheck)) 
 		{

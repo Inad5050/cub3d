@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:44:08 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/23 15:31:38 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/24 17:42:14 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ void	rotate_player(int right_dir, t_cub *c)
 {
 	if (right_dir)
 	{
-		c->p_rotationangle -= 2;
+		c->p_rotationangle -= 0.1;
 		if (c->p_rotationangle < 0)
 			c->p_rotationangle += 2 * PI; //en C los valores de un angulo van de 0 a 2PI, si sobrepasamos el 0 volvemos a empezar por 0/2PI
 	}
 	if (!right_dir)
 	{
-		c->p_rotationangle += 2;
+		c->p_rotationangle += 0.1;
 		if (c->p_rotationangle > 2 * PI)
 			c->p_rotationangle -= 2 * PI; //en C los valores de un angulo van de 0 a 2PI, si sobrepasamos el 0 volvemos a empezar por 0/2PI
 	}

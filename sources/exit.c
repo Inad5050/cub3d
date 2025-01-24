@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 20:30:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/23 15:39:43 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/24 16:32:16 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,7 @@
 
 void	c_error(char *str, t_cub *c)
 {
-	ft_printf("%s\n", str);
-	
-	//--------------------------
-	mlx_destroy_image(c->mlx, c->render->img_ptr); //si uso lo de Izaro
-	//--------------------------
-		
+	ft_printf("%s\n", str);		
 	mlx_destroy_window(c->mlx, c->win_mlx_2D);
 	mlx_destroy_window(c->mlx, c->win_mlx_3D);
 	free_memory(c);
@@ -27,11 +22,7 @@ void	c_error(char *str, t_cub *c)
 }
 
 void	c_close(t_cub *c)
-{
-	//--------------------------
-	mlx_destroy_image(c->mlx, c->render->img_ptr); //si uso lo de Izaro
-	//--------------------------
-	
+{	
 	mlx_destroy_window(c->mlx, c->win_mlx_2D);
 	mlx_destroy_window(c->mlx, c->win_mlx_3D);	
 	free_memory(c);

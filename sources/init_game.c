@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 17:35:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/23 15:38:37 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/24 16:51:20 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	init_game(t_cub *c)
 	init_image(c, &c->wall_e, ROUTE_EAST);
 	init_player_image(c, &c->player_img, ROUTE_PLAYER);
 	locate_player(c);
-	c->player_fov = (60 * PI / 180); //para un Field of View (FOV) de 60 grados
+	c->player_fov = (60 * PI / 180); //para un Field of View (FOV) de 60 grados. Siempre sera el mismo (aprox 1.66)
 	return (EXIT_SUCCESS);
 }
 
@@ -46,13 +46,6 @@ int	init_image(t_cub *c, t_img **c_img_ptr, char *route) //inicializa la estruct
 	c_img = *c_img_ptr;
 	c_img->img_height = CELL_HEIGHT; //guardamos el valor en ints para referenciarlos en mlx_get_data_addr
 	c_img->img_width = CELL_WIDHT;
-	
-	//--------------------------
-	//por que Izaro hace esto? para que le damos valor a c_img->img_ptr si luego lo vamos a sustituir inmediatamente? es como con la libreria de CODAM que por algun motivo necesitas usar new_image para poder renderizarlo?
-	c_img->img_height = WIN_HEIGHT;
-	c_img->img_width = WIN_WIDHT;
-	c_img->img_ptr = mlx_new_image(c->mlx, WIN_HEIGHT, WIN_WIDHT);
-	//--------------------------
 	
 	c_img->img_ptr = mlx_xpm_file_to_image(c->mlx, route, &(c_img->width), &(c_img->height)); //accedemos a la imagen desde la ruta correspondiente y obtenemos un puntero a la misma
 	if (!c_img->img_ptr)
@@ -78,39 +71,4 @@ int	init_player_image(t_cub *c, t_img **c_img_ptr, char *route) //inicializa la 
 	c_img->addr = mlx_get_data_addr(c_img->img_ptr, &(c_img->bpp), \
 		&(c_img->line_len), &(c_img->endian)); //obtenemos el bpp, la line_len y el endian de la imagen
 	return (EXIT_SUCCESS);
-}
-
-void	*locate_player(t_cub *c) //localiza la posición inicial del jugador y coloca suelo '0' en su lugar
-{
-	int	y;
-	int	x;
-
-	y = 0;
-	while (c->map[y])
-	{
-		x = 0;
-		while (c->map[y][x])
-		{
-			if (c->map[y][x] == 'N' || c->map[y][x] == 'S' || \
-			c->map[y][x] == 'W' || c->map[y][x] == 'E')
-				return (init_player(y, x, c), c->map[y][x] = '0', NULL);
-			x++;
-		}
-		y++;
-	}
-	return (NULL);
-}
-
-void	init_player(int y, int x, t_cub *c) //inicializa la dirección del jugador y su perpendicular, los valores no mencionados permanecen en cero
-{
-	c->p_y = (double)y * (double)CELL_HEIGHT; //posición inicial
-	c->p_x = (double)x * (double)CELL_WIDHT;
-	if (c->map[y][x] == 'N')
-		c->p_rotationangle = PI / 2; //angulo en multiplos de PI
-	if (c->map[y][x] == 'W')
-		c->p_rotationangle = PI;
-	if (c->map[y][x] == 'S')
-		c->p_rotationangle = PI * 3 / 4;
-	if (c->map[y][x] == 'E')
-		c->p_rotationangle = 2 * PI; //equivalente a 360 grados, se reinicia a cero
 }
