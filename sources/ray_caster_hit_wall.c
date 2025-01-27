@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:19:39 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/24 16:46:55 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:04:17 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 void	find_horizontal_hit(t_cub *c, t_ray *r, float rayAngle)
 {
 	//CURSO find the y coordinate of the closest horizontal grid intersection
-	
+	r->foundHorizontalWallHit = 0;
+	r->horizontalWallHitX = 0;
+	r->horizontalWallHitY = 0;
+	r->horizontalWallContent = 0;
 	r->yintercept = floor(c->p_y / TILE_SIZE) * TILE_SIZE; //TILE_SIZE se inicializa como 2000 el mismo valor del WIN_WIDTH. player.y son las coordenadas del jugador
 	//r->yintercept += r->isRayFacingDown ? TILE_SIZE : 0; 
 	//? : es el operador ternario "condición ? valor_si_es_verdadero : valor_si_es_falso;"
@@ -66,7 +69,6 @@ void	find_horizontal_hit_loop(t_cub *c, t_ray *r)
 			//encontramos muro
 			r->horizontalWallHitX = r->nextHorzTouchX; 
 			r->horizontalWallHitY = r->nextHorzTouchY;
-			r->horizontalWallContent = c->map[(int)floor(r->yToCheck / TILE_SIZE)][(int)floor(r->xToCheck / TILE_SIZE)];	
 			r->foundHorizontalWallHit = TRUE;
 			break;		
 		}
@@ -80,44 +82,50 @@ void	find_horizontal_hit_loop(t_cub *c, t_ray *r)
 
 void	find_vertical_hit(t_cub *c, t_ray *r, float rayAngle)
 {
+	r->foundVerticalWallHit = 0;
+	r->verticalWallHitX = 0;
+	r->verticalWallHitY = 0;
+	r->verticalWallContent = 0;
 	r->xintercept = floor(c->p_x / TILE_SIZE) * TILE_SIZE;
 	if (r->isRayFacingRight)
-		r->yintercept += TILE_SIZE;
-	r->yintercept = c->p_y + (r->xintercept - c->p_x) / tan(rayAngle);
+		r->xintercept += TILE_SIZE;
+	r->yintercept = c->p_y + (r->xintercept - c->p_x) * tan(rayAngle);
 	r->xstep = TILE_SIZE;
 	if (r->isRayFacingLeft)
+		r->xstep *= -1;
+	r->ystep = TILE_SIZE * tan(rayAngle);
+	if (r->isRayFacingUp && r->ystep > 0)
 		r->ystep *= -1;
-	r->ystep = TILE_SIZE / tan(rayAngle);
-	if (r->isRayFacingUp && r->xstep > 0)
-		r->ystep *= -1;
-	if (r->isRayFacingDown && r->xstep < 0)
+	else if (r->isRayFacingDown && r->ystep < 0)
 		r->ystep *= -1;
 	find_vertical_hit_loop(c, r);
 }
 
 void	find_vertical_hit_loop(t_cub *c, t_ray *r)
 {
-	r->nextHorzTouchX = r->xintercept;
-	r->nextHorzTouchY = r->yintercept;
-	while(r->nextHorzTouchX >= 0 && r->nextHorzTouchX <= WIN_WIDHT \
-	&& r->nextHorzTouchY >= 0 && r->nextHorzTouchY <= WIN_HEIGHT)
+	r->nextVerticalTouchX = r->xintercept;
+	r->nextVerticalTouchY = r->yintercept;
+	while(r->nextVerticalTouchX >= 0 && r->nextVerticalTouchX <= WIN_WIDHT \
+	&& r->nextVerticalTouchY >= 0 && r->nextVerticalTouchY <= WIN_HEIGHT)
 	{
-		r->xToCheck = r->nextHorzTouchX;
+		r->xToCheck = r->nextVerticalTouchX;
+		r->yToCheck = r->nextVerticalTouchY;
 		if (r->isRayFacingLeft)
 			r->xToCheck -= 1;
-		r->yToCheck = r->nextHorzTouchY;
+		r->yToCheck = r->nextVerticalTouchY;
 		if (mapHasWallAt(c, r->xToCheck, r->yToCheck)) 
 		{
-			r->verticalWallHitX = r->nextHorzTouchX; 
-			r->verticalWallHitY = r->nextHorzTouchY;
-			r->verticalWallContent = c->map[(int)floor(r->yToCheck / TILE_SIZE)][(int)floor(r->xToCheck / TILE_SIZE)];	
+			r->verticalWallHitX = r->nextVerticalTouchX; 
+			r->verticalWallHitY = r->nextVerticalTouchY;
 			r->foundVerticalWallHit = TRUE;
 			break;		
 		}
 		else
 		{
-			r->nextHorzTouchX += r->xstep;
-			r->nextHorzTouchY += r->ystep;
+			r->nextVerticalTouchX += r->xstep;
+			r->nextVerticalTouchY += r->ystep;
 		}
 	}
 }
+
+// r->verticalWallContent = c->map[(int)floor(r->yToCheck / TILE_SIZE)][(int)floor(r->xToCheck / TILE_SIZE)];	

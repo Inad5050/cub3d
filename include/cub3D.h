@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/24 17:40:26 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/27 20:01:13 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdbool.h>
 # include <math.h>
 # include <limits.h>
+# include <stdint.h>
 
 //sizes
 # define WIN_WIDHT 1300
@@ -81,6 +82,11 @@
 # define WINDOW_HEIGHT WIN_HEIGHT
 # define NUM_RAYS WINDOW_WIDTH
 
+//codium_library
+# define BPP sizeof(int32_t)	//Only support RGBA
+# define LCT_RGBA 6	//RGB with alpha: 8,16 bit
+
+
 //float ocupa 4 bytes y tiene una capacidad de entre 6/7 decimales. double ocupa 8 y tiene una capacidad de hasta 15/16. Para este proyecto con float vale.
 typedef struct s_image
 {
@@ -91,12 +97,44 @@ typedef struct s_image
 	int		endian; //el orden de los bytes (endianness) usado para representar los colores.
 	char	*buffer;
 	
-	int		height; //para que lo usa Izaro? Le otorgan el valor del tamaño de la ventana
-	int		width;
+/* 	int		height; //para que lo usa Izaro? Le otorgan el valor del tamaño de la ventana
+	int		width; */
 
 	int		img_height; //tamaño de la imagen, se correspondera con CELL_WIDHT y CELL_HEIGHT
 	int		img_width;
 } t_img;
+
+//PARSE
+
+typedef struct s_render_params
+{
+	float				perp_distance;
+	float				distance_proj_plane;
+	float				wall_strip_height;
+	int					wall_top_pixel;
+	int					wall_bottom_pixel;
+	unsigned int		wall_color;
+}	t_render_params;
+
+typedef struct s_texture
+{
+	char				*file;
+	int					width2;
+	int					height;
+	unsigned int		**img;
+}	t_texture;
+
+//CODIUM
+
+/* typedef struct mlx_texture //estructura de la lebreria de CODAM
+{
+	uint32_t	width; //The width of the texture.
+	uint32_t	height; //The height of the texture.
+	uint8_t		bytes_per_pixel; //The amount of bytes in a pixel, always 4.
+	uint8_t*	pixels; //The literal pixel data.
+}	mlx_texture_t; */
+
+//--------------------
 
 typedef struct s_ray
 {
@@ -120,6 +158,8 @@ typedef struct s_ray
 	//variables del WHILE
 	float	nextHorzTouchX; //la primera vez sera la distancia entre la posicion del jugador comparada con xintercept e yintercept. Una vez comience el bucle while el rayo estara sobre el eje X de una de las casillas y la distancia hasta el eje X de la siguiente casillas sera siempre la misma: xstep y ystep
 	float	nextHorzTouchY;
+	float	nextVerticalTouchX; //la primera vez sera la distancia entre la posicion del jugador comparada con xintercept e yintercept. Una vez comience el bucle while el rayo estara sobre el eje X de una de las casillas y la distancia hasta el eje X de la siguiente casillas sera siempre la misma: xstep y ystep
+	float	nextVerticalTouchY;
 	float	xToCheck; //altera nextHorzTouchX y nextHorzTouchY en funcion de la horientacion del rayo 
 	float	yToCheck;
 	
@@ -147,6 +187,14 @@ typedef struct s_ray
 	//MEDIUM BLOG
 	float	distance_medium; //parte del codigo del blog medium para renderizar los rayos
 	int		flag; //identifica la horientacion de la pared a la que estamos casteando
+
+	//render
+	float	perp_distance;
+	float	distance_proj_plane;
+	float	wall_strip_height;
+	int		wall_top_pixel;
+	int		wall_bottom_pixel;
+	unsigned int	wall_color;
 } t_ray;
 
 typedef struct s_cub
@@ -158,6 +206,7 @@ typedef struct s_cub
 	float	player_fov; //init_game. valor estatico. Lo usamos durante el casteo para determinar el angulo de los rayos
 	int		map_axis_y; //cantidad de caracteres del mapa en el eje vertical
 	int		map_axis_x; //cantidad de caracteres del mapa en el eje horizontal
+	
 	t_img	*ceiling; //son necesarias??
 	t_img	*floor; //son necesarias??
 	t_img	*wall_n;
@@ -165,14 +214,23 @@ typedef struct s_cub
 	t_img	*wall_w;
 	t_img	*wall_e;
 	t_img	*player_img; 
+	
 	float	p_y; //coordenadas del jugador sobre el eje vertical
 	float	p_x; //coordenadas del jugador sobre el eje horizontal
 	float	p_rotationangle; //angulo del jugador, lo usamos durante el casteo para determinar el angulo de los rayos
 	t_ray	*rays; //estructuras correpondientes a cada rayo
+
+	unsigned int	strip[WINDOW_HEIGHT];
+	
 } t_cub;
 
 //3D_init
 int		init_3D(t_cub *c);
+
+/* //codium_render
+mlx_texture_t* mlx_load_png(const char* path, t_cub *c);
+unsigned lodepng_decode32_file(unsigned char** out, unsigned* w,
+ unsigned* h, const char* filename); */
 
 //exit
 void	c_error(char *str, t_cub *c);
@@ -192,6 +250,9 @@ void	get_map_axix_x(t_cub *c);
 //init_player
 void	*locate_player(t_cub *c);
 void	init_player(int y, int x, t_cub *c);
+
+//init_textures
+int		load_sprite(t_texture *text, int x, int y);
 
 //key_hooks
 int		key_hooks(int keysym, t_cub *c);
@@ -218,15 +279,15 @@ void	cast_ray(t_cub *c, t_ray *r, int ray_index, float rayAngle);
 void	init_ray_struct(t_ray *r, int ray_index, float rayAngle);
 void	choose_ray_hit(t_cub *c, t_ray *r);
 
-//ray_render_utils
-float 	nor_angle(float angle);
-void 	my_mlx_pixel_put(t_cub *c, int x, int y, int color);
+/* //ray_render_utils
+uint32_t	get_color(uint8_t *p); */
 
 //ray_render
-void 	render_wall(t_cub *c, t_ray *r);
-void 	draw_wall(t_cub *c, t_ray *r, int top_pixel, int bottom_pixel);
-int 	get_color(t_cub *c, t_ray *r, int flag);
-void 	draw_floor_ceiling(t_cub *c, int ray, int top_pixel, int bottom_pixel);
+void	render_3d_projection(t_cub *c);
+int		init_data_render(t_cub *c, int i);
+void	render(t_cub *c, t_ray *r);
+void	render_strip(t_cub *c, int x);
+void	get_strip(t_cub *c, t_ray *r, t_texture *text, int x);
 
 //map_2d_render
 void	render_2Dmap(t_cub *c);

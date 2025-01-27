@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 17:35:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/24 16:51:20 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/27 15:25:05 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	init_image(t_cub *c, t_img **c_img_ptr, char *route) //inicializa la estruct
 	c_img->img_height = CELL_HEIGHT; //guardamos el valor en ints para referenciarlos en mlx_get_data_addr
 	c_img->img_width = CELL_WIDHT;
 	
-	c_img->img_ptr = mlx_xpm_file_to_image(c->mlx, route, &(c_img->width), &(c_img->height)); //accedemos a la imagen desde la ruta correspondiente y obtenemos un puntero a la misma
+	c_img->img_ptr = mlx_xpm_file_to_image(c->mlx, route, &(c_img->img_width), &(c_img->img_height)); //accedemos a la imagen desde la ruta correspondiente y obtenemos un puntero a la misma
 	if (!c_img->img_ptr)
 		return (c_error("Couldn't mlx_xpm_file_to_image", c), EXIT_FAILURE);
 	c_img->addr = mlx_get_data_addr(c_img->img_ptr, &(c_img->bpp), \
@@ -63,9 +63,9 @@ int	init_player_image(t_cub *c, t_img **c_img_ptr, char *route) //inicializa la 
 	if (!*c_img_ptr)
 		return (c_error("Couldn't alloc *c_img_ptr", c), EXIT_FAILURE);
 	c_img = *c_img_ptr;
-	c_img->height = PLAYER_WIDHT; //guardamos el valor en ints para referenciarlos en mlx_get_data_addr
-	c_img->width = PLAYER_HEIGHT;
-	c_img->img_ptr = mlx_xpm_file_to_image(c->mlx, route, &(c_img->width), &(c_img->height)); //accedemos a la imagen desde la ruta correspondiente y obtenemos un puntero a la misma
+	c_img->img_width = PLAYER_WIDHT; //guardamos el valor en ints para referenciarlos en mlx_get_data_addr
+	c_img->img_height = PLAYER_HEIGHT;
+	c_img->img_ptr = mlx_xpm_file_to_image(c->mlx, route, &(c_img->img_width), &(c_img->img_height)); //accedemos a la imagen desde la ruta correspondiente y obtenemos un puntero a la misma
 	if (!c_img->img_ptr)
 		return (c_error("Couldn't mlx_xpm_file_to_image", c), EXIT_FAILURE);
 	c_img->addr = mlx_get_data_addr(c_img->img_ptr, &(c_img->bpp), \

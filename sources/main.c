@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:27:23 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/24 17:18:25 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/27 12:52:54 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,5 @@ void	render_maps(t_cub *c)
 {
 	ray_caster(c);
 	render_2Dmap(c);
+	render_3d_projection(c);
 }

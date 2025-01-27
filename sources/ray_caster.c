@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:52:48 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/24 17:40:58 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/27 12:39:27 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ void	ray_caster(t_cub *c) //inicializa el algoritmo para cada uno de los rayos
 	while (ray_index < NUM_RAYS)
 	{
 		r = &(c->rays[ray_index]);		
-		cast_ray(c, r, ray_index, rayAngle); //funcion para manjar los rayos
-		render_wall(c, r);		
+		cast_ray(c, r, ray_index, rayAngle); //funcion para manjar los rayos		
 		rayAngle += c->player_fov / NUM_RAYS; //incrementamos el angulo del siguiente rayo la parte proporcional que le corresponde del total del angulo del FOV (si nuestro FOV es de 60 grados y tenemos 2000 rayos lo incrementamos en 60/2000)
 		ray_index++;
 	}
