@@ -6,29 +6,31 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:44:08 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/24 17:42:14 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/28 19:47:45 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-int	key_hooks(int keysym, t_cub *c)
+void	key_hook(void *param)
 {	
-	if (keysym == KEY_ESC)
+	t_cub	*c;
+	
+	c = (t_cub *)param;
+	if (mlx_is_key_down(c->mlx, MLX_KEY_ESCAPE))
 		c_close(c);
-	else if ((keysym == KEY_W) && !(is_in_wall(-1, 0, c)))
+	else if (mlx_is_key_down(c->mlx, MLX_KEY_W) && !(is_in_wall(-1, 0, c)))
 		c->p_y -= STEP_SIZE;
-	else if ((keysym == KEY_S) && !(is_in_wall(1, 0, c)))
+	else if (mlx_is_key_down(c->mlx, MLX_KEY_S) && !(is_in_wall(1, 0, c)))
 		c->p_y += STEP_SIZE;
-	else if ((keysym == KEY_A) && !(is_in_wall(0, -1, c)))
+	else if (mlx_is_key_down(c->mlx, MLX_KEY_A) && !(is_in_wall(0, -1, c)))
 		c->p_x -= STEP_SIZE;
-	else if ((keysym == KEY_D) && !(is_in_wall(0, 1, c)))
+	else if (mlx_is_key_down(c->mlx, MLX_KEY_D) && !(is_in_wall(0, 1, c)))
 		c->p_x += STEP_SIZE;
-	else if ((keysym == KEY_LEFT))
+	else if (mlx_is_key_down(c->mlx, MLX_KEY_LEFT))
 		rotate_player(0, c);
-	else if ((keysym == KEY_RIGHT))
+	else if (mlx_is_key_down(c->mlx, MLX_KEY_RIGHT))
 		rotate_player(1, c);
-	return (0);
 }
 
 int	is_in_wall(int y, int x, t_cub *c)
@@ -70,4 +72,3 @@ void	rotate_player(int right_dir, t_cub *c)
 			c->p_rotationangle -= 2 * PI; //en C los valores de un angulo van de 0 a 2PI, si sobrepasamos el 0 volvemos a empezar por 0/2PI
 	}
 }
-

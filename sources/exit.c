@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 20:30:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/24 16:32:16 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/28 18:04:19 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,22 @@
 void	c_error(char *str, t_cub *c)
 {
 	ft_printf("%s\n", str);		
-	mlx_destroy_window(c->mlx, c->win_mlx_2D);
-	mlx_destroy_window(c->mlx, c->win_mlx_3D);
+	mlx_close_window(c->mlx);
+	mlx_terminate(c->mlx);
 	free_memory(c);
 	exit (EXIT_FAILURE);
 }
 
 void	c_close(t_cub *c)
 {	
-	mlx_destroy_window(c->mlx, c->win_mlx_2D);
-	mlx_destroy_window(c->mlx, c->win_mlx_3D);	
+	mlx_close_window(c->mlx);
+	mlx_terminate(c->mlx);
 	free_memory(c);
 	exit(EXIT_SUCCESS);
 }
 
 void	free_memory(t_cub *c) //libera toda la memoria
-{
-	if (c->ceiling)
-		free(c->ceiling);
-	if (c->floor)
-		free(c->floor);
+{	
 	if (c->wall_n)	
 		free(c->wall_n);
 	if (c->wall_s)	

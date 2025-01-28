@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 17:35:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/27 15:25:05 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/28 18:52:27 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,61 +14,74 @@
 
 int	init_game(t_cub *c)
 {
-	c->mlx = mlx_init(c); //inicializa MLX
+	c->mlx = mlx_init(WINDOW_WIDTH, WINDOW_HEIGHT, "SUPER CUB3D", true);
 	if (!c->mlx)
 		return (c_error("Couldn't initiate c->mlx", c), EXIT_FAILURE);
-	c->win_mlx_2D = mlx_new_window(c->mlx, c->map_axis_x * CELL_WIDHT, \
-	c->map_axis_y * CELL_HEIGHT, "Cube3d"); //crea la ventana 2D
-	if (!c->win_mlx_2D)
-		return (c_error("Couldn't initiate c->win2D", c), EXIT_FAILURE);
-	c->win_mlx_3D = mlx_new_window(c->mlx, WIN_WIDHT, WIN_HEIGHT, "Cube3d");
-	if (!c->win_mlx_3D)
-		return (c_error("Couldn't initiate c->win3D", c), EXIT_FAILURE);
-	init_image(c, &c->ceiling, ROUTE_CEILING); //inicializa la estructura de cada imagen
-	init_image(c, &c->floor, ROUTE_FlOOR);
-	init_image(c, &c->wall_n, ROUTE_NORTH);
-	init_image(c, &c->wall_s, ROUTE_SHOUT);
-	init_image(c, &c->wall_w, ROUTE_WEST);
-	init_image(c, &c->wall_e, ROUTE_EAST);
-	init_player_image(c, &c->player_img, ROUTE_PLAYER);
+	c->win_mlx3D = mlx_new_image(c->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	init_t_texture(c, &c->wall_n);
+	init_t_texture(c, &c->wall_s);
+	init_t_texture(c, &c->wall_w);
+	init_t_texture(c, &c->wall_e);
+	c->ceiling = CEILING_COLOR;
+	c->floor = FlOOR_COLOR;
+	c->rays = ft_calloc(WIN_WIDHT, sizeof(t_ray));
+	if (!c->rays)
+			return (c_error("Couldn't initiate init_game", c), EXIT_FAILURE);
+	init_texture(c, c->wall_n, ROUTE_NORTH);
+	init_texture(c, c->wall_s, ROUTE_SHOUT);
+	init_texture(c, c->wall_w, ROUTE_WEST);
+	init_texture(c, c->wall_e, ROUTE_EAST);
 	locate_player(c);
 	c->player_fov = (60 * PI / 180); //para un Field of View (FOV) de 60 grados. Siempre sera el mismo (aprox 1.66)
 	return (EXIT_SUCCESS);
 }
 
-int	init_image(t_cub *c, t_img **c_img_ptr, char *route) //inicializa la estructura de cada imagen
+int	init_t_texture(t_cub *c, t_texture **strc)
 {
-	t_img	*c_img;
-	
-	*c_img_ptr = ft_calloc(1, sizeof(t_img)); //aloja memoria para la estructura t_img
-	if (!*c_img_ptr)
-		return (c_error("Couldn't alloc *c_img_ptr", c), EXIT_FAILURE);
-	c_img = *c_img_ptr;
-	c_img->img_height = CELL_HEIGHT; //guardamos el valor en ints para referenciarlos en mlx_get_data_addr
-	c_img->img_width = CELL_WIDHT;
-	
-	c_img->img_ptr = mlx_xpm_file_to_image(c->mlx, route, &(c_img->img_width), &(c_img->img_height)); //accedemos a la imagen desde la ruta correspondiente y obtenemos un puntero a la misma
-	if (!c_img->img_ptr)
-		return (c_error("Couldn't mlx_xpm_file_to_image", c), EXIT_FAILURE);
-	c_img->addr = mlx_get_data_addr(c_img->img_ptr, &(c_img->bpp), \
-		&(c_img->line_len), &(c_img->endian)); //obtenemos el bpp , la line_len y el endian de la imagen
-	return (EXIT_SUCCESS);
+	*strc = ft_calloc(1, sizeof(t_texture));
+	if (!*strc)
+			return (c_error("Couldn't alloc in init_t_texture", c), EXIT_FAILURE);
+	return (0);
 }
 
-int	init_player_image(t_cub *c, t_img **c_img_ptr, char *route) //inicializa la estructura de la imagen del jugador
+int	init_texture(t_cub *c, t_texture *texture, char *route) //load_png carga la informacion de la imagen en la estructura mlx_texture_t (nativa de la MLX). Nosotros pasamos los datos a t_texture que es una estructura propia
 {
-	t_img	*c_img;
-	
-	*c_img_ptr = ft_calloc(1, sizeof(t_img)); //aloja memoria para la estructura t_img
-	if (!*c_img_ptr)
-		return (c_error("Couldn't alloc *c_img_ptr", c), EXIT_FAILURE);
-	c_img = *c_img_ptr;
-	c_img->img_width = PLAYER_WIDHT; //guardamos el valor en ints para referenciarlos en mlx_get_data_addr
-	c_img->img_height = PLAYER_HEIGHT;
-	c_img->img_ptr = mlx_xpm_file_to_image(c->mlx, route, &(c_img->img_width), &(c_img->img_height)); //accedemos a la imagen desde la ruta correspondiente y obtenemos un puntero a la misma
-	if (!c_img->img_ptr)
-		return (c_error("Couldn't mlx_xpm_file_to_image", c), EXIT_FAILURE);
-	c_img->addr = mlx_get_data_addr(c_img->img_ptr, &(c_img->bpp), \
-		&(c_img->line_len), &(c_img->endian)); //obtenemos el bpp, la line_len y el endian de la imagen
-	return (EXIT_SUCCESS);
+	mlx_texture_t	*png;
+	int				y;
+	int				x;
+	png = mlx_load_png(route); //cargamos el buffer con la ingormacion del png
+	if (!png)
+		return (c_error("Couldn't load_png in init_image", c), EXIT_FAILURE);
+	texture->height = png->height; //rellenamos nuestra estructura
+	texture->width = png->width;
+	texture->pixels = ft_calloc(texture->height, sizeof(unsigned int *));
+	if (!texture->pixels)
+		return (mlx_delete_texture(png), c_error("Couldn't aloc in init_image", c), EXIT_FAILURE);
+	y = 0;
+	while (y < texture->height) //rellenamos texture->pixels
+	{
+		texture->pixels[y] = ft_calloc(texture->width, sizeof(unsigned int));
+		if (!texture->pixels[y])
+			return (mlx_delete_texture(png), c_error("Couldn't aloc in init_image", c), EXIT_FAILURE);
+		x = -1;
+		while (++x < texture->width)
+			texture->pixels[y][x] = get_color(&png->pixels[(y * png->width + x) * png->bytes_per_pixel]); //png->pixels es un solo string de uint8_t. Podemos localizar el puntero al valor de cada pixel multiplicando el numero de filas que ya hemos recorrido (y) * el tamaño de la fila (widht) + los uint8_t que ya hemos recorrido de la siguiente fila. bytes_per_pixel sera siempre 8 (?) y nos da una idea de cuanto espacio ocupa el color de cada pixel
+		y++;
+	}
+	mlx_delete_texture(png); //liberamos el buffer del png
+	return (0);
+}
+
+uint32_t	get_color(uint8_t *ptr) //load_png almacena el valor del color de los pixeles en estructuras de 4 integers de 8 bytes. Queremos combinar esos numeros en uno solo de 32 bytes.
+{
+	uint32_t	b; //blue
+	uint32_t	g; //green
+	uint32_t	r; //red
+	uint32_t	a; //alpha. opacidad (?)
+
+	r = (uint32_t)*(ptr);
+	g = (uint32_t)*(ptr + 1);
+	b = (uint32_t)*(ptr + 2);
+	a = (uint32_t)*(ptr + 3);
+	return ((r << 24) + (g << 16) + (b << 8) + a);
 }

@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/27 20:01:13 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/28 19:46:15 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define CUBE3D_H
 
 # include "../libft/libft.h"
-# include "../minilibx-linux/mlx.h"
+# include "../mlx/include/MLX42/MLX42.h"
 # include <stdbool.h>
 # include <math.h>
 # include <limits.h>
@@ -40,19 +40,6 @@
 # define KEY_LEFT  		65361
 # define KEY_RIGHT 		65363
 
-//events
-# define ON_KEYDOWN		2
-# define ON_DESTROY	   	17
-
-//routes
-# define ROUTE_CEILING "./textures/xpm/space/blue.xpm"
-# define ROUTE_FlOOR "./textures/xpm/floor_62.xpm"
-# define ROUTE_NORTH "./textures/xpm/grey_wall.xpm"
-# define ROUTE_SHOUT "./textures/xpm/grey_wall.xpm"
-# define ROUTE_WEST "./textures/xpm/grey_wall.xpm"
-# define ROUTE_EAST "./textures/xpm/grey_wall.xpm"
-# define ROUTE_PLAYER "./textures/xpm/player_small.xpm"
-
 //colors
 # define RED 0xFFFF0000 //los primeros dos hexadecimales FF o 00
 # define BLUE 0x000000FF
@@ -60,6 +47,16 @@
 # define WHITE 0x00FFFFFF
 # define PURPLE 0x800080FF
 # define ORANGE 0xFFA500FF
+
+//canvas_colors
+# define CEILING_COLOR BLUE
+# define FlOOR_COLOR WHITE
+ 
+//routes
+# define ROUTE_NORTH "./textures/png/space/blue.png"
+# define ROUTE_SHOUT "./textures/png/space/green.png"
+# define ROUTE_WEST "./textures/png/space/pink.png"
+# define ROUTE_EAST "./textures/png/space/red.png"
 
 //map_parts
 # define FLOOR 'f'
@@ -83,8 +80,11 @@
 # define NUM_RAYS WINDOW_WIDTH
 
 //codium_library
-# define BPP sizeof(int32_t)	//Only support RGBA
+# define BPP sizeof(int32_t) //Only support RGBA
 # define LCT_RGBA 6	//RGB with alpha: 8,16 bit
+
+//others
+# define FRAMES 30
 
 
 //float ocupa 4 bytes y tiene una capacidad de entre 6/7 decimales. double ocupa 8 y tiene una capacidad de hasta 15/16. Para este proyecto con float vale.
@@ -118,10 +118,9 @@ typedef struct s_render_params
 
 typedef struct s_texture
 {
-	char				*file;
-	int					width2;
+	int					width;
 	int					height;
-	unsigned int		**img;
+	unsigned int		**pixels;
 }	t_texture;
 
 //CODIUM
@@ -199,28 +198,35 @@ typedef struct s_ray
 
 typedef struct s_cub
 {
-	void	*mlx; //puntero a la instancia de MLX
-	void	*win_mlx_2D; //puntero a la ventana creada por MLX
-	void	*win_mlx_3D;
-	char	**map; //matriz con los caracteres del mapa
-	float	player_fov; //init_game. valor estatico. Lo usamos durante el casteo para determinar el angulo de los rayos
-	int		map_axis_y; //cantidad de caracteres del mapa en el eje vertical
-	int		map_axis_x; //cantidad de caracteres del mapa en el eje horizontal
+	void		*mlx; //puntero a la instancia de MLX
+	mlx_image_t	*win_mlx3D;
+	char		**map; //matriz con los caracteres del mapa
+	float		player_fov; //init_game. valor estatico. Lo usamos durante el casteo para determinar el angulo de los rayos
+	int			map_axis_y; //cantidad de caracteres del mapa en el eje vertical
+	int			map_axis_x; //cantidad de caracteres del mapa en el eje horizontal
 	
-	t_img	*ceiling; //son necesarias??
+/* 	t_img	*ceiling; //son necesarias??
 	t_img	*floor; //son necesarias??
 	t_img	*wall_n;
 	t_img	*wall_s;
 	t_img	*wall_w;
 	t_img	*wall_e;
-	t_img	*player_img; 
+	t_img	*player_img;  */
+
+	unsigned int	ceiling;
+	unsigned int	floor;
+	t_texture		*wall_n;
+	t_texture		*wall_s;
+	t_texture		*wall_w;
+	t_texture		*wall_e;
 	
-	float	p_y; //coordenadas del jugador sobre el eje vertical
-	float	p_x; //coordenadas del jugador sobre el eje horizontal
-	float	p_rotationangle; //angulo del jugador, lo usamos durante el casteo para determinar el angulo de los rayos
-	t_ray	*rays; //estructuras correpondientes a cada rayo
+	float		p_y; //coordenadas del jugador sobre el eje vertical
+	float		p_x; //coordenadas del jugador sobre el eje horizontal
+	float		p_rotationangle; //angulo del jugador, lo usamos durante el casteo para determinar el angulo de los rayos
+	t_ray		*rays; //estructuras correpondientes a cada rayo
 
 	unsigned int	strip[WINDOW_HEIGHT];
+	unsigned int	timelastframe;
 	
 } t_cub;
 
@@ -233,66 +239,64 @@ unsigned lodepng_decode32_file(unsigned char** out, unsigned* w,
  unsigned* h, const char* filename); */
 
 //exit
-void	c_error(char *str, t_cub *c);
-void	c_close(t_cub *c);
-void	free_memory(t_cub *c);
+void		c_error(char *str, t_cub *c);
+void		c_close(t_cub *c);
+void		free_memory(t_cub *c);
 
 //init_game
-int		init_game(t_cub *c);
-int		init_image(t_cub *c, t_img **c_img_ptr, char *route);
-int		init_player_image(t_cub *c, t_img **c_img_ptr, char *route);
+int			init_game(t_cub *c);
+int			init_t_texture(t_cub *c, t_texture **strc);
+int			init_texture(t_cub *c, t_texture *texture, char *route);
+uint32_t	get_color(uint8_t *ptr); 
 
 //init_map
-void	init_map(char **argv, t_cub *c);
-char	*sl_strjoin(char *s1, const char *s2);
-void	get_map_axix_x(t_cub *c);
+void		init_map(char **argv, t_cub *c);
+char		*sl_strjoin(char *s1, const char *s2);
+void		get_map_axix_x(t_cub *c);
 
 //init_player
-void	*locate_player(t_cub *c);
-void	init_player(int y, int x, t_cub *c);
+void		*locate_player(t_cub *c);
+void		init_player(int y, int x, t_cub *c);
 
 //init_textures
-int		load_sprite(t_texture *text, int x, int y);
+int			load_sprite(t_texture *text, int x, int y);
 
 //key_hooks
-int		key_hooks(int keysym, t_cub *c);
-int		is_in_wall(int y, int x, t_cub *c);
-void	rotate_player(int right_dir, t_cub *c);
+void		key_hook(void *param);
+int			is_in_wall(int y, int x, t_cub *c);
+void		rotate_player(int right_dir, t_cub *c);
 
 //main
-void	render_maps(t_cub *c);
+void		render_maps(void *param);
 
 //ray_caster_hit_wall
-void	find_horizontal_hit(t_cub *c, t_ray	*r, float rayAngle);
-void	find_horizontal_hit_loop(t_cub *c, t_ray *r);
-void	find_vertical_hit(t_cub *c, t_ray	*r, float rayAngle);
-void	find_vertical_hit_loop(t_cub *c, t_ray *r);
+void		find_horizontal_hit(t_cub *c, t_ray *r, float rayAngle);
+void		find_horizontal_hit_loop(t_cub *c, t_ray *r);
+void		find_vertical_hit(t_cub *c, t_ray *r, float rayAngle);
+void		find_vertical_hit_loop(t_cub *c, t_ray *r);
 
 //ray_caster_utils
-float	normalizeAngle(float angle);
-int		mapHasWallAt(t_cub *c, float x, float y);
-float	distanceBetweenPoints(float x1, float y1, float x2, float y2);
+float		normalizeAngle(float angle);
+int			mapHasWallAt(t_cub *c, float x, float y);
+float		distanceBetweenPoints(float x1, float y1, float x2, float y2);
 
 //ray_caster
-void	ray_caster(t_cub *c);
-void	cast_ray(t_cub *c, t_ray *r, int ray_index, float rayAngle);
-void	init_ray_struct(t_ray *r, int ray_index, float rayAngle);
-void	choose_ray_hit(t_cub *c, t_ray *r);
-
-/* //ray_render_utils
-uint32_t	get_color(uint8_t *p); */
+void		ray_caster(t_cub *c);
+void		cast_ray(t_cub *c, t_ray *r, int ray_index, float rayAngle);
+void		init_ray_struct(t_ray *r, int ray_index, float rayAngle);
+void		choose_ray_hit(t_cub *c, t_ray *r);
 
 //ray_render
-void	render_3d_projection(t_cub *c);
-int		init_data_render(t_cub *c, int i);
-void	render(t_cub *c, t_ray *r);
-void	render_strip(t_cub *c, int x);
-void	get_strip(t_cub *c, t_ray *r, t_texture *text, int x);
+void		ray_render(t_cub *c);
+int			init_data_render(t_cub *c, t_ray *r);
+void		render(t_cub *c, t_ray *r);
+void		render_strip(t_cub *c, int x);
+void		get_strip(t_cub *c, t_ray *r, t_texture *text, int x);
 
 //map_2d_render
-void	render_2Dmap(t_cub *c);
-void	map_select_element(int y, int x, t_cub *c);
-void	map_print(int y, int x, t_img *c_img, t_cub *c);
-void	player_print(double y, double x, t_img *c_img, t_cub *c);
+void		render_2Dmap(t_cub *c);
+void		map_select_element(int y, int x, t_cub *c);
+void		map_print(int y, int x, t_img *c_img, t_cub *c);
+void		player_print(double y, double x, t_img *c_img, t_cub *c);
 
 #endif

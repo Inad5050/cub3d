@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 13:21:58 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/27 20:09:26 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/28 19:39:16 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	render_strip(t_cub *c, int x)
 
 	y = -1;
 	while (++y < WINDOW_HEIGHT)
-		mlx_put_pixel(c->img, x, y, c->strip[y]);
+		mlx_put_pixel(c->win_mlx3D, x, y, c->strip[y]);
 }
 
 void	get_strip(t_cub *c, t_ray *r, t_texture *text, int x) //rellenamos strip(), es un buffer del contenido del rayo. //estoy usando t_img en lugar de t_texture
@@ -33,15 +33,15 @@ void	get_strip(t_cub *c, t_ray *r, t_texture *text, int x) //rellenamos strip(),
 		c->strip[y++] = c->ceiling; //inicializamos strip como ceiling
 	img_x = 1;
 	if (x != 1)
-		img_x = (x * text->width2) / TILE_SIZE; //calculamos el tamaño de cada linea de strip
+		img_x = (x * text->width) / TILE_SIZE; //calculamos el tamaño de cada linea de strip
 	anti_y = y;
 	if (r->wall_top_pixel < 0) //si el pixel más alto es negativo le restamos su valor a y (?)
 		anti_y += r->wall_top_pixel;
 	while (y < r->wall_bottom_pixel && y < WINDOW_HEIGHT)
 	{
 		img_y = ((y - anti_y) * text->height) / (r->wall_bottom_pixel - r->wall_top_pixel);
-		if (img_y >= 0 && img_y < text->height && img_x >= 0 && img_x < text->width2)
-			c->strip[y++] = text->img[img_y][img_x];
+		if (img_y >= 0 && img_y < text->height && img_x >= 0 && img_x < text->width)
+			c->strip[y++] = text->pixels[img_y][img_x];
 	}
 	while (y < WINDOW_HEIGHT)
 		c->strip[y++] = c->floor;
@@ -77,7 +77,7 @@ int	init_data_render(t_cub *c, t_ray *r) //inicializamos las variables que vamos
 	return (0);
 }
 
-void	render_3d_projection(t_cub *c)
+void	ray_render(t_cub *c)
 {
 	int	index_ray;
 
