@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:55:16 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/23 15:57:13 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/29 15:56:12 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,23 @@ void	init_player(int y, int x, t_cub *c) //inicializa la dirección del jugador 
 	c->p_y = (double)y * (double)CELL_HEIGHT; //posición inicial
 	c->p_x = (double)x * (double)CELL_WIDHT;
 	if (c->map[y][x] == 'N')
-		c->p_rotationangle = PI / 2; //angulo en multiplos de PI
+	{
+		c->p_rotationangle = normalizeAngle(3 * PI / 2); //angulo en multiplos de PI
+		c->player_direction = NORTH;
+	}
 	if (c->map[y][x] == 'W')
-		c->p_rotationangle = PI;
+	{
+		c->p_rotationangle = normalizeAngle(PI);
+		c->player_direction = WEST;
+	}
 	if (c->map[y][x] == 'S')
-		c->p_rotationangle = PI * 3 / 4;
+	{
+		c->p_rotationangle = normalizeAngle(PI / 2);
+		c->player_direction = SOUTH;
+	}
 	if (c->map[y][x] == 'E')
-		c->p_rotationangle = 2 * PI; //equivalente a 360 grados, se reinicia a cero
+	{
+		c->p_rotationangle = normalizeAngle(0); //equivalente a 360 grados, se reinicia a cer
+		c->player_direction = EAST;  
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 13:21:58 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/28 19:39:16 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/29 14:00:58 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	ray_render(t_cub *c)
 	index_ray = 0;
 	while (index_ray < NUM_RAYS) //por cada rayo renderizalo
 	{
+		/* printf("c->rays[%d].distance = %f\n", index_ray, c->rays[index_ray].distance); */
 		init_data_render(c, &c->rays[index_ray]);
 		render(c, &c->rays[index_ray]); //una vez conseguidas las dimensiones del rayo lo imprimimos en pantalla
 		render_strip(c, index_ray);

@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 17:35:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/28 18:52:27 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/29 13:43:17 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	init_texture(t_cub *c, t_texture *texture, char *route) //load_png carga la 
 	mlx_texture_t	*png;
 	int				y;
 	int				x;
+	
 	png = mlx_load_png(route); //cargamos el buffer con la ingormacion del png
 	if (!png)
 		return (c_error("Couldn't load_png in init_image", c), EXIT_FAILURE);
@@ -65,10 +66,13 @@ int	init_texture(t_cub *c, t_texture *texture, char *route) //load_png carga la 
 			return (mlx_delete_texture(png), c_error("Couldn't aloc in init_image", c), EXIT_FAILURE);
 		x = -1;
 		while (++x < texture->width)
+		{
 			texture->pixels[y][x] = get_color(&png->pixels[(y * png->width + x) * png->bytes_per_pixel]); //png->pixels es un solo string de uint8_t. Podemos localizar el puntero al valor de cada pixel multiplicando el numero de filas que ya hemos recorrido (y) * el tamaño de la fila (widht) + los uint8_t que ya hemos recorrido de la siguiente fila. bytes_per_pixel sera siempre 8 (?) y nos da una idea de cuanto espacio ocupa el color de cada pixel
+			/* printf("texture->pixels[%d][%d] = %u\n", y, x, texture->pixels[y][x]); */
+		}
 		y++;
 	}
-	mlx_delete_texture(png); //liberamos el buffer del png
+	mlx_delete_texture(png); //liberamos el buffer del png	
 	return (0);
 }
 

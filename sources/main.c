@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:27:23 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/28 19:48:25 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/29 13:51:35 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int argc, char **argv)
 
 	init_map(argv, c); //lee el mapa
 	init_game(c); //inicializa estructuras e imagenes
-	init_3D(c); //inicializa el ray caster
+	/* init_3D(c);  *///inicializa el ray caster
 	/* mlx_loop_hook(c->mlx, key_hook, c); */ //define los loops que el programa tendra que repetir
 	mlx_loop_hook(c->mlx, render_maps, c); //lanza rayos
 	mlx_loop(c->mlx); //realiza los loops

@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/28 19:46:15 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/29 16:24:12 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # include <stdint.h>
 
 //sizes
-# define WIN_WIDHT 1300
-# define WIN_HEIGHT 800
+# define WIN_WIDHT 2000
+# define WIN_HEIGHT 1000
 # define CELL_WIDHT 64
 # define CELL_HEIGHT 64
 # define PLAYER_WIDHT 1
@@ -201,6 +201,7 @@ typedef struct s_cub
 	void		*mlx; //puntero a la instancia de MLX
 	mlx_image_t	*win_mlx3D;
 	char		**map; //matriz con los caracteres del mapa
+	int			player_direction;
 	float		player_fov; //init_game. valor estatico. Lo usamos durante el casteo para determinar el angulo de los rayos
 	int			map_axis_y; //cantidad de caracteres del mapa en el eje vertical
 	int			map_axis_x; //cantidad de caracteres del mapa en el eje horizontal

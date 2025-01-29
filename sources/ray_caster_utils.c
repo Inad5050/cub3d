@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 16:42:54 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/22 19:31:29 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/29 15:55:32 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,16 @@ float	normalizeAngle(float angle) //hace que el angulo sea positivo y menor a 36
 		angle = angle + 2 * PI; //si el angulo es negativo obtenemos el equivalente positivo sumandole 2PI que equivale a 360 grados
 	return (angle);
 }
+
+/* float	normalize_angle(float angle)
+{
+	angle = remainder(angle, 2 * PI);
+	if (angle < 0)
+	{
+		angle = 2 * PI + angle;
+	}
+	return (angle);
+} */
 
 int	mapHasWallAt(t_cub *c, float x, float y) //detecta si la coordenada es suelo u otro elemento
 {
