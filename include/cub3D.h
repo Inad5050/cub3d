@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/30 16:20:53 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/30 19:01:58 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,8 @@
 //sizes
 # define WIN_WIDHT 2000
 # define WIN_HEIGHT 1000
-/* # define CELL_WIDHT 64
-# define CELL_HEIGHT 64 */
-# define CELL_WIDHT 128
-# define CELL_HEIGHT 128
-# define PLAYER_WIDHT 10
-# define PLAYER_HEIGHT 10
+# define CELL_SIZE 128
+# define PLAYER_SIZE 10
 # define PI 3.14159265
 # define ANGLE_ROTATION_SIZE 5
 
@@ -54,10 +50,10 @@
 # define FlOOR_COLOR WHITE
  
 //routes
-# define ROUTE_NORTH "./textures/png/space/blue.png"
-# define ROUTE_SHOUT "./textures/png/space/green.png"
-# define ROUTE_WEST "./textures/png/space/pink.png"
-# define ROUTE_EAST "./textures/png/space/red.png"
+# define ROUTE_NORTH "./textures/NO.png"
+# define ROUTE_SHOUT "./textures/SO.png"
+# define ROUTE_WEST "./textures/WE.png"
+# define ROUTE_EAST "./textures/EA.png"
 
 //map_parts
 # define FLOOR 'f'
@@ -75,7 +71,6 @@
 # define TRUE 1
 
 //ray_caster
-/* # define TILE_SIZE CELL_WIDHT */
 # define TILE_SIZE WIN_WIDHT
 # define WINDOW_WIDTH WIN_WIDHT
 # define WINDOW_HEIGHT WIN_HEIGHT
@@ -87,26 +82,6 @@
 
 //others
 # define FRAMES 30
-
-
-//float ocupa 4 bytes y tiene una capacidad de entre 6/7 decimales. double ocupa 8 y tiene una capacidad de hasta 15/16. Para este proyecto con float vale.
-typedef struct s_image
-{
-	void	*img_ptr; 
-	void	*addr; //puntero a la dirección de memoria inicial donde están almacenados los datos de los píxeles de la imagen.
-	int		bpp; //(bits_per_pixel) el número de bits utilizados para representar cada píxel de la imagen.
-	int		line_len; //el tamaño (en bytes) de cada fila de la imagen.
-	int		endian; //el orden de los bytes (endianness) usado para representar los colores.
-	char	*buffer;
-	
-/* 	int		height; //para que lo usa Izaro? Le otorgan el valor del tamaño de la ventana
-	int		width; */
-
-	int		img_height; //tamaño de la imagen, se correspondera con CELL_WIDHT y CELL_HEIGHT
-	int		img_width;
-} t_img;
-
-//PARSE
 
 typedef struct s_render_params
 {
@@ -247,8 +222,8 @@ void		free_memory(t_cub *c);
 
 //init_game
 int			init_game(t_cub *c);
-int			init_t_struct(t_cub *c, t_texture **strc);
-int			init_texture(t_cub *c, t_texture *texture, char *route);
+int			init_texture_struct(t_cub *c, t_texture **strc, char *route);
+int			init_texture_struct_aux(t_cub *c, t_texture *texture, mlx_texture_t	*png);
 uint32_t	get_color(uint8_t *ptr); 
 
 //init_map
@@ -264,11 +239,11 @@ void		init_player_inmap(int y, int x, t_cub *c);
 //init_textures
 int			load_sprite(t_texture *text, int x, int y);
 
-//player_loop
-int			player_loop(void *param);
-int			move_player(t_cub *c);
-int			is_in_wall(t_cub *c, float x, float y);
-int			rotate_player(int right_dir, t_cub *c);
+//handle_player_input
+int			handle_player_input(void *param);
+int			update_player_position(t_cub *c);
+int			check_wall_collision(t_cub *c, float x, float y);
+int			rotate_player(t_cub *c);
 
 //main
 void		game_loop(void *param);
@@ -296,11 +271,5 @@ int			init_data_render(t_cub *c, t_ray *r);
 void		render(t_cub *c, t_ray *r);
 void		render_strip(t_cub *c, int x);
 void		get_strip(t_cub *c, t_ray *r, t_texture *text, int x);
-
-//map_2d_render
-void		render_2Dmap(t_cub *c);
-void		map_select_element(int y, int x, t_cub *c);
-void		map_print(int y, int x, t_img *c_img, t_cub *c);
-void		player_print(double y, double x, t_img *c_img, t_cub *c);
 
 #endif
