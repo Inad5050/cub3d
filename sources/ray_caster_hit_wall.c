@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:19:39 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/27 19:04:17 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/30 16:21:23 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ void	find_horizontal_hit(t_cub *c, t_ray *r, float rayAngle)
 	r->horizontalWallHitY = 0;
 	r->horizontalWallContent = 0;
 	r->yintercept = floor(c->p_y / TILE_SIZE) * TILE_SIZE; //TILE_SIZE se inicializa como 2000 el mismo valor del WIN_WIDTH. player.y son las coordenadas del jugador
+
 	//r->yintercept += r->isRayFacingDown ? TILE_SIZE : 0; 
 	//? : es el operador ternario "condición ? valor_si_es_verdadero : valor_si_es_falso;"
-	//el equivalente seria:
+	//el equivalente seria:	
 	if (r->isRayFacingDown)
 		r->yintercept += TILE_SIZE;
 	//cuando calculamos la coordenada Y de la siguiente interseccion horizontal sabemos exactamente cual va a ser el valor de y. va a ser la y de la siguiente celda a la actual ubicacion del jugador. al ser la intersección HORIZONTAL es por fuerza mayor la siguiente. En funcion de la direccion del rayo redondeamos hacia abajo (hasta un numero entero) el valor de la posicion del jugador o redondeamos hacia abajo el valor de la posicion y le sumamos el valor de una casilla del mapa
@@ -47,6 +48,9 @@ void	find_horizontal_hit(t_cub *c, t_ray *r, float rayAngle)
 		r->xstep *= -1;
 	if (r->isRayFacingRight && r->xstep < 0)
 		r->xstep *= -1;
+	
+	/* printf("r->yintercept = %f r->xintercept = %f r->ystep = %f r->xstep = %f\n", r->yintercept, r->xintercept, r->ystep, r->xstep); */
+	
 	find_horizontal_hit_loop(c, r);
 }
 

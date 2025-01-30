@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/29 16:24:12 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/30 16:20:53 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@
 //sizes
 # define WIN_WIDHT 2000
 # define WIN_HEIGHT 1000
-# define CELL_WIDHT 64
-# define CELL_HEIGHT 64
-# define PLAYER_WIDHT 1
-# define PLAYER_HEIGHT 1
-# define STEP_SIZE 4
+/* # define CELL_WIDHT 64
+# define CELL_HEIGHT 64 */
+# define CELL_WIDHT 128
+# define CELL_HEIGHT 128
+# define PLAYER_WIDHT 10
+# define PLAYER_HEIGHT 10
 # define PI 3.14159265
 # define ANGLE_ROTATION_SIZE 5
 
@@ -74,7 +75,8 @@
 # define TRUE 1
 
 //ray_caster
-# define TILE_SIZE CELL_WIDHT
+/* # define TILE_SIZE CELL_WIDHT */
+# define TILE_SIZE WIN_WIDHT
 # define WINDOW_WIDTH WIN_WIDHT
 # define WINDOW_HEIGHT WIN_HEIGHT
 # define NUM_RAYS WINDOW_WIDTH
@@ -202,18 +204,9 @@ typedef struct s_cub
 	mlx_image_t	*win_mlx3D;
 	char		**map; //matriz con los caracteres del mapa
 	int			player_direction;
-	float		player_fov; //init_game. valor estatico. Lo usamos durante el casteo para determinar el angulo de los rayos
 	int			map_axis_y; //cantidad de caracteres del mapa en el eje vertical
 	int			map_axis_x; //cantidad de caracteres del mapa en el eje horizontal
 	
-/* 	t_img	*ceiling; //son necesarias??
-	t_img	*floor; //son necesarias??
-	t_img	*wall_n;
-	t_img	*wall_s;
-	t_img	*wall_w;
-	t_img	*wall_e;
-	t_img	*player_img;  */
-
 	unsigned int	ceiling;
 	unsigned int	floor;
 	t_texture		*wall_n;
@@ -221,14 +214,22 @@ typedef struct s_cub
 	t_texture		*wall_w;
 	t_texture		*wall_e;
 	
+	float		p_fov; //init_game. valor estatico. Lo usamos durante el casteo para determinar el angulo de los rayos
+	float		p_turnspeed; //velocidad a la que rota el jugador cada vez que pulsamos MLX_KEY_LEFT y MLX_KEY_RIGHT
+	float		p_walkspeed; //velocidad de movimiento del jugador
+	
+	float		p_rotationangle; //angulo del jugador
 	float		p_y; //coordenadas del jugador sobre el eje vertical
 	float		p_x; //coordenadas del jugador sobre el eje horizontal
-	float		p_rotationangle; //angulo del jugador, lo usamos durante el casteo para determinar el angulo de los rayos
+	
+	int			p_turndirection;
+	int			p_walkdirection;
+	int			p_strafedirection;
+
 	t_ray		*rays; //estructuras correpondientes a cada rayo
 
 	unsigned int	strip[WINDOW_HEIGHT];
 	unsigned int	timelastframe;
-	
 } t_cub;
 
 //3D_init
@@ -246,7 +247,7 @@ void		free_memory(t_cub *c);
 
 //init_game
 int			init_game(t_cub *c);
-int			init_t_texture(t_cub *c, t_texture **strc);
+int			init_t_struct(t_cub *c, t_texture **strc);
 int			init_texture(t_cub *c, t_texture *texture, char *route);
 uint32_t	get_color(uint8_t *ptr); 
 
@@ -256,19 +257,21 @@ char		*sl_strjoin(char *s1, const char *s2);
 void		get_map_axix_x(t_cub *c);
 
 //init_player
-void		*locate_player(t_cub *c);
-void		init_player(int y, int x, t_cub *c);
+void		init_player(t_cub *c);
+int			locate_player(t_cub *c);
+void		init_player_inmap(int y, int x, t_cub *c);
 
 //init_textures
 int			load_sprite(t_texture *text, int x, int y);
 
-//key_hooks
-void		key_hook(void *param);
-int			is_in_wall(int y, int x, t_cub *c);
-void		rotate_player(int right_dir, t_cub *c);
+//player_loop
+int			player_loop(void *param);
+int			move_player(t_cub *c);
+int			is_in_wall(t_cub *c, float x, float y);
+int			rotate_player(int right_dir, t_cub *c);
 
 //main
-void		render_maps(void *param);
+void		game_loop(void *param);
 
 //ray_caster_hit_wall
 void		find_horizontal_hit(t_cub *c, t_ray *r, float rayAngle);
@@ -277,7 +280,7 @@ void		find_vertical_hit(t_cub *c, t_ray *r, float rayAngle);
 void		find_vertical_hit_loop(t_cub *c, t_ray *r);
 
 //ray_caster_utils
-float		normalizeAngle(float angle);
+float		normalize_angle(float angle);
 int			mapHasWallAt(t_cub *c, float x, float y);
 float		distanceBetweenPoints(float x1, float y1, float x2, float y2);
 

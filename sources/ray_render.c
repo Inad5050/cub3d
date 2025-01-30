@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 13:21:58 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/29 14:00:58 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:24:10 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	init_data_render(t_cub *c, t_ray *r) //inicializamos las variables que vamos
 	if (r->distance == 0) //la distancia no puede ser 0, la ponemos a un minimo
 		r->distance = 0.1;
 	r->perp_distance = r->distance * cos(r->rayangle - c->p_rotationangle); //ajustamos la distancia desde la perspectiva del rayo a la del jugador (?)
-	r->distance_proj_plane = (WINDOW_WIDTH / 2) / tan(c->player_fov / 2); //calculamos la distancia de la linea sobre la que vamos a proyectar los rayos
+	r->distance_proj_plane = (WINDOW_WIDTH / 2) / tan(c->p_fov / 2); //calculamos la distancia de la linea sobre la que vamos a proyectar los rayos
 	r->wall_strip_height = (TILE_SIZE / r->perp_distance) * r->distance_proj_plane; //(?)
 	r->wall_top_pixel = (WINDOW_HEIGHT / 2)	- (r->wall_strip_height / 2);
 	r->wall_bottom_pixel = (WINDOW_HEIGHT / 2) + (r->wall_strip_height / 2);
@@ -136,7 +136,7 @@ void	ray_render(t_cub *c)
 	double top_pixel;
 
 	r->distance_medium *= cos(nor_angle(r->rayangle - c->p_rotationangle)); // fix the fisheye
-	wall_height = (TILE_SIZE / r->distance_medium r->distance) * ((WIN_WIDHT / 2) / tan(c->player_fov / 2)); // get the wall height
+	wall_height = (TILE_SIZE / r->distance_medium r->distance) * ((WIN_WIDHT / 2) / tan(c->p_fov / 2)); // get the wall height
 	bottom_pixel = (WIN_HEIGHT / 2) + (wall_height / 2); // get the bottom pixel. la pared estara centrada en la linea horizontal que forma el ecuador del eje Y. Esa linea esta en x = WINHEIGHT / 2. la pared tendra la misma altura por encima y por debajo
 	top_pixel = (WIN_HEIGHT / 2) - (wall_height / 2); // get the top pixel
 	if (bottom_pixel > WIN_HEIGHT) // check the bottom pixel. recuerda que el eje y crece hacia abajo

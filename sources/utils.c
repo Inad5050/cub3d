@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray_caster_utils.c                                 :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 16:42:54 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/29 15:55:32 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/30 15:46:43 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-float	normalizeAngle(float angle) //hace que el angulo sea positivo y menor a 360 grados
+float	normalize_angle(float angle) //hace que el angulo sea positivo y menor a 360 grados
 {
 	angle = remainder(angle, 2 * PI); //hace el equivalente a angle % 2PI, pero con decimales (float)
 	if (angle < 0)
@@ -20,15 +20,19 @@ float	normalizeAngle(float angle) //hace que el angulo sea positivo y menor a 36
 	return (angle);
 }
 
-/* float	normalize_angle(float angle)
+uint32_t	get_color(uint8_t *ptr) //load_png almacena el valor del color de los pixeles en estructuras de 4 integers de 8 bytes. Queremos combinar esos numeros en uno solo de 32 bytes.
 {
-	angle = remainder(angle, 2 * PI);
-	if (angle < 0)
-	{
-		angle = 2 * PI + angle;
-	}
-	return (angle);
-} */
+	uint32_t	b; //blue
+	uint32_t	g; //green
+	uint32_t	r; //red
+	uint32_t	a; //alpha. opacidad (?)
+
+	r = (uint32_t)*(ptr);
+	g = (uint32_t)*(ptr + 1);
+	b = (uint32_t)*(ptr + 2);
+	a = (uint32_t)*(ptr + 3);
+	return ((r << 24) + (g << 16) + (b << 8) + a);
+}
 
 int	mapHasWallAt(t_cub *c, float x, float y) //detecta si la coordenada es suelo u otro elemento
 {
