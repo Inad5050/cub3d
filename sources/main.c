@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:27:23 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/30 17:49:56 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/31 16:13:51 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	game_loop(void *param)
 	timenow = mlx_get_time() * 1000; //el tiempo actual en segundos
 	if (timenow - c->timelastframe > 1000 / FRAMES)
 	{
-		handle_player_input(c); //actualiza el angulo y la posicion del jugador
+		process_player_input(c); //actualiza el angulo y la posicion del jugador
 		ray_caster(c); //lanza rayos
 		/* ft_memset(c->win_mlx3D->pixels, 0, c->win_mlx3D->width * c->win_mlx3D->height * sizeof(unsigned int)); //resetea la ventana */
 		ray_render(c); //renderiza el mapa 3D

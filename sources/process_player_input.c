@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_player_input.c                                  :+:      :+:    :+:   */
+/*   process_player_input.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "../include/cub3D.h"
 
-int	handle_player_input(void *param)
+int	process_player_input(void *param)
 {	
 	t_cub	*c;
 	

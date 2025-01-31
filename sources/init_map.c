@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:03:26 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/31 14:55:43 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/31 15:39:42 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,3 @@ void	get_map_axix_x(t_cub *c)
 		i++;
 	}	
 }
-
-/* void	get_map_data(t_cub *c)
-{
-	int	i;
-
-	i = -1;
-	c->map_width = 0;
-	while (c->map[++i])
-		if (c->map_width < ft_strlen(c->map[i]) * TILE_SIZE)
-			c->map_width = ft_strlen(c->map[i]) * TILE_SIZE;
-	c->map_heigth = split_len(c->map) * TILE_SIZE;
-} */

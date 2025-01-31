@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:52:48 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/31 14:03:29 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/31 16:18:35 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	cast_ray(t_cub *c, t_ray *r, int ray_index, float rayAngle)
 	init_ray_struct(r, ray_index, rayAngle);
 	find_horizontal_hit(c, r, rayAngle);
 	find_vertical_hit(c, r, rayAngle);	
-	choose_ray_hit(c, r);
+	select_ray_hit(c, r);
 }
 
 //FCD
@@ -64,14 +64,14 @@ void	init_ray_struct(t_ray *r, int ray_index, float rayAngle) //pone a cero todo
 	
 }
 
-void	choose_ray_hit(t_cub *c, t_ray *r) //en que eje ha golpeado antes el rayo en el horizontal o en el vertical. Una vez hayamos elegido almacenamos los valores de uno o de otro
+void	select_ray_hit(t_cub *c, t_ray *r) //en que eje ha golpeado antes el rayo en el horizontal o en el vertical. Una vez hayamos elegido almacenamos los valores de uno o de otro
 {
 	if (r->foundHorizontalWallHit)
-		r->horizontalHitDistance = distanceBetweenPoints(c->p_x, c->p_y, r->horizontalWallHitX, r->horizontalWallHitY);
+		r->horizontalHitDistance = distance_between_points(c->p_x, c->p_y, r->horizontalWallHitX, r->horizontalWallHitY);
 	else  
 		r->horizontalHitDistance = INT_MAX;
 	if (r->foundVerticalWallHit)
-		r->verticalHitDistance = distanceBetweenPoints(c->p_x, c->p_y, r->verticalWallHitX, r->verticalWallHitY);
+		r->verticalHitDistance = distance_between_points(c->p_x, c->p_y, r->verticalWallHitX, r->verticalWallHitY);
 	else  
 		r->verticalHitDistance = INT_MAX;
 	

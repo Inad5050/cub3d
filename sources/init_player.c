@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:55:16 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/30 15:47:22 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/31 16:12:56 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	locate_player(t_cub *c) //localiza la posición inicial del jugador y coloca
 		{
 			if (c->map[y][x] == 'N' || c->map[y][x] == 'S' || \
 			c->map[y][x] == 'W' || c->map[y][x] == 'E')
-				return (init_player_inmap(y, x, c), c->map[y][x] = '0', 0);
+				return (set_player_position(y, x, c), c->map[y][x] = '0', 0);
 			x++;
 		}
 		y++;
@@ -41,7 +41,7 @@ int	locate_player(t_cub *c) //localiza la posición inicial del jugador y coloca
 	return (0);
 }
 
-void	init_player_inmap(int y, int x, t_cub *c) //inicializa la dirección del jugador y su perpendicular, los valores no mencionados permanecen en cero
+void	set_player_position(int y, int x, t_cub *c) //inicializa la dirección del jugador y su perpendicular, los valores no mencionados permanecen en cero
 {
 	c->p_y = y * TILE_SIZE + TILE_SIZE / 2; //posición inicial
 	c->p_x = x * TILE_SIZE + TILE_SIZE / 2;

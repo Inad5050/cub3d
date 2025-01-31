@@ -6,13 +6,58 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 13:21:58 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/30 12:24:10 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/31 16:17:48 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-void	render_strip(t_cub *c, int x)
+void	ray_render(t_cub *c)
+{
+	int	index_ray;
+
+	index_ray = 0;
+	while (index_ray < NUM_RAYS) //por cada rayo renderizalo
+	{
+		/* printf("c->rays[%d].distance = %f\n", index_ray, c->rays[index_ray].distance); */
+		init_data_render(c, &c->rays[index_ray]);
+		render(c, &c->rays[index_ray]); //una vez conseguidas las dimensiones del rayo lo imprimimos en pantalla
+		draw_wall_strip(c, index_ray);
+		index_ray++;
+	}
+}
+
+int	init_data_render(t_cub *c, t_ray *r) //inicializamos las variables que vamos a usar durante el renderizado
+{
+	if (r->distance == 0) //la distancia no puede ser 0, la ponemos a un minimo
+		r->distance = 0.1;
+	r->perp_distance = r->distance * cos(r->rayangle - c->p_rotationangle); //ajustamos la distancia desde la perspectiva del rayo a la del jugador (?)
+	r->distance_proj_plane = (WINDOW_WIDTH / 2) / tan(c->p_fov / 2); //calculamos la distancia de la linea sobre la que vamos a proyectar los rayos
+	r->wall_strip_height = (TILE_SIZE / r->perp_distance) * r->distance_proj_plane; //(?)
+	r->wall_top_pixel = (WINDOW_HEIGHT / 2)	- (r->wall_strip_height / 2);
+	r->wall_bottom_pixel = (WINDOW_HEIGHT / 2) + (r->wall_strip_height / 2);
+	return (0);
+}
+
+void	render(t_cub *c, t_ray *r) //identificamos la direccion cardinal del muro
+{
+	if (!r->wasHitVertical)
+	{
+		if (r->rayangle < PI && r->rayangle > 0)
+			calculate_wall_strip(c, r, c->wall_s, TILE_SIZE - 1 - ((int)(r->wallHitX + r->wallHitY) % TILE_SIZE)); //pasamos el tipo de muro y X, es la posicion del rayp (?)
+		else
+			calculate_wall_strip(c, r, c->wall_n, (int)(r->wallHitX + r->wallHitY) % TILE_SIZE);
+	}
+	else
+	{
+		if (r->rayangle > PI * 1 / 2 && r->rayangle < PI * 3 / 2)
+			calculate_wall_strip(c, r, c->wall_w, TILE_SIZE - 1 - ((int)(r->wallHitX + r->wallHitY) % TILE_SIZE));
+		else
+			calculate_wall_strip(c, r, c->wall_e, (int)(r->wallHitX + r->wallHitY) % TILE_SIZE);
+	}
+}
+
+void	draw_wall_strip(t_cub *c, int x)
 {
 	int	y;
 
@@ -21,7 +66,7 @@ void	render_strip(t_cub *c, int x)
 		mlx_put_pixel(c->win_mlx3D, x, y, c->strip[y]);
 }
 
-void	get_strip(t_cub *c, t_ray *r, t_texture *text, int x) //rellenamos strip(), es un buffer del contenido del rayo. //estoy usando t_img en lugar de t_texture
+void	calculate_wall_strip(t_cub *c, t_ray *r, t_texture *text, int x) //rellenamos strip(), es un buffer del contenido del rayo. //estoy usando t_img en lugar de t_texture
 {
 	int	y;
 	int	anti_y;
@@ -46,52 +91,6 @@ void	get_strip(t_cub *c, t_ray *r, t_texture *text, int x) //rellenamos strip(),
 	while (y < WINDOW_HEIGHT)
 		c->strip[y++] = c->floor;
 }
-
-void	render(t_cub *c, t_ray *r) //identificamos la direccion cardinal del muro
-{
-	if (!r->wasHitVertical)
-	{
-		if (r->rayangle < PI && r->rayangle > 0)
-			get_strip(c, r, c->wall_s, TILE_SIZE - 1 - ((int)(r->wallHitX + r->wallHitY) % TILE_SIZE)); //pasamos el tipo de muro y X, es la posicion del rayp (?)
-		else
-			get_strip(c, r, c->wall_n, (int)(r->wallHitX + r->wallHitY) % TILE_SIZE);
-	}
-	else
-	{
-		if (r->rayangle > PI * 1 / 2 && r->rayangle < PI * 3 / 2)
-			get_strip(c, r, c->wall_w, TILE_SIZE - 1 - ((int)(r->wallHitX + r->wallHitY) % TILE_SIZE));
-		else
-			get_strip(c, r, c->wall_e, (int)(r->wallHitX + r->wallHitY) % TILE_SIZE);
-	}
-}
-
-int	init_data_render(t_cub *c, t_ray *r) //inicializamos las variables que vamos a usar durante el renderizado
-{
-	if (r->distance == 0) //la distancia no puede ser 0, la ponemos a un minimo
-		r->distance = 0.1;
-	r->perp_distance = r->distance * cos(r->rayangle - c->p_rotationangle); //ajustamos la distancia desde la perspectiva del rayo a la del jugador (?)
-	r->distance_proj_plane = (WINDOW_WIDTH / 2) / tan(c->p_fov / 2); //calculamos la distancia de la linea sobre la que vamos a proyectar los rayos
-	r->wall_strip_height = (TILE_SIZE / r->perp_distance) * r->distance_proj_plane; //(?)
-	r->wall_top_pixel = (WINDOW_HEIGHT / 2)	- (r->wall_strip_height / 2);
-	r->wall_bottom_pixel = (WINDOW_HEIGHT / 2) + (r->wall_strip_height / 2);
-	return (0);
-}
-
-void	ray_render(t_cub *c)
-{
-	int	index_ray;
-
-	index_ray = 0;
-	while (index_ray < NUM_RAYS) //por cada rayo renderizalo
-	{
-		/* printf("c->rays[%d].distance = %f\n", index_ray, c->rays[index_ray].distance); */
-		init_data_render(c, &c->rays[index_ray]);
-		render(c, &c->rays[index_ray]); //una vez conseguidas las dimensiones del rayo lo imprimimos en pantalla
-		render_strip(c, index_ray);
-		index_ray++;
-	}
-}
-
 
 
 

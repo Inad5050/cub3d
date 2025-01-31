@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 16:42:54 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/31 15:00:31 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/31 16:18:35 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ uint32_t	get_color(uint8_t *ptr) //load_png almacena el valor del color de los p
 	return ((r << 24) + (g << 16) + (b << 8) + a);
 }
 
-int	mapHasWallAt(t_cub *c, float x, float y) //detecta si la coordenada es suelo u otro elemento
+int	has_wall_at(t_cub *c, float x, float y) //detecta si la coordenada es suelo u otro elemento
 {
 	int		map_grid_index_x;
 	int		map_grid_index_y;
@@ -54,7 +54,7 @@ int	mapHasWallAt(t_cub *c, float x, float y) //detecta si la coordenada es suelo
 	return (tile != '0');
 }
 
-float	distanceBetweenPoints(float x1, float y1, float x2, float y2)
+float	distance_between_points(float x1, float y1, float x2, float y2)
 {
 	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))); //toerema de pitagoras	
 }

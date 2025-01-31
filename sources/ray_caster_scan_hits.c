@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray_caster_hit_wall.c                              :+:      :+:    :+:   */
+/*   ray_caster_scan_hits.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:19:39 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/31 15:00:13 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/31 16:18:08 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	find_horizontal_hit_loop(t_cub *c, t_ray *r)
 		r->yToCheck = r->nextHorzTouchY; //lo ajustamos para estar en el proximo cuadrado y no en el borde de la interseccion
 		if (r->isRayFacingUp)
 			r->yToCheck -= 1;
-		if (mapHasWallAt(c, r->xToCheck, r->yToCheck)) //ME FALTA LA FUNCION
+		if (has_wall_at(c, r->xToCheck, r->yToCheck)) //ME FALTA LA FUNCION
 		{
 			//encontramos muro
 			r->horizontalWallHitX = r->nextHorzTouchX; 
@@ -124,7 +124,7 @@ void	find_vertical_hit_loop(t_cub *c, t_ray *r)
 		if (r->isRayFacingLeft)
 			r->xToCheck -= 1;
 		r->yToCheck = r->nextVerticalTouchY;
-		if (mapHasWallAt(c, r->xToCheck, r->yToCheck)) 
+		if (has_wall_at(c, r->xToCheck, r->yToCheck)) 
 		{
 			r->verticalWallHitX = r->nextVerticalTouchX; 
 			r->verticalWallHitY = r->nextVerticalTouchY;

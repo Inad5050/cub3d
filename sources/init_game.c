@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 17:35:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/30 19:00:43 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/31 16:12:29 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ int	init_game(t_cub *c)
 	c->win_mlx3D = mlx_new_image(c->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	if (!c->win_mlx3D)
 		return (c_error("Couldn't mlx_new_image in init_game", c), EXIT_FAILURE);
-	init_texture_struct(c, &c->wall_n, ROUTE_NORTH);
-	init_texture_struct(c, &c->wall_s, ROUTE_SHOUT);
-	init_texture_struct(c, &c->wall_w, ROUTE_WEST);
-	init_texture_struct(c, &c->wall_e, ROUTE_EAST);
+	load_texture(c, &c->wall_n, ROUTE_NORTH);
+	load_texture(c, &c->wall_s, ROUTE_SHOUT);
+	load_texture(c, &c->wall_w, ROUTE_WEST);
+	load_texture(c, &c->wall_e, ROUTE_EAST);
 	c->ceiling = CEILING_COLOR;
 	c->floor = FlOOR_COLOR;
 	c->rays = ft_calloc(WIN_WIDHT, sizeof(t_ray));
@@ -38,20 +38,20 @@ int	init_game(t_cub *c)
 	return (EXIT_SUCCESS);
 }
 
-int	init_texture_struct(t_cub *c, t_texture **strc, char *route)
+int	load_texture(t_cub *c, t_texture **strc, char *route)
 {
 	mlx_texture_t	*png;
 	
 	*strc = ft_calloc(1, sizeof(t_texture)); //alojamos memoria en la localizacion del puntero
 	if (!*strc)
-		return (c_error("Couldn't alloc in init_texture_struct", c), EXIT_FAILURE);
+		return (c_error("Couldn't alloc in load_texture", c), EXIT_FAILURE);
 	png = mlx_load_png(route); //cargamos mlx_texture_t con la informacion del png
 	if (!png)
-		return (c_error("Couldn't alloc in init_texture_struct", c), EXIT_FAILURE);
+		return (c_error("Couldn't alloc in load_texture", c), EXIT_FAILURE);
 
 	/* printf("(*strc)->height = %d, (*strc)->width = %d\n", (*strc)->height, (*strc)->width); */
 	
-	init_texture_struct_aux(c, *strc, png);
+	load_texture_aux(c, *strc, png);
 
 	/* 	printf("(*strc)->height = %d, (*strc)->width = %d, (*strc)->pixels[0][0] = %u\n", (*strc)->height, (*strc)->width, (*strc)->pixels[0][0]);
 		printf("png->height = %d, png->width = %d, png->pixels[0] = %u\n", png->height, png->width, png->pixels[0]); */
@@ -60,7 +60,7 @@ int	init_texture_struct(t_cub *c, t_texture **strc, char *route)
 	return (EXIT_SUCCESS);
 }
 
-int	init_texture_struct_aux(t_cub *c, t_texture *texture, mlx_texture_t	*png) //load_png carga la informacion de la imagen en la estructura mlx_texture_t (nativa de la MLX). Pasamos los datos a t_texture que es una estructura propia
+int	load_texture_aux(t_cub *c, t_texture *texture, mlx_texture_t	*png) //load_png carga la informacion de la imagen en la estructura mlx_texture_t (nativa de la MLX). Pasamos los datos a t_texture que es una estructura propia
 {
 	int				y;
 	int				x;
