@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:19:39 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/30 19:15:48 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/31 15:00:13 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,23 @@ void	find_horizontal_hit(t_cub *c, t_ray *r, float rayAngle) //FCD
 	if (r->isRayFacingRight && r->xstep < 0)
 		r->xstep *= -1;
 	
-	/* printf("r->yintercept = %f r->xintercept = %f r->ystep = %f r->xstep = %f\n", r->yintercept, r->xintercept, r->ystep, r->xstep); */
+/* 	printf("PRELOOP horizontal r->xintercept = %f r->yintercept = %f r->xstep = %f r->ystep = %f\n", r->xintercept, r->yintercept, r->xstep, r->ystep); */
 	
 	find_horizontal_hit_loop(c, r);
+
 }
 
-void	find_horizontal_hit_loop(t_cub *c, t_ray *r) //FCD
+void	find_horizontal_hit_loop(t_cub *c, t_ray *r)
 {
 	//vamos a aumentar la longitud del rayo progresivamente. Cada vez cruzara TILE_SIZE distancia en el eje Y. Asi obtendremos todos los puntos de corte horizontales. En cada punto de corte comprobaremos si la siguiente celda tiene una pared.
 	//Debemos empezar por el principio en el eje Y de una celda. Por lo que nuestro punto de partida es el primer punto de corte que ya hemos calculado: xintercept e yintercept
 	r->nextHorzTouchX = r->xintercept;
 	r->nextHorzTouchY = r->yintercept;
 
-	while(r->nextHorzTouchX >= 0 && r->nextHorzTouchX <= WIN_WIDHT \
-	&& r->nextHorzTouchY >= 0 && r->nextHorzTouchY <= WIN_HEIGHT)
+	/* printf("r->nextHorzTouchX = %f c->map_axis_x = %d r->nextHorzTouchY = %f c->map_axis_y = %d\n", r->nextHorzTouchX, c->map_axis_x, r->nextHorzTouchY, c->map_axis_y); */
+
+	while(r->nextHorzTouchX >= 0 && r->nextHorzTouchX <= c->map_axis_x \
+	&& r->nextHorzTouchY >= 0 && r->nextHorzTouchY <= c->map_axis_y)
 	{
 		r->xToCheck = r->nextHorzTouchX;
 		r->yToCheck = r->nextHorzTouchY; //lo ajustamos para estar en el proximo cuadrado y no en el borde de la interseccion
@@ -78,6 +81,9 @@ void	find_horizontal_hit_loop(t_cub *c, t_ray *r) //FCD
 			r->nextHorzTouchY += r->ystep;
 		}
 	}
+
+	/* printf("r->horizontalWallHitX = %f r->horizontalWallHitY = %f r->foundHorizontalWallHit = %d\n", r->horizontalWallHitX, r->horizontalWallHitY, r->foundHorizontalWallHit); */
+	
 }
 
 void	find_vertical_hit(t_cub *c, t_ray *r, float rayAngle) //FCD
@@ -99,17 +105,19 @@ void	find_vertical_hit(t_cub *c, t_ray *r, float rayAngle) //FCD
 	else if (r->isRayFacingDown && r->ystep < 0)
 		r->ystep *= -1;
 	
-	/* printf("r->yintercept = %f r->xintercept = %f r->ystep = %f r->xstep = %f\n", r->yintercept, r->xintercept, r->ystep, r->xstep); */
+	/* printf("PRELOOP r->xintercept = %f r->yintercept = %f r->xstep = %f r->ystep = %f\n", r->xintercept, r->yintercept, r->xstep, r->ystep); */
 	
 	find_vertical_hit_loop(c, r);
+
+	/* printf("r->verticalWallHitX = %f r->verticalWallHitY = %f r->foundVerticalWallHit = %d\n", r->verticalWallHitX, r->verticalWallHitY, r->foundVerticalWallHit); */
 }
 
-void	find_vertical_hit_loop(t_cub *c, t_ray *r) //FCD
+void	find_vertical_hit_loop(t_cub *c, t_ray *r)
 {
 	r->nextVerticalTouchX = r->xintercept;
 	r->nextVerticalTouchY = r->yintercept;
-	while(r->nextVerticalTouchX >= 0 && r->nextVerticalTouchX <= WIN_WIDHT \
-	&& r->nextVerticalTouchY >= 0 && r->nextVerticalTouchY <= WIN_HEIGHT)
+	while(r->nextVerticalTouchX >= 0 && r->nextVerticalTouchX <= c->map_axis_x \
+	&& r->nextVerticalTouchY >= 0 && r->nextVerticalTouchY <= c->map_axis_y)
 	{
 		r->xToCheck = r->nextVerticalTouchX;
 		r->yToCheck = r->nextVerticalTouchY;
@@ -130,5 +138,3 @@ void	find_vertical_hit_loop(t_cub *c, t_ray *r) //FCD
 		}
 	}
 }
-
-// r->verticalWallContent = c->map[(int)floor(r->yToCheck / TILE_SIZE)][(int)floor(r->xToCheck / TILE_SIZE)];	

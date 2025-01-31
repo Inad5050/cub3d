@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:03:26 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/24 16:30:42 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/31 14:55:43 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	init_map(char **argv, t_cub *c) //lee el mapa
 	c->map = ft_split(map_temp, '\n');
 	free(map_temp);
 	c->map_axis_y--; //necesario?
+	c->map_axis_y *= TILE_SIZE;
 	get_map_axix_x(c);
 }
 
@@ -74,10 +75,22 @@ void	get_map_axix_x(t_cub *c)
 	int	i;
 
 	i = 0;
-	while (i < c->map_axis_y)
+	while (i < c->map_axis_y / TILE_SIZE)
 	{
-		if ((int)ft_strlen((const char *)c->map[i]) > (c->map_axis_x))
-			(c->map_axis_x) = (int)ft_strlen((const char *)c->map[i]);
+		if ((int)ft_strlen((const char *)c->map[i]) * TILE_SIZE > (c->map_axis_x))
+			(c->map_axis_x) = (int)ft_strlen((const char *)c->map[i]) * TILE_SIZE;
 		i++;
 	}	
 }
+
+/* void	get_map_data(t_cub *c)
+{
+	int	i;
+
+	i = -1;
+	c->map_width = 0;
+	while (c->map[++i])
+		if (c->map_width < ft_strlen(c->map[i]) * TILE_SIZE)
+			c->map_width = ft_strlen(c->map[i]) * TILE_SIZE;
+	c->map_heigth = split_len(c->map) * TILE_SIZE;
+} */

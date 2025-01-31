@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:52:48 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/30 13:38:54 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/31 14:03:29 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,10 @@ void	choose_ray_hit(t_cub *c, t_ray *r) //en que eje ha golpeado antes el rayo e
 	else  
 		r->verticalHitDistance = INT_MAX;
 	
-	/* printf("r->verticalHitDistance = %f, r->horizontalHitDistance = %f\n", r->verticalHitDistance, r->horizontalHitDistance); */
-	
+/* 	printf("r->foundHorizontalWallHit = %d c->p_x = %f c->p_y = %f r->horizontalWallHitX = %f r->horizontalWallHitY = %f\n", r->foundHorizontalWallHit, c->p_x, c->p_y, r->horizontalWallHitX, r->horizontalWallHitY);
+	printf("r->foundVerticalWallHit = %d c->p_x = %f c->p_y = %f r->verticalWallHitX = %f r->verticalWallHitY = %f\n", r->foundVerticalWallHit, c->p_x, c->p_y, r->verticalWallHitX, r->verticalWallHitY);
+	printf("r->horizontalHitDistance = %f, r->verticalHitDistance = %f\n\n", r->horizontalHitDistance, r->verticalHitDistance);
+ */	
 	if (r->verticalHitDistance < r->horizontalHitDistance)
 	{
 		/* printf("VERTICAL\n"); */

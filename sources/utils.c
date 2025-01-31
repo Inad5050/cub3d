@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 16:42:54 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/30 15:46:43 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/01/31 15:00:31 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,13 @@ int	mapHasWallAt(t_cub *c, float x, float y) //detecta si la coordenada es suelo
 	map_grid_index_y = ((int)y / TILE_SIZE);
 	if (map_grid_index_y < 0 || map_grid_index_y >= c->map_axis_y) //si empieza a dar seg_fault mira aqui
 		return (0);
-	if (map_grid_index_x < 0 || map_grid_index_x >= c->map_axis_x)
+	if (map_grid_index_x < 0 || 
+	map_grid_index_x >= (int)ft_strlen(c->map[map_grid_index_y]))
 		return (0);
 	tile = c->map[map_grid_index_y][map_grid_index_x];
+	
+	/* printf("x = %f y = %f map_grid_index_x = %d map_grid_index_y = %d (int)ft_strlen(game->map[map_grid_index_y] = %d tile = %c\n", x, y, map_grid_index_x, map_grid_index_y, (int)ft_strlen(c->map[map_grid_index_y]), tile); */
+	
 	return (tile != '0');
 }
 

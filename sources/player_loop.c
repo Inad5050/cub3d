@@ -27,9 +27,9 @@ int	handle_player_input(void *param)
 	else if (mlx_is_key_down(c->mlx, MLX_KEY_S))
 		return(c->p_walkdirection = -1, update_player_position(c));
 	else if (mlx_is_key_down(c->mlx, MLX_KEY_A))
-		return(c->p_strafedirection = 1, update_player_position(c));
-	else if (mlx_is_key_down(c->mlx, MLX_KEY_D))
 		return(c->p_strafedirection = -1, update_player_position(c));
+	else if (mlx_is_key_down(c->mlx, MLX_KEY_D))
+		return(c->p_strafedirection = 1, update_player_position(c));
 	else if (mlx_is_key_down(c->mlx, MLX_KEY_LEFT))
 		return(c->p_turndirection = -1, rotate_player(c));
 	else if (mlx_is_key_down(c->mlx, MLX_KEY_RIGHT))
@@ -46,8 +46,8 @@ int	update_player_position(t_cub *c)
 	float	new_p_x;
 	float	new_p_y;
 
-/* 	c->p_rotationangle = normalize_angle(c->p_rotationangle + \
-	c->p_turndirection * c->p_turnspeed); */
+	c->p_rotationangle = normalize_angle(c->p_rotationangle + \
+	c->p_turndirection * c->p_turnspeed);
 	movestep = c->p_walkdirection * c->p_walkspeed;
 	strafestep = c->p_strafedirection * c->p_walkspeed;
 	new_p_x = c->p_x + cos(c->p_rotationangle) * movestep + \
