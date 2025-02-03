@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:27:23 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/03 16:56:22 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/03 18:16:06 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char **argv)
 	//PARSEO
 	check_arg_number(argc);
 	ft_bzero(&cube, sizeof(t_cube));
-	check_extension(argv[1], &cube);
+	check_extension(argv[1]);
 	if(verification_start(&cube, &player_position,argv))
 		return(1);
 
