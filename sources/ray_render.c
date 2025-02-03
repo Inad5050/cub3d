@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 13:21:58 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/03 15:02:58 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:04:13 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ int	init_data_render(t_cub *c, t_ray *r) //inicializamos las variables que vamos
 	if (r->distance == 0) //la distancia no puede ser 0, la ponemos a un minimo
 		r->distance = 0.1;
 	r->perp_distance = r->distance * cos(r->rayangle - c->p_rotationangle); //ajustamos la distancia desde la perspectiva del rayo a la del jugador (?)
-	r->distance_proj_plane = (WINDOW_WIDTH / 2) / tan(c->p_fov / 2); //calculamos la distancia de la linea sobre la que vamos a proyectar los rayos
+	r->distance_proj_plane = (WIN_WIDHT / 2) / tan(c->p_fov / 2); //calculamos la distancia de la linea sobre la que vamos a proyectar los rayos
 	r->wall_strip_height = (TILE_SIZE / r->perp_distance) * r->distance_proj_plane; //(?)
-	r->wall_top_pixel = (WINDOW_HEIGHT / 2)	- (r->wall_strip_height / 2);
-	r->wall_bottom_pixel = (WINDOW_HEIGHT / 2) + (r->wall_strip_height / 2);
+	r->wall_top_pixel = (WIN_HEIGHT / 2)	- (r->wall_strip_height / 2);
+	r->wall_bottom_pixel = (WIN_HEIGHT / 2) + (r->wall_strip_height / 2);
 	return (0);
 }
 
@@ -61,7 +61,7 @@ void	draw_wall_strip(t_cub *c, int x)
 	int	y;
 
 	y = -1;
-	while (++y < WINDOW_HEIGHT)
+	while (++y < WIN_HEIGHT)
 		mlx_put_pixel(c->win_mlx3D, x, y, c->strip[y]);
 }
 
@@ -81,12 +81,12 @@ void	calculate_wall_strip(t_cub *c, t_ray *r, t_texture *text, int x) //rellenam
 	anti_y = y;
 	if (r->wall_top_pixel < 0) //si el pixel más alto es negativo le restamos su valor a y (?)
 		anti_y += r->wall_top_pixel;
-	while (y < r->wall_bottom_pixel && y < WINDOW_HEIGHT)
+	while (y < r->wall_bottom_pixel && y < WIN_HEIGHT)
 	{
 		img_y = ((y - anti_y) * text->height) / (r->wall_bottom_pixel - r->wall_top_pixel);
 		if (img_y >= 0 && img_y < text->height && img_x >= 0 && img_x < text->width)
 			c->strip[y++] = text->pixels[img_y][img_x];
 	}
-	while (y < WINDOW_HEIGHT)
+	while (y < WIN_HEIGHT)
 		c->strip[y++] = c->floor;
 }

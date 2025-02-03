@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/03 16:54:51 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:10:17 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,30 +27,8 @@
 # define PI 3.14159265
 # define ANGLE_ROTATION_SIZE 5
 # define FRAMES 30 
-
-//ray_caster
 # define TILE_SIZE WIN_WIDHT
-# define WINDOW_WIDTH WIN_WIDHT
-# define WINDOW_HEIGHT WIN_HEIGHT
-# define NUM_RAYS WINDOW_WIDTH
-
-//colors
-# define RED 0xFF0000FF //0xRED,GREEN,BLUE,ALPHA
-# define GREEN 0x00FF00FF
-# define BLACK 0x000000FF
-# define BLUE 0x0000FFFF
-# define CRIMSON_RED 0xDC143C80
-# define STONE_GREY 0x928E8580
-
-//canvas_colors
-# define CEILING_COLOR CRIMSON_RED
-# define FlOOR_COLOR STONE_GREY
- 
-//routes
-# define ROUTE_NORTH "./textures/doom1.png"
-# define ROUTE_SHOUT "./textures/doom2.png"
-# define ROUTE_WEST "./textures/doom3.png"
-# define ROUTE_EAST "./textures/doom4.png"
+# define NUM_RAYS WIN_WIDHT
 
 //cardinal directions
 # define EAST 0
@@ -62,8 +40,6 @@
 # define FALSE 0
 # define TRUE 1
 
-// ---------------------- PARSER ----------------------
-
 typedef struct s_player_position
 {
 	int		x;
@@ -71,7 +47,6 @@ typedef struct s_player_position
 	int		pos_x;
 	int		pos_y;
 	char	orientation;
-
 }			t_player_position;
 
 typedef struct s_cube
@@ -90,9 +65,7 @@ typedef struct s_cube
     char        *raw_map;            // Temporary raw map
 } t_cube;
 
-// ----------------------
-
-typedef struct s_texture
+typedef struct s_texture //buffer para renderizar PNGs
 {
 	int				width;
 	int				height;
@@ -104,18 +77,15 @@ typedef struct s_ray
 	float			rayangle; //el angulo del rayo, su valor depende de la horientacion de la vision del jugador. Lo incrementamos con cada rayo sucesivo que lanzamos
 	int				ray_index;
 	
-	//horientacion del rayo
-	int				isRayFacingDown;
+	int				isRayFacingDown; //horientacion del rayo
 	int				isRayFacingUp;
 	int				isRayFacingLeft;
 	int				isRayFacingRight;
 
-	//las coordenadas X e Y donde vamos a tocar la pared, las usamos para calcular la interseccion horizontal y luego la vertical
-	float			xintercept;
+	float			xintercept; //las coordenadas X e Y donde vamos a tocar la pared, las usamos para calcular la interseccion horizontal y luego la vertical
 	float			yintercept;
 	
-	//es la distancia que el rayo debe recorrer en cada eje empezando por el principio de una celda y hasta el final de la siguiente. Nos interesa la diferencia de longitud entre uno y otro. Ejem: Cuando intentamos encontrar el punto de corte horizontal sabemos que el vector en el eje Y es TILE_SIZE, si es así cuanto mide el vector en el eje X hasta el punto de corte horizontal? se calcula con la tangente (en este caso: adyacente (vctor X) = opuesto (ctor Y)/tan(angulo del rayo)). Uno de ellos sera siempre TILE_SIZE (la Y calculando la interseccion horizontal, la X calculando la interseccion vertical). 
-	float			xstep;
+	float			xstep; //es la distancia que el rayo debe recorrer en cada eje empezando por el principio de una celda y hasta el final de la siguiente. Nos interesa la diferencia de longitud entre uno y otro. Ejem: Cuando intentamos encontrar el punto de corte horizontal sabemos que el vector en el eje Y es TILE_SIZE, si es así cuanto mide el vector en el eje X hasta el punto de corte horizontal? se calcula con la tangente (en este caso: adyacente (vctor X) = opuesto (ctor Y)/tan(angulo del rayo)). Uno de ellos sera siempre TILE_SIZE (la Y calculando la interseccion horizontal, la X calculando la interseccion vertical).
 	float			ystep;
 
 	//variables del WHILE
@@ -126,8 +96,7 @@ typedef struct s_ray
 	float			xToCheck; //altera nextHorzTouchX y nextHorzTouchY en funcion de la horientacion del rayo 
 	float			yToCheck;
 	
-	//cuando el rayo choca contra la pared recabamos estos datos
-	float			horizontalWallHitX;
+	float			horizontalWallHitX;	//cuando el rayo choca contra la pared recabamos estos datos
 	float			horizontalWallHitY;
 	char			horizontalWallContent;
 	int				foundHorizontalWallHit;
@@ -136,19 +105,16 @@ typedef struct s_ray
 	char			verticalWallContent;
 	int				foundVerticalWallHit;
 
-	//comprobamos que distancia es más corta	
-	float			horizontalHitDistance;
+	float			horizontalHitDistance;	//comprobamos que distancia es más corta	
 	float			verticalHitDistance;
 
-	//elegimos que datos vamos a usar los del hit horizontal o vertical y los almacenamos
-	float			distance;
+	float			distance;	//elegimos que datos vamos a usar los del hit horizontal o vertical y los almacenamos
 	float			wallHitX;
 	float			wallHitY;
 	float			wallHitContent;
 	float			wasHitVertical;
 	
-	//render
-	float			perp_distance;
+	float			perp_distance;	//render
 	float			distance_proj_plane;
 	float			wall_strip_height;
 	int				wall_top_pixel;
@@ -160,12 +126,15 @@ typedef struct s_cub
 {
 	void			*mlx; //puntero a la instancia de MLX
 	mlx_image_t		*win_mlx3D;
+
+	t_cube			*parse_struct; //puntero al parseo
+
 	char			**map; //matriz con los caracteres del mapa
 	int				player_direction;
 	int				map_max_y; //cantidad de caracteres del mapa en el eje vertical
 	int				map_max_x; //cantidad de caracteres del mapa en el eje horizontal
 	
-	unsigned int	ceiling;
+	unsigned int	ceiling; //colores && texturas
 	unsigned int	floor;
 	t_texture		*wall_n;
 	t_texture		*wall_s;
@@ -180,17 +149,18 @@ typedef struct s_cub
 	float			p_y; //coordenadas del jugador sobre el eje vertical
 	float			p_x; //coordenadas del jugador sobre el eje horizontal
 	
-	int				p_turndirection;
-	int				p_walkdirection;
+	int				p_walkdirection; //flags de movimiento del jugador
 	int				p_strafedirection;
+	int				p_turndirection; 
 
 	t_ray			*rays; //estructuras correpondientes a cada rayo
 
-	unsigned int	strip[WINDOW_HEIGHT];
-	unsigned int	timelastframe;
-
-	t_cube			*parse_struct;
+	unsigned int	strip[WIN_HEIGHT]; //buffer para proyectar las texturas
+	
+	unsigned int	timelastframe; //controla las frames/s del juego
 } t_cub;
+
+// ----------------------
 
 //p_check_map.c
 void	check_extension(char *argv1, t_cube *cube);
