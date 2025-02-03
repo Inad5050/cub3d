@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/31 16:21:22 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/03 16:54:51 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,36 @@
 # define FALSE 0
 # define TRUE 1
 
+// ---------------------- PARSER ----------------------
+
+typedef struct s_player_position
+{
+	int		x;
+	int		y;
+	int		pos_x;
+	int		pos_y;
+	char	orientation;
+
+}			t_player_position;
+
+typedef struct s_cube
+{
+    char        **map;               // The parsed map
+    int         player_x;            // Player's X position
+    int         player_y;            // Player's Y position
+    char        *north_texture;      // North texture path
+    char        *south_texture;      // South texture path
+    char        *west_texture;       // West texture path
+    char        *east_texture;       // East texture path
+    int         floor_color[3];      // Floor color (RGB)
+    int         ceiling_color[3];    // Ceiling color (RGB)
+    int         max_y_size;          // Max Y size of the map
+    int         max_x_size;          // Max X size of the map
+    char        *raw_map;            // Temporary raw map
+} t_cube;
+
+// ----------------------
+
 typedef struct s_texture
 {
 	int				width;
@@ -109,18 +139,14 @@ typedef struct s_ray
 	//comprobamos que distancia es más corta	
 	float			horizontalHitDistance;
 	float			verticalHitDistance;
-	
-	//elegimos que datos vamos a usar (los del hit horizontal o vertical) y los almacenamos
+
+	//elegimos que datos vamos a usar los del hit horizontal o vertical y los almacenamos
 	float			distance;
 	float			wallHitX;
 	float			wallHitY;
 	float			wallHitContent;
 	float			wasHitVertical;
-
-	//MEDIUM BLOG
-	float			distance_medium; //parte del codigo del blog medium para renderizar los rayos
-	int				flag; //identifica la horientacion de la pared a la que estamos casteando
-
+	
 	//render
 	float			perp_distance;
 	float			distance_proj_plane;
@@ -136,8 +162,8 @@ typedef struct s_cub
 	mlx_image_t		*win_mlx3D;
 	char			**map; //matriz con los caracteres del mapa
 	int				player_direction;
-	int				map_axis_y; //cantidad de caracteres del mapa en el eje vertical
-	int				map_axis_x; //cantidad de caracteres del mapa en el eje horizontal
+	int				map_max_y; //cantidad de caracteres del mapa en el eje vertical
+	int				map_max_x; //cantidad de caracteres del mapa en el eje horizontal
 	
 	unsigned int	ceiling;
 	unsigned int	floor;
@@ -162,7 +188,51 @@ typedef struct s_cub
 
 	unsigned int	strip[WINDOW_HEIGHT];
 	unsigned int	timelastframe;
+
+	t_cube			*parse_struct;
 } t_cub;
+
+//p_check_map.c
+void	check_extension(char *argv1, t_cube *cube);
+int		read_file(char *file, t_cube *cube);
+
+//p_freedom.c
+void	free_line(char *line, t_cube *cube);
+void	free_content(t_cube *cube);
+void	array_free(char **array);
+
+//p_map_parsing
+int		validate_map(t_cube *cube, t_player_position *player_position);
+
+//p_parser.c
+void	check_arg_number(int argc);
+int		verification_start(t_cube *cube,\
+			t_player_position *player_position, char **argv);
+int		parser(int argc, char **argv);
+void 	reach_last_character(const char *file_path);
+
+//p_parsing.c
+int		parse_line(char *line, t_cube *cube);
+char	*line_verification(char *line);
+int		parse_colors(char *line, int color[3]);
+void	parse_map(char *line, t_cube *cube);
+
+//p_util_map.c
+void	delete_tab(char ***map, int i);
+int		last_verification(t_cube *cube, t_player_position *player_position);
+int		validate_file(t_cube *cube);
+
+//p_utils.c
+int		space_verification(char c);
+int		array_len(char **array);
+void 	error_exit();
+int		is_number(const char *str);
+void	set_initial_position(t_player_position *player_position, int x, int y,
+		char orientation);
+//print
+char	*ft_sprintf(char const *container, ...);
+
+// ----------------------
 
 //exit
 void		c_error(char *str, t_cub *c);
@@ -172,12 +242,8 @@ void		free_memory(t_cub *c);
 //init_game
 int			init_game(t_cub *c);
 int			load_texture(t_cub *c, t_texture **strc, char *route);
-int			load_texture_aux(t_cub *c, t_texture *texture, mlx_texture_t	*png);
-
-//init_map
-void		init_map(char **argv, t_cub *c);
-char		*sl_strjoin(char *s1, const char *s2);
-void		get_map_axix_x(t_cub *c);
+int			load_texture_aux(t_cub *c, t_texture *texture, mlx_texture_t *png);
+void		get_map_max_x(t_cub *c);
 
 //init_player
 void		init_player(t_cub *c);
@@ -215,6 +281,7 @@ void		calculate_wall_strip(t_cub *c, t_ray *r, t_texture *text, int x);
 //utils
 float		normalize_angle(float angle);
 uint32_t	get_color(uint8_t *ptr);
+uint32_t	get_color_alt(int *ptr);
 int			has_wall_at(t_cub *c, float x, float y);
 float		distance_between_points(float x1, float y1, float x2, float y2);
 

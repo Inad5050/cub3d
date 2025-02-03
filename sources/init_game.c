@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 17:35:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/31 16:12:29 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/03 16:54:51 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,18 @@ int	init_game(t_cub *c)
 	c->win_mlx3D = mlx_new_image(c->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	if (!c->win_mlx3D)
 		return (c_error("Couldn't mlx_new_image in init_game", c), EXIT_FAILURE);
-	load_texture(c, &c->wall_n, ROUTE_NORTH);
-	load_texture(c, &c->wall_s, ROUTE_SHOUT);
-	load_texture(c, &c->wall_w, ROUTE_WEST);
-	load_texture(c, &c->wall_e, ROUTE_EAST);
-	c->ceiling = CEILING_COLOR;
-	c->floor = FlOOR_COLOR;
+	c->map = c->parse_struct->map;
+	load_texture(c, &c->wall_n, c->parse_struct->north_texture);
+	load_texture(c, &c->wall_s, c->parse_struct->south_texture);
+	load_texture(c, &c->wall_w, c->parse_struct->west_texture);
+	load_texture(c, &c->wall_e, c->parse_struct->east_texture);
+	c->floor = get_color_alt(c->parse_struct->floor_color);
+	c->ceiling = get_color_alt(c->parse_struct->ceiling_color);	
+	c->map_max_y = c->parse_struct->max_y_size * TILE_SIZE;
+	get_map_max_x(c);	
 	c->rays = ft_calloc(WIN_WIDHT, sizeof(t_ray));
 	if (!c->rays)
 		return (c_error("Couldn't initiate init_game", c), EXIT_FAILURE);
-	
-/* 	printf("c->wall_n->height = %d, c->wall_n->width = %d, c->wall_n->pixels[0][0] = %u\n", c->wall_n->height, c->wall_n->width, c->wall_n->pixels[0][0]);
-	printf("c->wall_s->height = %d, c->wall_s->width = %d, c->wall_s->pixelsP[0][0] = %u\n", c->wall_s->height, c->wall_s->width, c->wall_s->pixels[0][0]);
-	printf("c->wall_w->height = %d, c->wall_w->width = %d, c->wall_w->pixelsP[0][0] = %u\n", c->wall_w->height, c->wall_w->width, c->wall_w->pixels[0][0]);
-	printf("c->wall_e->height = %d, c->wall_e->width = %d, c->wall_e->pixelsP[0][0] = %u\n", c->wall_e->height, c->wall_e->width, c->wall_e->pixels[0][0]);
- */	
 	return (EXIT_SUCCESS);
 }
 
@@ -47,15 +44,8 @@ int	load_texture(t_cub *c, t_texture **strc, char *route)
 		return (c_error("Couldn't alloc in load_texture", c), EXIT_FAILURE);
 	png = mlx_load_png(route); //cargamos mlx_texture_t con la informacion del png
 	if (!png)
-		return (c_error("Couldn't alloc in load_texture", c), EXIT_FAILURE);
-
-	/* printf("(*strc)->height = %d, (*strc)->width = %d\n", (*strc)->height, (*strc)->width); */
-	
-	load_texture_aux(c, *strc, png);
-
-	/* 	printf("(*strc)->height = %d, (*strc)->width = %d, (*strc)->pixels[0][0] = %u\n", (*strc)->height, (*strc)->width, (*strc)->pixels[0][0]);
-		printf("png->height = %d, png->width = %d, png->pixels[0] = %u\n", png->height, png->width, png->pixels[0]); */
-	
+		return (c_error("Couldn't alloc in load_texture", c), EXIT_FAILURE);	
+	load_texture_aux(c, *strc, png);	
 	mlx_delete_texture(png);
 	return (EXIT_SUCCESS);
 }
@@ -82,4 +72,19 @@ int	load_texture_aux(t_cub *c, t_texture *texture, mlx_texture_t	*png) //load_pn
 		y++;
 	}
 	return (EXIT_SUCCESS);
+}
+
+void	get_map_max_x(t_cub *c)
+{
+	int	i;
+	int	new_max;
+
+	i = 0;
+	while (i <= c->map_max_y / TILE_SIZE)
+	{
+		new_max = (int)ft_strlen((const char *)c->map[i]) * TILE_SIZE;
+		if (new_max > (c->map_max_x))
+			(c->map_max_x) = new_max;
+		i++;
+	}	
 }

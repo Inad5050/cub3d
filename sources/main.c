@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:27:23 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/31 16:13:51 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/03 16:56:22 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,22 @@
 
 int	main(int argc, char **argv)
 {
+	t_cube	cube;
+	t_player_position	player_position;
 	t_cub	*c;
 	
+	//PARSEO
+	check_arg_number(argc);
+	ft_bzero(&cube, sizeof(t_cube));
+	check_extension(argv[1], &cube);
+	if(verification_start(&cube, &player_position,argv))
+		return(1);
+
+	//JUEGO
 	c = ft_calloc(1, sizeof(t_cub)); 
 	if (!c)
 		return (ft_printf("Couldn`t alloc c"), EXIT_FAILURE);
-
-	//PARSING
-	argc++; //borrar luego
-
-	init_map(argv, c); //lee el mapa
+	c->parse_struct = &cube;
 	init_game(c); //inicializa el juego
 	init_player(c); //inicializa las variables relativas al jugador
 	mlx_image_to_window(c->mlx, c->win_mlx3D, 0, 0); //inicializa la ventana (que CODAM llama imagenes)

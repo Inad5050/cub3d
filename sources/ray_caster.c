@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:52:48 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/31 16:18:35 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/03 15:02:42 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,12 @@ void	ray_caster(t_cub *c) //inicializa el algoritmo para cada uno de los rayos
 
 	rayAngle = c->p_rotationangle - (c->p_fov / 2); //inicializa el angulo del primer rayo como el angulo del jugador - la mitad del FOV	
 	ray_index = 0;
-	/* printf("rayAngle = %f c->p_rotationangle = %f c->p_fov = %f\n", rayAngle, c->p_rotationangle, c->p_fov); */
 	while (ray_index < NUM_RAYS)
 	{
 		r = &(c->rays[ray_index]);		
 		cast_ray(c, r, ray_index, rayAngle); //funcion para manjar los rayos		
 		rayAngle = r->rayangle + c->p_fov / NUM_RAYS; //incrementamos el angulo del siguiente rayo la parte proporcional que le corresponde del total del angulo del FOV (si nuestro FOV es de 60 grados y tenemos 2000 rayos lo incrementamos en 60/2000)
 		ray_index++;
-		
-/* 		printf("rayAngle = %f ray_index = %d\n", rayAngle, ray_index); */
 	}	
 }
 
@@ -59,9 +56,6 @@ void	init_ray_struct(t_ray *r, int ray_index, float rayAngle) //pone a cero todo
 	r->isRayFacingUp = !r->isRayFacingDown;
 	r->isRayFacingRight = (rayAngle < 0.5 * PI) || (rayAngle > 1.5 * PI);
 	r->isRayFacingLeft = !r->isRayFacingRight;
-
-	/* printf("r->rayangle = %f r->ray_index = %d r->isRayFacingDown = %d r->isRayFacingUp = %d r->isRayFacingRight = %d r->isRayFacingLeft = %d\n", r->rayangle, r->ray_index, r->isRayFacingDown, r->isRayFacingUp, r->isRayFacingRight, r->isRayFacingLeft); */
-	
 }
 
 void	select_ray_hit(t_cub *c, t_ray *r) //en que eje ha golpeado antes el rayo en el horizontal o en el vertical. Una vez hayamos elegido almacenamos los valores de uno o de otro
@@ -74,15 +68,8 @@ void	select_ray_hit(t_cub *c, t_ray *r) //en que eje ha golpeado antes el rayo e
 		r->verticalHitDistance = distance_between_points(c->p_x, c->p_y, r->verticalWallHitX, r->verticalWallHitY);
 	else  
 		r->verticalHitDistance = INT_MAX;
-	
-/* 	printf("r->foundHorizontalWallHit = %d c->p_x = %f c->p_y = %f r->horizontalWallHitX = %f r->horizontalWallHitY = %f\n", r->foundHorizontalWallHit, c->p_x, c->p_y, r->horizontalWallHitX, r->horizontalWallHitY);
-	printf("r->foundVerticalWallHit = %d c->p_x = %f c->p_y = %f r->verticalWallHitX = %f r->verticalWallHitY = %f\n", r->foundVerticalWallHit, c->p_x, c->p_y, r->verticalWallHitX, r->verticalWallHitY);
-	printf("r->horizontalHitDistance = %f, r->verticalHitDistance = %f\n\n", r->horizontalHitDistance, r->verticalHitDistance);
- */	
 	if (r->verticalHitDistance < r->horizontalHitDistance)
 	{
-		/* printf("VERTICAL\n"); */
-		
 		r->distance = r->verticalHitDistance;
 		r->wallHitX = r->verticalWallHitX;
 		r->wallHitY = r->verticalWallHitY;
@@ -91,23 +78,10 @@ void	select_ray_hit(t_cub *c, t_ray *r) //en que eje ha golpeado antes el rayo e
 	}
 	else
 	{
-		/* printf("HORIZONTAL\n"); */
-		
 		r->distance = r->horizontalHitDistance;
 		r->wallHitX = r->horizontalWallHitX;
 		r->wallHitY = r->horizontalWallHitY;
 		r->wallHitContent = r->horizontalWallContent;
 		r->wasHitVertical = FALSE;	
 	}
-
-	/* printf("OLA r->ray_index = %d\n", r->ray_index); */
-/* 	if (r->ray_index == 0 || r->ray_index == 2)
-	{
-		printf("r->ray_index = %d\n", r->ray_index);
-		printf("r->distance = %f\n", r->distance);
-		printf("r->wallHitX = %f\n", r->wallHitX);
-		printf("r->wallHitY = %f\n", r->wallHitY);
-		printf("r->wallHitContent = %f\n", r->wallHitContent);
-		printf("r->wasHitVertical = %f\n\n", r->wasHitVertical);
-	} */
 }

@@ -85,7 +85,7 @@ int	check_wall_collision(t_cub *c, float new_x, float new_y)
 		{
 			map_x = ((int)(new_x + offset_x * 0.1) / TILE_SIZE); //comprobamos el espacio antes (offset -1), después (offset 1) y exactamente en la coordenada (offset 0)
 			map_y = ((int)(new_y + offset_y * 0.1) / TILE_SIZE);
-			if (map_y >= 0 && map_x >= 0 && map_y < c->map_axis_y && \
+			if (map_y >= 0 && map_x >= 0 && map_y < c->map_max_y && \
 			map_x < (int)ft_strlen(c->map[map_y])) //comprobamos si las nuevas coordenadas estan en los limites del mapa
 			{
 				if (c->map[map_y][map_x] != '0') //comprobamos si las nuevas coordenadas son accesibles

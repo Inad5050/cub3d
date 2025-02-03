@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 16:42:54 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/31 16:18:35 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/03 16:54:38 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,20 @@ uint32_t	get_color(uint8_t *ptr) //load_png almacena el valor del color de los p
 	return ((r << 24) + (g << 16) + (b << 8) + a);
 }
 
+uint32_t	get_color_alt(int *ptr) //load_png almacena el valor del color de los pixeles en estructuras de 4 integers de 8 bytes. Queremos combinar esos numeros en uno solo de 32 bytes.
+{
+	uint32_t	b; //blue
+	uint32_t	g; //green
+	uint32_t	r; //red
+	uint32_t	a; //alpha. opacidad (?)
+
+	r = (uint32_t)ptr[0];
+	g = (uint32_t)ptr[1];
+	b = (uint32_t)ptr[2];
+	a = (uint32_t)255;
+	return ((r << 24) + (g << 16) + (b << 8) + a);
+}
+
 int	has_wall_at(t_cub *c, float x, float y) //detecta si la coordenada es suelo u otro elemento
 {
 	int		map_grid_index_x;
@@ -42,15 +56,12 @@ int	has_wall_at(t_cub *c, float x, float y) //detecta si la coordenada es suelo 
 
 	map_grid_index_x = ((int)x / TILE_SIZE);
 	map_grid_index_y = ((int)y / TILE_SIZE);
-	if (map_grid_index_y < 0 || map_grid_index_y >= c->map_axis_y) //si empieza a dar seg_fault mira aqui
+	if (map_grid_index_y < 0 || map_grid_index_y >= c->map_max_y) //si empieza a dar seg_fault mira aqui
 		return (0);
 	if (map_grid_index_x < 0 || 
 	map_grid_index_x >= (int)ft_strlen(c->map[map_grid_index_y]))
 		return (0);
-	tile = c->map[map_grid_index_y][map_grid_index_x];
-	
-	/* printf("x = %f y = %f map_grid_index_x = %d map_grid_index_y = %d (int)ft_strlen(game->map[map_grid_index_y] = %d tile = %c\n", x, y, map_grid_index_x, map_grid_index_y, (int)ft_strlen(c->map[map_grid_index_y]), tile); */
-	
+	tile = c->map[map_grid_index_y][map_grid_index_x];	
 	return (tile != '0');
 }
 

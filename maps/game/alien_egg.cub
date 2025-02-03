@@ -1,0 +1,22 @@
+NO ./texture/xpm/wolfestein/blue_wall.xpm
+SO ./texture/xpm/wolfestein/brick_wall.xpm
+WE ./texture/xpm/wolfestein/grey_wall.xpm
+EA ./texture/xpm/wolfestein/steel_wall.xpm
+
+C 0,255,255
+F 160,160,160
+
+       1111 1111 1111
+      1000010000100001
+      1000000000000001
+       10000001000001
+      1000000010000001
+     10000000E000000001
+     100000000000000001
+     100000001000000001
+    100000001 1000000001
+    100000001 1000000001
+     100000001000000001
+      1000000000000001
+       11111101111111
+             1

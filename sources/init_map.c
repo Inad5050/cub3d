@@ -6,13 +6,13 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:03:26 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/01/31 15:39:42 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/03 16:54:38 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-void	init_map(char **argv, t_cub *c) //lee el mapa
+/* void	init_map(char **argv, t_cub *c) //lee el mapa
 {
 	char	*map_temp; //almacena los valores del mapa pre split()
 	char	*line_temp; //buffer de get_next_line
@@ -31,14 +31,14 @@ void	init_map(char **argv, t_cub *c) //lee el mapa
 			break ;
 		map_temp = sl_strjoin(map_temp, line_temp);
 		free(line_temp);
-		c->map_axis_y++;
+		c->map_max_y++;
 	}
 	close(map_fd);
 	c->map = ft_split(map_temp, '\n');
 	free(map_temp);
-	c->map_axis_y--; //necesario?
-	c->map_axis_y *= TILE_SIZE;
-	get_map_axix_x(c);
+	c->map_max_y--; //necesario?
+	c->map_max_y *= TILE_SIZE;
+	get_map_max_x(c);
 }
 
 char	*sl_strjoin(char *s1, const char *s2) // sl_strjoin personalizado del so_long
@@ -68,17 +68,4 @@ char	*sl_strjoin(char *s1, const char *s2) // sl_strjoin personalizado del so_lo
 	result[len_s1 + i] = '\0';
 	free(s1);
 	return (result);
-}
-
-void	get_map_axix_x(t_cub *c)
-{
-	int	i;
-
-	i = 0;
-	while (i < c->map_axis_y / TILE_SIZE)
-	{
-		if ((int)ft_strlen((const char *)c->map[i]) * TILE_SIZE > (c->map_axis_x))
-			(c->map_axis_x) = (int)ft_strlen((const char *)c->map[i]) * TILE_SIZE;
-		i++;
-	}	
-}
+} */
