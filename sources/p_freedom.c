@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   freedom.c                                          :+:      :+:    :+:   */
+/*   p_freedom.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshiki <tshiki@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 14:28:55 by otboumeh          #+#    #+#             */
-/*   Updated: 2024/11/29 09:54:34 by tshiki           ###   ########.fr       */
+/*   Updated: 2025/02/03 17:25:23 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	free_line(char *line, t_cube *cube)
 	printf("Error parsing; wrong content\n");
 	free(line);
 	free_content(cube);
+	printf("CLosing program\n");
 	exit(1);
 }
 /* free the game (map,textures and colors) */
@@ -43,7 +44,7 @@ void	free_content(t_cube *cube)
 		}
 		free(cube->map);
 	}
-	printf("CLosing program\n");
+	// printf("CLosing program\n"); cambio el prit a free_line para poder llamar a free_content en otro contexto
 }
 /* Function to free arrays */
 void	array_free(char **array)

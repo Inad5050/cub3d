@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/03 17:10:17 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:37:07 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,7 @@ char	*ft_sprintf(char const *container, ...);
 void		c_error(char *str, t_cub *c);
 void		c_close(t_cub *c);
 void		free_memory(t_cub *c);
+void 		free_t_texture(t_texture *t);
 
 //init_game
 int			init_game(t_cub *c);
