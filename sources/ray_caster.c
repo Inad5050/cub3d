@@ -6,22 +6,21 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:52:48 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/03 15:02:42 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/03 19:49:21 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-//FUNCIONA COMO LA DE DAVID (FCD de ahora en adelante)
 void	ray_caster(t_cub *c) //inicializa el algoritmo para cada uno de los rayos
 {
 	float	rayAngle;
 	int		ray_index;
 	t_ray	*r;
 
-	rayAngle = c->p_rotationangle - (c->p_fov / 2); //inicializa el angulo del primer rayo como el angulo del jugador - la mitad del FOV	
+	rayAngle = c->p_rotationangle - (c->p_fov / 2); //inicializa el angulo del primer rayo como el angulo del jugador - la mitad del FOV (30 grados). Este sera el angulo de cada rayo con respecto al angulo del jugador
 	ray_index = 0;
-	while (ray_index < NUM_RAYS)
+	while (ray_index < NUM_RAYS) //NUM_RAYS = WIN_WIDHT proyectamos un rayo en cada linea vertical de la pantalla
 	{
 		r = &(c->rays[ray_index]);		
 		cast_ray(c, r, ray_index, rayAngle); //funcion para manjar los rayos		
@@ -45,8 +44,7 @@ void	cast_ray(t_cub *c, t_ray *r, int ray_index, float rayAngle)
 	select_ray_hit(c, r);
 }
 
-//FCD
-void	init_ray_struct(t_ray *r, int ray_index, float rayAngle) //pone a cero todos los valores de la estructura para que podamos volver a usarla. Almacena el valor del actual angulo del rayo y les da valor a las flags 
+void	init_ray_struct(t_ray *r, int ray_index, float rayAngle) //pone a cero todos los valores de la estructura para que podamos volver a usarla. Almacena el valor del actual angulo del rayo y les da valor a las flags que indican el cuadrante del angulo del rayo
 {
 	ft_memset(r, 0, sizeof(t_ray));
 	rayAngle = normalize_angle(rayAngle); //hace que el angulo sea positivo y menor a 360 grados
@@ -54,7 +52,7 @@ void	init_ray_struct(t_ray *r, int ray_index, float rayAngle) //pone a cero todo
 	r->ray_index = ray_index;
 	r->isRayFacingDown = (rayAngle > 0 && rayAngle < PI); //si el angulo es positivo (depende unicamente de la rotacion, para ser positivo debe ser rotacion antihoraria) && y el angulo es menor a 180 (PI) grados
 	r->isRayFacingUp = !r->isRayFacingDown;
-	r->isRayFacingRight = (rayAngle < 0.5 * PI) || (rayAngle > 1.5 * PI);
+	r->isRayFacingRight = (rayAngle < 0.5 * PI) || (rayAngle > 1.5 * PI); //si es menor que 90 grados o mayor de 270 estara mirando a la derecha
 	r->isRayFacingLeft = !r->isRayFacingRight;
 }
 

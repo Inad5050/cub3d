@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/03 18:16:15 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/03 20:09:54 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,8 @@
 # define PI 3.14159265
 # define ANGLE_ROTATION_SIZE 5
 # define FRAMES 30 
-# define TILE_SIZE WIN_WIDHT
+# define TILE_SIZE 1000
 # define NUM_RAYS WIN_WIDHT
-
-//cardinal directions
-# define EAST 0
-# define NORTH 1
-# define WEST 2
-# define SOUTH 3
 
 //bools
 # define FALSE 0
@@ -42,27 +36,27 @@
 
 typedef struct s_player_position
 {
-	int		x;
-	int		y;
-	int		pos_x;
-	int		pos_y;
-	char	orientation;
+	int				x;
+	int				y;
+	int				pos_x;
+	int				pos_y;
+	char			orientation;
 }			t_player_position;
 
 typedef struct s_cube
 {
-    char        **map;               // The parsed map
-    int         player_x;            // Player's X position
-    int         player_y;            // Player's Y position
-    char        *north_texture;      // North texture path
-    char        *south_texture;      // South texture path
-    char        *west_texture;       // West texture path
-    char        *east_texture;       // East texture path
-    int         floor_color[3];      // Floor color (RGB)
-    int         ceiling_color[3];    // Ceiling color (RGB)
-    int         max_y_size;          // Max Y size of the map
-    int         max_x_size;          // Max X size of the map
-    char        *raw_map;            // Temporary raw map
+    char        	**map;               // The parsed map
+    int         	player_x;            // Player's X position
+    int         	player_y;            // Player's Y position
+    char        	*north_texture;      // North texture path
+    char        	*south_texture;      // South texture path
+    char        	*west_texture;       // West texture path
+    char        	*east_texture;       // East texture path
+    int         	floor_color[3];      // Floor color (RGB)
+    int         	ceiling_color[3];    // Ceiling color (RGB)
+    int         	max_y_size;          // Max Y size of the map
+    int         	max_x_size;          // Max X size of the map
+    char       		*raw_map;            // Temporary raw map
 } t_cube;
 
 typedef struct s_texture //buffer para renderizar PNGs
@@ -160,49 +154,43 @@ typedef struct s_cub
 	unsigned int	timelastframe; //controla las frames/s del juego
 } t_cub;
 
-// ----------------------
-
 //p_check_map.c
-void	check_extension(char *argv1);
-int		read_file(char *file, t_cube *cube);
+void		check_extension(char *argv1);
+int			read_file(char *file, t_cube *cube);
 
 //p_freedom.c
-void	free_line(char *line, t_cube *cube);
-void	free_content(t_cube *cube);
-void	array_free(char **array);
+void		free_line(char *line, t_cube *cube);
+void		free_content(t_cube *cube);
+void		array_free(char **array);
 
 //p_map_parsing
-int		validate_map(t_cube *cube, t_player_position *player_position);
+int			validate_map(t_cube *cube, t_player_position *player_position);
 
 //p_parser.c
-void	check_arg_number(int argc);
-int		verification_start(t_cube *cube,\
+void		check_arg_number(int argc);
+int			verification_start(t_cube *cube,\
 			t_player_position *player_position, char **argv);
-int		parser(int argc, char **argv);
-void 	reach_last_character(const char *file_path);
+int			parser(int argc, char **argv);
+void 		reach_last_character(const char *file_path);
 
 //p_parsing.c
-int		parse_line(char *line, t_cube *cube);
-char	*line_verification(char *line);
-int		parse_colors(char *line, int color[3]);
-void	parse_map(char *line, t_cube *cube);
+int			parse_line(char *line, t_cube *cube);
+char		*line_verification(char *line);
+int			parse_colors(char *line, int color[3]);
+void		parse_map(char *line, t_cube *cube);
 
 //p_util_map.c
-void	delete_tab(char ***map, int i);
-int		last_verification(t_cube *cube, t_player_position *player_position);
-int		validate_file(t_cube *cube);
+void		delete_tab(char ***map, int i);
+int			last_verification(t_cube *cube, t_player_position *player_position);
+int			validate_file(t_cube *cube);
 
 //p_utils.c
-int		space_verification(char c);
-int		array_len(char **array);
-void 	error_exit();
-int		is_number(const char *str);
-void	set_initial_position(t_player_position *player_position, int x, int y,
-		char orientation);
-//print
-char	*ft_sprintf(char const *container, ...);
-
-// ----------------------
+int			space_verification(char c);
+int			array_len(char **array);
+void 		error_exit();
+int			is_number(const char *str);
+void		set_initial_position(t_player_position *player_position, int x, int y,
+			char orientation);
 
 //exit
 void		c_error(char *str, t_cub *c);
@@ -225,9 +213,8 @@ void		set_player_position(int y, int x, t_cub *c);
 void		game_loop(void *param);
 
 //process_player_input
-int			process_player_input(void *param);
-int			update_player_position(t_cub *c);
-int			rotate_player(t_cub *c);
+void		process_player_input(void *param);
+void		update_player_position(t_cub *c);
 int			check_wall_collision(t_cub *c, float x, float y);
 
 //ray_caster_scan_hits
