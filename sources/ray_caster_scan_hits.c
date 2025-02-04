@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:19:39 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/03 20:19:21 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/04 15:16:21 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,10 @@ void	find_horizontal_hit(t_cub *c, t_ray *r, float rayAngle) //FCD
 	r->horizontalWallHitY = 0;
 	r->horizontalWallContent = 0;
 	
-	r->yintercept = floor(c->p_y / TILE_SIZE) * TILE_SIZE; //la interseccion del rayo con el borde de nuestra celda. Redondeamos el valor de la posicion del jugador hacia abajo para obtener la posicion del limite de su casilla actual. El valor de TILE_SIZE es arbitrario es el numero de veces en el que dividimos cada celda. 
+	r->yintercept = floor(c->p_y / TILE_SIZE) * TILE_SIZE; //la interseccion del rayo con el borde de nuestra celda. Redondeamos el valor de la posicion del jugador hacia abajo para obtener la posicion del limite de su casilla actual. El valor de TILE_SIZE es arbitrario, es el numero de veces en el que dividimos cada celda. 
 	if (r->isRayFacingDown)
 		r->yintercept += TILE_SIZE;
-	r->xintercept = c->p_x + (r->yintercept - c->p_y) / tan(rayAngle);
-	//teniendo el lado y del triangulo tenemos el lado opuesto del angulo del rayo. Usando la tangente (tan = opuesto / adyacente) -> adyacente = opuesto / tan.
-	//codigo original : r->ystep *= r->isRayFacingUp ? -1 : 1;
+	r->xintercept = c->p_x + (r->yintercept - c->p_y) / tan(rayAngle); //teniendo el lado adyacente (r->yintercept) del triangulo recto formado por el angulo del rayo tambien tenemos el lado opuesto. Usando la tangente (tan = opuesto / adyacente) -> adyacente = opuesto / tan.
 	r->ystep = TILE_SIZE; //la distancia que se recorre en el vector Y para cruzar de un rectangulo a otro. Cuando calculamos el valor Y de la siguiente celda (la siguiente interseccion horizontal) sabemos que entre el comienzo de una celda y otra hay TILE_SIZE de distancia.
 	if (r->isRayFacingUp)
 		r->ystep *= -1;
@@ -36,10 +34,11 @@ void	find_horizontal_hit(t_cub *c, t_ray *r, float rayAngle) //FCD
 	find_horizontal_hit_loop(c, r);
 }
 
+
+//debemos empezar al principio del eje Y de una celda. Por lo que nuestro punto de partida es el primer punto de corte que ya hemos calculado: xintercept e yintercept
+//vamos a aumentar la longitud del rayo progresivamente. Cada vez cruzara TILE_SIZE distancia en el eje Y. Asi obtendremos todos los puntos de corte horizontales. En cada punto de corte comprobaremos si la siguiente celda tiene una pared.
 void	find_horizontal_hit_loop(t_cub *c, t_ray *r)
 {
-	//vamos a aumentar la longitud del rayo progresivamente. Cada vez cruzara TILE_SIZE distancia en el eje Y. Asi obtendremos todos los puntos de corte horizontales. En cada punto de corte comprobaremos si la siguiente celda tiene una pared.
-	//Debemos empezar por el principio en el eje Y de una celda. Por lo que nuestro punto de partida es el primer punto de corte que ya hemos calculado: xintercept e yintercept
 	r->nextHorzTouchX = r->xintercept;
 	r->nextHorzTouchY = r->yintercept;
 	while(r->nextHorzTouchX >= 0 && r->nextHorzTouchX <= c->map_max_x \
@@ -93,7 +92,6 @@ void	find_vertical_hit_loop(t_cub *c, t_ray *r)
 	&& r->nextVerticalTouchY >= 0 && r->nextVerticalTouchY <= c->map_max_y)
 	{
 		r->xToCheck = r->nextVerticalTouchX;
-		r->yToCheck = r->nextVerticalTouchY;
 		if (r->isRayFacingLeft)
 			r->xToCheck -= 1;
 		r->yToCheck = r->nextVerticalTouchY;

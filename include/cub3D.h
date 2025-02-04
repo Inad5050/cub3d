@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/03 20:09:54 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/04 18:17:05 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@
 //bools
 # define FALSE 0
 # define TRUE 1
+
+//minimap colors
+# define RED 0xFFFF0000
+# define GREEN 0xFF00FF00
+# define BLUE 0xFF0000FF
+# define WHITE 0xFFFFFFFF
 
 typedef struct s_player_position
 {
@@ -108,7 +114,7 @@ typedef struct s_ray
 	float			wallHitContent;
 	float			wasHitVertical;
 	
-	float			perp_distance;	//render
+	float			perp_distance;	//renderizado
 	float			distance_proj_plane;
 	float			wall_strip_height;
 	int				wall_top_pixel;
@@ -214,6 +220,7 @@ void		game_loop(void *param);
 
 //process_player_input
 void		process_player_input(void *param);
+void		mouse_hook(t_cub *c);
 void		update_player_position(t_cub *c);
 int			check_wall_collision(t_cub *c, float x, float y);
 
@@ -233,8 +240,8 @@ void		select_ray_hit(t_cub *c, t_ray *r);
 void		ray_render(t_cub *c);
 int			init_data_render(t_cub *c, t_ray *r);
 void		render(t_cub *c, t_ray *r);
-void		draw_wall_strip(t_cub *c, int x);
 void		calculate_wall_strip(t_cub *c, t_ray *r, t_texture *text, int x);
+void		draw_wall_strip(t_cub *c, int x);
 
 //utils
 float		normalize_angle(float angle);
