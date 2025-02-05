@@ -28,7 +28,7 @@ void	process_player_input(void *param)
 	c->p_walkdirection = 0;
 	c->p_strafedirection = 0;
 	c->p_turndirection = 0;
-	mouse_hook(c);
+	c->p_turnspeed = c->p_turnspeed_original;
 	if (mlx_is_key_down(c->mlx, MLX_KEY_ESCAPE))
 		c_close(c);
 	if (mlx_is_key_down(c->mlx, MLX_KEY_W))
@@ -43,6 +43,7 @@ void	process_player_input(void *param)
 		c->p_turndirection = -1;
 	if (mlx_is_key_down(c->mlx, MLX_KEY_RIGHT))
 		c->p_turndirection = 1;
+	mouse_hook(c);
 	update_player_position(c);
 }
 
@@ -51,11 +52,21 @@ void	mouse_hook(t_cub *c)
 	int32_t	x;
 	int32_t y;
 
+	if (c->p_turndirection)
+		return;
 	mlx_get_mouse_pos(c->mlx, &x, &y);
-	if (0 < x && x <= WIN_WIDHT * 0.1)
+	if (0 < x && x <= WIN_WIDHT * 0.3)
+	{
 		c->p_turndirection = -1;
-	if (WIN_WIDHT * 0.9 < x && x < WIN_WIDHT)
+		if (x > WIN_WIDHT * 0.15)
+			c->p_turnspeed *= 0.4;
+	}
+	if (WIN_WIDHT * 0.7 < x && x < WIN_WIDHT)
+	{
 		c->p_turndirection = 1;
+		if (x < WIN_WIDHT * 0.85)
+			c->p_turnspeed *= 0.4;
+	}
 }
 
 void	update_player_position(t_cub *c)

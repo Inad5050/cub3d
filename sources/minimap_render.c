@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:55:44 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/04 18:16:01 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:12:51 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 void	minimap_render(t_cub *c)
 {
-	int		y;
+/* 	int		y;
 	int		x;
-	char	element;
+	char	element; */
 
-	y = 0;
+	init_minimap(c);
+/* 	y = 0;
 	while (y < c->map_max_y)
 	{
 		x = 0;
@@ -29,24 +30,52 @@ void	minimap_render(t_cub *c)
 				minimap_print(x, y, BLUE);
 			if (element == '1')
 				minimap_print(x, y, WHITE);
-			if (element == 'N' || element == 'S' || element == 'E' || element == 'W')
+			if (element == 'N' || element == 'S'
+			 || element == 'E' || element == 'W')
 				minimap_print(x, y, GREEN);				
 			x++;
 		}
 		y++;
-	}	
+	} */	
 }
 
-void	minimap_print(x, y, element)
+/* void	minimap_print(x, y, element)
 {
 	
 
 
 
 	
+} */
+
+void	init_minimap(t_cub *c)
+{
+	int	y;
+	int	x;
+
+	y = WIN_HEIGHT * 0.01;
+	c->minimap_area_x = 0.3 * WIN_HEIGHT;
+	c->minimap_area_y = 0.3 * WIN_HEIGHT;
+	c->minimap_tile_size = c->minimap_area_x / (c->map_max_x / TILE_SIZE);
+	if (c->minimap_area_y / (c->map_max_y / TILE_SIZE) < c->minimap_tile_size)  
+		c->minimap_tile_size = c->minimap_area_y / (c->map_max_y / TILE_SIZE);
+	
+	printf("c->minimap_area_y = %d c->minimap_tile_size = %d c->minimap_area_x %d\n", c->minimap_area_y, c->minimap_tile_size, c->minimap_area_x);
+	
+	
+	while (y < c->minimap_area_y)
+	{
+		x = WIN_WIDHT * 0.01;
+		while (x < c->minimap_area_x + WIN_WIDHT * 0.05)
+		{
+			mlx_put_pixel(c->win_mlx3D, x, y, WHITE);
+			x++;
+		}
+		y++;
+	}
 }
 
-void	calculate_wall_strip(t_cub *c, t_ray *r, t_texture *t, int x)
+/* void	calculate_wall_strip(t_cub *c, t_ray *r, t_texture *t, int x)
 {
 	int	y;
 	int	anti_y;
@@ -79,4 +108,4 @@ void	draw_wall_strip(t_cub *c, int x)
 	y = -1;
 	while (++y < WIN_HEIGHT)
 		mlx_put_pixel(c->win_mlx3D, x, y, c->strip[y]);
-}
+} */

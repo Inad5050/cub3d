@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:55:16 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/03 19:30:28 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:19:05 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	init_player(t_cub *c)
 {
 	c->p_fov = (60 * PI / 180); //para un Field of View (FOV) de 60 grados. Siempre sera el mismo (aprox 1.66)
 	c->p_turnspeed = ANGLE_ROTATION_SIZE * (PI / 180); //ANGLE_ROTATION_SIZE tiene un tamaño arbitrario, está en grados, lo pasamos a radianes con * PI / 180
+	c->p_turnspeed_original = c->p_turnspeed;
 	c->p_walkspeed = TILE_SIZE / 10;
 	locate_player(c);
 }

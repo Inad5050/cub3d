@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/04 18:17:05 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:19:30 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@
 # define TRUE 1
 
 //minimap colors
-# define RED 0xFFFF0000
-# define GREEN 0xFF00FF00
-# define BLUE 0xFF0000FF
+# define RED 0xFF0000FF
+# define GREEN 0x00FF00FF
+# define BLUE 0x0000FFFF
 # define WHITE 0xFFFFFFFF
 
 typedef struct s_player_position
@@ -144,6 +144,7 @@ typedef struct s_cub
 	float			p_fov; //init_game. valor estatico. Lo usamos durante el casteo para determinar el angulo de los rayos
 	float			p_turnspeed; //velocidad a la que rota el jugador cada vez que pulsamos MLX_KEY_LEFT y MLX_KEY_RIGHT
 	float			p_walkspeed; //velocidad de movimiento del jugador
+	float			p_turnspeed_original;
 	
 	float			p_rotationangle; //angulo del jugador
 	float			p_y; //coordenadas del jugador sobre el eje vertical
@@ -158,7 +159,35 @@ typedef struct s_cub
 	unsigned int	strip[WIN_HEIGHT]; //buffer para proyectar las texturas
 	
 	unsigned int	timelastframe; //controla las frames/s del juego
+
+	int				minimap_area_y;
+	int				minimap_area_x;
+	int				minimap_tile_size;
 } t_cub;
+
+//exit
+void		c_error(char *str, t_cub *c);
+void		c_close(t_cub *c);
+void		free_memory(t_cub *c);
+void 		free_t_texture(t_texture *t);
+
+//init_game
+int			init_game(t_cub *c);
+int			load_texture(t_cub *c, t_texture **strc, char *route);
+int			load_texture_aux(t_cub *c, t_texture *texture, mlx_texture_t *png);
+void		get_map_max_x(t_cub *c);
+
+//init_player
+void		init_player(t_cub *c);
+int			locate_player(t_cub *c);
+void		set_player_position(int y, int x, t_cub *c);
+
+//main
+void		game_loop(void *param);
+
+//minimap_render
+void		minimap_render(t_cub *c);
+void		init_minimap(t_cub *c);
 
 //p_check_map.c
 void		check_extension(char *argv1);
@@ -197,26 +226,6 @@ void 		error_exit();
 int			is_number(const char *str);
 void		set_initial_position(t_player_position *player_position, int x, int y,
 			char orientation);
-
-//exit
-void		c_error(char *str, t_cub *c);
-void		c_close(t_cub *c);
-void		free_memory(t_cub *c);
-void 		free_t_texture(t_texture *t);
-
-//init_game
-int			init_game(t_cub *c);
-int			load_texture(t_cub *c, t_texture **strc, char *route);
-int			load_texture_aux(t_cub *c, t_texture *texture, mlx_texture_t *png);
-void		get_map_max_x(t_cub *c);
-
-//init_player
-void		init_player(t_cub *c);
-int			locate_player(t_cub *c);
-void		set_player_position(int y, int x, t_cub *c);
-
-//main
-void		game_loop(void *param);
 
 //process_player_input
 void		process_player_input(void *param);
