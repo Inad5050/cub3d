@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 17:35:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/03 18:52:32 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:34:16 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	init_game(t_cub *c)
 	c->rays = ft_calloc(NUM_RAYS, sizeof(t_ray)); //inicializa las estrucuturas de los rayos
 	if (!c->rays)
 		return (c_error("Couldn't initiate init_game", c), EXIT_FAILURE);
+	init_minimap(c);
 	return (EXIT_SUCCESS);
 }
 

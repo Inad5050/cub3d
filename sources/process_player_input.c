@@ -55,17 +55,23 @@ void	mouse_hook(t_cub *c)
 	if (c->p_turndirection)
 		return;
 	mlx_get_mouse_pos(c->mlx, &x, &y);
-	if (0 < x && x <= WIN_WIDHT * 0.3)
+	if (y < 0 || WIN_HEIGHT <= y)
+		return;
+	if (0 < x && x <= WIN_WIDHT * 0.45)
 	{
 		c->p_turndirection = -1;
-		if (x > WIN_WIDHT * 0.15)
-			c->p_turnspeed *= 0.4;
+		if (WIN_WIDHT * 0.3 < x && x <= WIN_WIDHT * 0.45)
+			c->p_turnspeed *= 0.35;
+		if (WIN_WIDHT * 0.15 < x && x <= WIN_WIDHT * 0.3)
+			c->p_turnspeed *= 0.6;		
 	}
-	if (WIN_WIDHT * 0.7 < x && x < WIN_WIDHT)
+	if (WIN_WIDHT * 0.55 < x && x < WIN_WIDHT)
 	{
 		c->p_turndirection = 1;
-		if (x < WIN_WIDHT * 0.85)
-			c->p_turnspeed *= 0.4;
+		if (WIN_WIDHT * 0.55 < x && x <= WIN_WIDHT * 0.7)
+			c->p_turnspeed *= 0.35;
+		if (WIN_WIDHT * 0.7 < x && x <= WIN_WIDHT * 0.85)
+			c->p_turnspeed *= 0.6;
 	}
 }
 

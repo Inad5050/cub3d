@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/05 16:19:30 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/06 14:10:06 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # define GREEN 0x00FF00FF
 # define BLUE 0x0000FFFF
 # define WHITE 0xFFFFFFFF
+# define BLACK 0x000000FF
 
 typedef struct s_player_position
 {
@@ -160,9 +161,12 @@ typedef struct s_cub
 	
 	unsigned int	timelastframe; //controla las frames/s del juego
 
-	int				minimap_area_y;
-	int				minimap_area_x;
-	int				minimap_tile_size;
+	float				minimap_start_y;
+	float				minimap_start_x;
+	float				minimap_area_y;
+	float				minimap_area_x;
+	float				minimap_tile_size;
+	float				minimap_player_size;
 } t_cub;
 
 //exit
@@ -185,8 +189,11 @@ void		set_player_position(int y, int x, t_cub *c);
 //main
 void		game_loop(void *param);
 
-//minimap_render
+//minimap
 void		minimap_render(t_cub *c);
+void		minimap_print(int x_map, int y_map, uint32_t element, t_cub *c);
+void		minimap_print_player(t_cub *c);
+/* int			minimap_next_wall(float x, float y, t_cub *c); */
 void		init_minimap(t_cub *c);
 
 //p_check_map.c
