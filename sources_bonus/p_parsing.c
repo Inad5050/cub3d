@@ -6,11 +6,11 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 13:47:40 by otboumeh          #+#    #+#             */
-/*   Updated: 2025/02/03 14:40:27 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:00:42 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3D.h"
+#include "../include/cub3D_bonus.h"
 
 /* This function delete the unecessary white spaces founded in the line and
 return a clean line*/

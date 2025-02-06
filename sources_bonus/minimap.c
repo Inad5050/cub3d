@@ -6,11 +6,11 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:55:44 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/06 14:11:04 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:00:22 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D.h"
+#include "../include/cub3D_bonus.h"
 
 void	minimap_render(t_cub *c)
 {

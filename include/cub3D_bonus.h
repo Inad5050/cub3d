@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3D.h                                            :+:      :+:    :+:   */
+/*   cub3D_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/06 15:59:16 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/06 19:06:36 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@
 # define BLUE 0x0000FFFF
 # define WHITE 0xFFFFFFFF
 # define BLACK 0x000000FF
+
+//sprite
+# define SPRITE_ROUTE "./texture/cocodemon.png"
+# define WHITE_DECIMAL 4294967295
 
 typedef struct s_player_position
 {
@@ -122,6 +126,22 @@ typedef struct s_ray
 	unsigned int	wall_color;
 
 	int				is_sprite;
+	float			horizontal_sprite_hit_x;
+	float			horizontal_sprite_hit_y;
+	float			vertical_sprite_hit_x;
+	float			vertical_sprite_hit_y;
+	float			sprite_horizontal_hit_distance;
+	float			sprite_vertical_hit_distance;
+	float			sprite_hit_x;
+	float			sprite_hit_y;
+	float			sprite_distance;
+	int				sprite_was_hit_vertical;
+
+	float			sprite_perp_distance;
+	float			sprite_distance_proj_plane;
+	float			sprite_strip_height;
+	int				sprite_top_pixel;
+	int				sprite_bottom_pixel;
 } t_ray;
 
 typedef struct s_cub
@@ -142,6 +162,8 @@ typedef struct s_cub
 	t_texture		*wall_s;
 	t_texture		*wall_w;
 	t_texture		*wall_e;
+
+	t_texture		*sprite_texture;
 	
 	float			p_fov; //init_game. valor estatico. Lo usamos durante el casteo para determinar el angulo de los rayos
 	float			p_turnspeed; //velocidad a la que rota el jugador cada vez que pulsamos MLX_KEY_LEFT y MLX_KEY_RIGHT
@@ -162,12 +184,14 @@ typedef struct s_cub
 	
 	unsigned int	timelastframe; //controla las frames/s del juego
 
-	float				minimap_start_y;
-	float				minimap_start_x;
-	float				minimap_area_y;
-	float				minimap_area_x;
-	float				minimap_tile_size;
-	float				minimap_player_size;
+	float			minimap_start_y;
+	float			minimap_start_x;
+	float			minimap_area_y;
+	float			minimap_area_x;
+	float			minimap_tile_size;
+	float			minimap_player_size;
+
+	unsigned int	sprite_strip[WIN_HEIGHT];
 } t_cub;
 
 //exit
@@ -260,6 +284,13 @@ int			init_data_render(t_cub *c, t_ray *r);
 void		render(t_cub *c, t_ray *r);
 void		calculate_wall_strip(t_cub *c, t_ray *r, t_texture *text, int x);
 void		draw_wall_strip(t_cub *c, int x);
+
+//sprite_render
+void		choose_sprite_hit(t_cub *c, t_ray *r);
+void		sprite_render(t_cub *c, t_ray *r);
+void		sprite_render_aux(t_cub *c, t_ray *r);
+void		calculate_sprite_strip(t_cub *c, t_ray *r, t_texture *t, int x);
+void		draw_sprite_strip(t_cub *c, t_ray *r, int x);
 
 //utils
 float		normalize_angle(float angle);

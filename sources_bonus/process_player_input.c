@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D.h"
+#include "../include/cub3D_bonus.h"
 
 void mlx_cursor_hook(mlx_t* mlx, mlx_cursorfunc func, void* param);
 //This function sets the cursor callback, which is called when the

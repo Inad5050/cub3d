@@ -6,11 +6,11 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 14:28:55 by otboumeh          #+#    #+#             */
-/*   Updated: 2025/02/03 17:25:23 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:00:29 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3D.h"
+#include "../include/cub3D_bonus.h"
 
 /* free the selected line and print a error message */
 void	free_line(char *line, t_cube *cube)

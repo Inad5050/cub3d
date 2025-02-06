@@ -6,11 +6,11 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:55:16 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/05 16:19:05 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:00:16 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D.h"
+#include "../include/cub3D_bonus.h"
 
 void	init_player(t_cub *c)
 {

@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:52:48 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/04 15:17:35 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/06 15:43:45 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,28 +58,26 @@ void	init_ray_struct(t_ray *r, int ray_index, float rayAngle) //pone a cero todo
 
 void	select_ray_hit(t_cub *c, t_ray *r) //en que eje ha golpeado antes el rayo en el horizontal o en el vertical. Una vez hayamos elegido almacenamos los valores de uno o de otro
 {
-	if (r->foundHorizontalWallHit)
-		r->horizontalHitDistance = distance_between_points(c->p_x, c->p_y, r->horizontalWallHitX, r->horizontalWallHitY);
+	if (r->found_horizontal_wall_hit)
+		r->horizontal_hit_distance = distance_between_points(c->p_x, c->p_y, r->horizontal_wall_hit_x, r->horizontal_wall_hit_y);
 	else  
-		r->horizontalHitDistance = INT_MAX;
-	if (r->foundVerticalWallHit)
-		r->verticalHitDistance = distance_between_points(c->p_x, c->p_y, r->verticalWallHitX, r->verticalWallHitY);
+		r->horizontal_hit_distance = INT_MAX;
+	if (r->found_vertical_wall_hit)
+		r->vertical_hit_distance = distance_between_points(c->p_x, c->p_y, r->vertical_wall_hit_x, r->vertical_wall_hit_y);
 	else  
-		r->verticalHitDistance = INT_MAX;
-	if (r->verticalHitDistance < r->horizontalHitDistance)
+		r->vertical_hit_distance = INT_MAX;
+	if (r->vertical_hit_distance < r->horizontal_hit_distance)
 	{
-		r->distance = r->verticalHitDistance;
-		r->wallHitX = r->verticalWallHitX;
-		r->wallHitY = r->verticalWallHitY;
-		r->wallHitContent = r->verticalWallContent;
-		r->wasHitVertical = TRUE;		
+		r->distance = r->vertical_hit_distance;
+		r->wall_hit_x = r->vertical_wall_hit_x;
+		r->wall_hit_y = r->vertical_wall_hit_y;
+		r->was_hit_vertical = TRUE;		
 	}
 	else
 	{
-		r->distance = r->horizontalHitDistance;
-		r->wallHitX = r->horizontalWallHitX;
-		r->wallHitY = r->horizontalWallHitY;
-		r->wallHitContent = r->horizontalWallContent;
-		r->wasHitVertical = FALSE;	
+		r->distance = r->horizontal_hit_distance;
+		r->wall_hit_x = r->horizontal_wall_hit_x;
+		r->wall_hit_y = r->horizontal_wall_hit_y;
+		r->was_hit_vertical = FALSE;	
 	}
 }

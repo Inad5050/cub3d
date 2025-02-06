@@ -6,11 +6,11 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 10:40:13 by otboumeh          #+#    #+#             */
-/*   Updated: 2025/02/03 14:39:41 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/06 18:03:23 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3D.h"
+#include "../include/cub3D_bonus.h"
 
 void	perror_neighbour(char *line, char *neighbour)
 {
@@ -72,7 +72,7 @@ static int	validate_line(char **map, int x, int y,
 		return (ft_printf("Invalid map line:\n\t%s\n", line), 1);
 	while (line[++x])
 	{
-		if (!ft_strchr(" 01", line[x]))
+		if (!ft_strchr(" 01M", line[x])) //he cambiado esta linea para que incluya la 'M' de monster para el bonus sprite
 		{
 			if (ft_strchr("NSWE", line[x]))
 			{

@@ -6,11 +6,11 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:52:48 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/04 15:17:35 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:24:40 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D.h"
+#include "../include/cub3D_bonus.h"
 
 void	ray_caster(t_cub *c) //inicializa el algoritmo para cada uno de los rayos
 {
@@ -42,6 +42,8 @@ void	cast_ray(t_cub *c, t_ray *r, int ray_index, float rayAngle)
 	find_horizontal_hit(c, r, rayAngle);
 	find_vertical_hit(c, r, rayAngle);	
 	select_ray_hit(c, r);
+	if (r->is_sprite)
+		choose_sprite_hit(c, r);
 }
 
 void	init_ray_struct(t_ray *r, int ray_index, float rayAngle) //pone a cero todos los valores de la estructura para que podamos volver a usarla. Almacena el valor del actual angulo del rayo y les da valor a las flags que indican el cuadrante del angulo del rayo
@@ -58,28 +60,26 @@ void	init_ray_struct(t_ray *r, int ray_index, float rayAngle) //pone a cero todo
 
 void	select_ray_hit(t_cub *c, t_ray *r) //en que eje ha golpeado antes el rayo en el horizontal o en el vertical. Una vez hayamos elegido almacenamos los valores de uno o de otro
 {
-	if (r->foundHorizontalWallHit)
-		r->horizontalHitDistance = distance_between_points(c->p_x, c->p_y, r->horizontalWallHitX, r->horizontalWallHitY);
+	if (r->found_horizontal_wall_hit)
+		r->horizontal_hit_distance = distance_between_points(c->p_x, c->p_y, r->horizontal_wall_hit_x, r->horizontal_wall_hit_y);
 	else  
-		r->horizontalHitDistance = INT_MAX;
-	if (r->foundVerticalWallHit)
-		r->verticalHitDistance = distance_between_points(c->p_x, c->p_y, r->verticalWallHitX, r->verticalWallHitY);
+		r->horizontal_hit_distance = INT_MAX;
+	if (r->found_vertical_wall_hit)
+		r->vertical_hit_distance = distance_between_points(c->p_x, c->p_y, r->vertical_wall_hit_x, r->vertical_wall_hit_y);
 	else  
-		r->verticalHitDistance = INT_MAX;
-	if (r->verticalHitDistance < r->horizontalHitDistance)
+		r->vertical_hit_distance = INT_MAX;
+	if (r->vertical_hit_distance < r->horizontal_hit_distance)
 	{
-		r->distance = r->verticalHitDistance;
-		r->wallHitX = r->verticalWallHitX;
-		r->wallHitY = r->verticalWallHitY;
-		r->wallHitContent = r->verticalWallContent;
-		r->wasHitVertical = TRUE;		
+		r->distance = r->vertical_hit_distance;
+		r->wall_hit_x = r->vertical_wall_hit_x;
+		r->wall_hit_y = r->vertical_wall_hit_y;
+		r->was_hit_vertical = TRUE;		
 	}
 	else
 	{
-		r->distance = r->horizontalHitDistance;
-		r->wallHitX = r->horizontalWallHitX;
-		r->wallHitY = r->horizontalWallHitY;
-		r->wallHitContent = r->horizontalWallContent;
-		r->wasHitVertical = FALSE;	
+		r->distance = r->horizontal_hit_distance;
+		r->wall_hit_x = r->horizontal_wall_hit_x;
+		r->wall_hit_y = r->horizontal_wall_hit_y;
+		r->was_hit_vertical = FALSE;	
 	}
 }

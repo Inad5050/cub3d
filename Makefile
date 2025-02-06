@@ -6,12 +6,12 @@
 #    By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 16:11:59 by dangonz3          #+#    #+#              #
-#    Updated: 2025/02/06 15:21:22 by dangonz3         ###   ########.fr        #
+#    Updated: 2025/02/06 16:05:20 by dangonz3         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3D
-NAME_BONUS = cub3D 
+NAME_BONUS = cub3D_bonus
 CC = gcc
 CCFLAGS = -Wall -Wextra -Werror
 
@@ -54,7 +54,7 @@ $(LIBFT_LIB):
 bonus: $(NAME_BONUS)
 
 $(NAME_BONUS): $(OBJ_BONUS) libmlx $(LIBFT_LIB)
-	$(CC) $(OBJ_BONUS) $(MLX_LIB) $(MLX_FLAGS) $(LIBFT_LIB) -o $(NAME)
+	$(CC) $(OBJ_BONUS) $(MLX_LIB) $(MLX_FLAGS) $(LIBFT_LIB) -o $(NAME_BONUS)
 
 clean:
 	@rm -f $(OBJ)

@@ -6,18 +6,18 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:19:39 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/04 15:16:21 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/06 18:01:23 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D.h"
+#include "../include/cub3D_bonus.h"
 
 void	find_horizontal_hit(t_cub *c, t_ray *r, float rayAngle) //FCD
 {
-	r->foundHorizontalWallHit = 0;
-	r->horizontalWallHitX = 0;
-	r->horizontalWallHitY = 0;
-	r->horizontalWallContent = 0;
+	r->found_horizontal_wall_hit = 0;
+	r->horizontal_wall_hit_x = 0;
+	r->horizontal_wall_hit_y = 0;
+	r->horizontal_wall_content = 0;
 	
 	r->yintercept = floor(c->p_y / TILE_SIZE) * TILE_SIZE; //la interseccion del rayo con el borde de nuestra celda. Redondeamos el valor de la posicion del jugador hacia abajo para obtener la posicion del limite de su casilla actual. El valor de TILE_SIZE es arbitrario, es el numero de veces en el que dividimos cada celda. 
 	if (r->isRayFacingDown)
@@ -39,36 +39,39 @@ void	find_horizontal_hit(t_cub *c, t_ray *r, float rayAngle) //FCD
 //vamos a aumentar la longitud del rayo progresivamente. Cada vez cruzara TILE_SIZE distancia en el eje Y. Asi obtendremos todos los puntos de corte horizontales. En cada punto de corte comprobaremos si la siguiente celda tiene una pared.
 void	find_horizontal_hit_loop(t_cub *c, t_ray *r)
 {
-	r->nextHorzTouchX = r->xintercept;
-	r->nextHorzTouchY = r->yintercept;
-	while(r->nextHorzTouchX >= 0 && r->nextHorzTouchX <= c->map_max_x \
-	&& r->nextHorzTouchY >= 0 && r->nextHorzTouchY <= c->map_max_y)
+	r->next_horz_touch_x = r->xintercept;
+	r->next_horz_touch_y = r->yintercept;
+	while(r->next_horz_touch_x >= 0 && r->next_horz_touch_x <= c->map_max_x \
+	&& r->next_horz_touch_y >= 0 && r->next_horz_touch_y <= c->map_max_y)
 	{
-		r->xToCheck = r->nextHorzTouchX;
-		r->yToCheck = r->nextHorzTouchY; //lo ajustamos para estar en el proximo cuadrado y no en el borde de la interseccion
+		r->x_to_check = r->next_horz_touch_x;
+		r->y_to_check = r->next_horz_touch_y; //lo ajustamos para estar en el proximo cuadrado y no en el borde de la interseccion
 		if (r->isRayFacingUp)
-			r->yToCheck -= 1;
-		if (has_wall_at(c, r->xToCheck, r->yToCheck))
+			r->y_to_check -= 1;
+		if (has_wall_at(c, r->x_to_check, r->y_to_check) == 1)
 		{
-			r->horizontalWallHitX = r->nextHorzTouchX; 
-			r->horizontalWallHitY = r->nextHorzTouchY;
-			r->foundHorizontalWallHit = TRUE;
+			r->horizontal_wall_hit_x = r->next_horz_touch_x; 
+			r->horizontal_wall_hit_y = r->next_horz_touch_y;
+			r->found_horizontal_wall_hit = TRUE;
 			break;		
 		}
-		else
+		if (has_wall_at(c, r->x_to_check, r->y_to_check) == 2)
 		{
-			r->nextHorzTouchX += r->xstep;
-			r->nextHorzTouchY += r->ystep;
+			r->horizontal_sprite_hit_x = r->next_horz_touch_x; 
+			r->horizontal_sprite_hit_y = r->next_horz_touch_y;
+			r->is_sprite = 1;
 		}
+		r->next_horz_touch_x += r->xstep;
+		r->next_horz_touch_y += r->ystep;
 	}
 }
 
 void	find_vertical_hit(t_cub *c, t_ray *r, float rayAngle) //FCD
 {
-	r->foundVerticalWallHit = 0;
-	r->verticalWallHitX = 0;
-	r->verticalWallHitY = 0;
-	r->verticalWallContent = 0;
+	r->found_vertical_wall_hit = 0;
+	r->vertical_wall_hit_x = 0;
+	r->vertical_wall_hit_y = 0;
+	r->vertical_wall_content = 0;
 	r->xintercept = floor(c->p_x / TILE_SIZE) * TILE_SIZE;
 	if (r->isRayFacingRight)
 		r->xintercept += TILE_SIZE;
@@ -86,26 +89,50 @@ void	find_vertical_hit(t_cub *c, t_ray *r, float rayAngle) //FCD
 
 void	find_vertical_hit_loop(t_cub *c, t_ray *r)
 {
-	r->nextVerticalTouchX = r->xintercept;
-	r->nextVerticalTouchY = r->yintercept;
-	while(r->nextVerticalTouchX >= 0 && r->nextVerticalTouchX <= c->map_max_x \
-	&& r->nextVerticalTouchY >= 0 && r->nextVerticalTouchY <= c->map_max_y)
+	r->next_vertical_touch_x = r->xintercept;
+	r->next_vertical_touch_y = r->yintercept;
+	while(r->next_vertical_touch_x >= 0 && r->next_vertical_touch_x <= c->map_max_x \
+	&& r->next_vertical_touch_y >= 0 && r->next_vertical_touch_y <= c->map_max_y)
 	{
-		r->xToCheck = r->nextVerticalTouchX;
+		r->x_to_check = r->next_vertical_touch_x;
 		if (r->isRayFacingLeft)
-			r->xToCheck -= 1;
-		r->yToCheck = r->nextVerticalTouchY;
-		if (has_wall_at(c, r->xToCheck, r->yToCheck)) 
+			r->x_to_check -= 1;
+		r->y_to_check = r->next_vertical_touch_y;
+		if (has_wall_at(c, r->x_to_check, r->y_to_check) == 1) 
 		{
-			r->verticalWallHitX = r->nextVerticalTouchX; 
-			r->verticalWallHitY = r->nextVerticalTouchY;
-			r->foundVerticalWallHit = TRUE;
+			r->vertical_wall_hit_x = r->next_vertical_touch_x; 
+			r->vertical_wall_hit_y = r->next_vertical_touch_y;
+			r->found_vertical_wall_hit = TRUE;
 			break;		
 		}
-		else
+		if (has_wall_at(c, r->x_to_check, r->y_to_check) == 2)
 		{
-			r->nextVerticalTouchX += r->xstep;
-			r->nextVerticalTouchY += r->ystep;
+			r->vertical_sprite_hit_x = r->next_horz_touch_x; 
+			r->vertical_sprite_hit_y = r->next_horz_touch_y;
+			r->is_sprite = 1;
 		}
+		r->next_vertical_touch_x += r->xstep;
+		r->next_vertical_touch_y += r->ystep;
 	}
+}
+
+int	has_wall_at(t_cub *c, float x, float y) //detecta si la coordenada es suelo u otro elemento
+{
+	int		map_grid_index_x;
+	int		map_grid_index_y;
+	char	tile;
+
+	map_grid_index_x = ((int)x / TILE_SIZE); //cuando casteamos un float a int perdemos los valores decimales, redondeando el valor de las coordenadas al borde de la casilla actual
+	map_grid_index_y = ((int)y / TILE_SIZE);
+	if (map_grid_index_y < 0 || map_grid_index_y >= c->map_max_y) //comprobamos que las coordenadas no se salgan del mapa
+		return (0);
+	if (map_grid_index_x < 0 || 
+	map_grid_index_x >= (int)ft_strlen(c->map[map_grid_index_y]))
+		return (0);
+	tile = c->map[map_grid_index_y][map_grid_index_x];
+	if (tile == 'M')
+		return (2);
+	if (tile == '1')
+		return (1);
+	return (0); //si la casilla de las coordenadas no es suelo devolvemos 1
 }

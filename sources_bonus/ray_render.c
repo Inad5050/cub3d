@@ -6,22 +6,29 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 13:21:58 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/06 15:02:56 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/06 19:05:35 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D.h"
+#include "../include/cub3D_bonus.h"
 
 void	ray_render(t_cub *c)
 {
-	int	index_ray;
+	int		index_ray;
+	t_ray	*r;
 
 	index_ray = 0;
 	while (index_ray < NUM_RAYS) //por cada rayo renderizalo
 	{
-		init_data_render(c, &c->rays[index_ray]);
-		render(c, &c->rays[index_ray]);
+		r = &c->rays[index_ray];
+		init_data_render(c, r);
+		render(c, r);
 		draw_wall_strip(c, index_ray);
+		if (r->is_sprite)
+		{
+			sprite_render(c, r);
+			draw_sprite_strip(c, r, index_ray);
+		}
 		index_ray++;
 	}
 }
@@ -39,20 +46,20 @@ int	init_data_render(t_cub *c, t_ray *r) //inicializamos las variables que vamos
 }
 
 void	render(t_cub *c, t_ray *r) //identificamos la direccion cardinal del muro, y le adjudicamos su textura correspondiente
-{
-	if (!r->wasHitVertical)
+{	
+	if (!r->was_hit_vertical)
 	{
 		if (r->rayangle < PI && r->rayangle > 0)
-			calculate_wall_strip(c, r, c->wall_s, TILE_SIZE - 1 - ((int)(r->wallHitX + r->wallHitY) % TILE_SIZE)); //muro sur, el rayo viene desde abajo
+			calculate_wall_strip(c, r, c->wall_s, TILE_SIZE - 1 - ((int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE)); //muro sur, el rayo viene desde abajo
 		else
-			calculate_wall_strip(c, r, c->wall_n, (int)(r->wallHitX + r->wallHitY) % TILE_SIZE); //muro norte
+			calculate_wall_strip(c, r, c->wall_n, (int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE); //muro norte
 	}
 	else
 	{
 		if (r->rayangle > PI * 1 / 2 && r->rayangle < PI * 3 / 2)
-			calculate_wall_strip(c, r, c->wall_w, TILE_SIZE - 1 - ((int)(r->wallHitX + r->wallHitY) % TILE_SIZE)); //muro oeste, el rayo viene desde la derecha
+			calculate_wall_strip(c, r, c->wall_w, TILE_SIZE - 1 - ((int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE)); //muro oeste, el rayo viene desde la derecha
 		else 
-			calculate_wall_strip(c, r, c->wall_e, (int)(r->wallHitX + r->wallHitY) % TILE_SIZE); //muro este
+			calculate_wall_strip(c, r, c->wall_e, (int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE); //muro este
 	}
 }
 
