@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:27:23 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/06 15:14:56 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/06 15:23:16 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ void	game_loop(void *param)
 		process_player_input(c); //actualiza el angulo y la posicion del jugador
 		ray_caster(c); //lanza rayos
 		ray_render(c); //renderiza el mapa 3D
+		minimap_render(c);
+		sprite_caster(c);
+		sprite_render(c);
 		c->timelastframe = timenow;
 	}
 }

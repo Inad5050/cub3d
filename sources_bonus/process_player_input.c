@@ -12,6 +12,14 @@
 
 #include "../include/cub3D.h"
 
+void mlx_cursor_hook(mlx_t* mlx, mlx_cursorfunc func, void* param);
+//This function sets the cursor callback, which is called when the
+//mouse position changes. Position is relative to the window.
+
+void mlx_get_mouse_pos(mlx_t* mlx, int32_t* x, int32_t* y);
+//Returns the current, relative, mouse cursor position on the window, starting
+//from the top left corner.
+
 void	process_player_input(void *param)
 {	
 	t_cub	*c;
@@ -35,7 +43,36 @@ void	process_player_input(void *param)
 		c->p_turndirection = -1;
 	if (mlx_is_key_down(c->mlx, MLX_KEY_RIGHT))
 		c->p_turndirection = 1;
+	mouse_hook(c);
 	update_player_position(c);
+}
+
+void	mouse_hook(t_cub *c)
+{
+	int32_t	x;
+	int32_t y;
+
+	if (c->p_turndirection)
+		return;
+	mlx_get_mouse_pos(c->mlx, &x, &y);
+	if (y < 0 || WIN_HEIGHT <= y)
+		return;
+	if (0 < x && x <= WIN_WIDHT * 0.45)
+	{
+		c->p_turndirection = -1;
+		if (WIN_WIDHT * 0.3 < x && x <= WIN_WIDHT * 0.45)
+			c->p_turnspeed *= 0.35;
+		if (WIN_WIDHT * 0.15 < x && x <= WIN_WIDHT * 0.3)
+			c->p_turnspeed *= 0.6;		
+	}
+	if (WIN_WIDHT * 0.55 < x && x < WIN_WIDHT)
+	{
+		c->p_turndirection = 1;
+		if (WIN_WIDHT * 0.55 < x && x <= WIN_WIDHT * 0.7)
+			c->p_turnspeed *= 0.35;
+		if (WIN_WIDHT * 0.7 < x && x <= WIN_WIDHT * 0.85)
+			c->p_turnspeed *= 0.6;
+	}
 }
 
 void	update_player_position(t_cub *c)
