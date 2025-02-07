@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:27:23 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/07 17:13:44 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 19:22:03 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	game_loop(void *param)
 		ray_render(c); //renderiza el mapa 3D
 		/* sprite_render(c); */
 		minimap_render(c);
+		update_doors(c);
 		c->timelastframe = timenow;
 	}
 }

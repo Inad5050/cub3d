@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/07 19:08:28 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 20:40:38 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@
 # define BLACK 0x000000FF
 
 //door
-# define OPEN_TIME 5
+# define OPEN_TIME 60
+# define OPEN_DISTANCE TILE_SIZE * 2
+# define DOOR_ROUTE "./texture/doom_door.png"
 
 //sprite
 # define SPRITE_ROUTE "./texture/cocodemon.png"
@@ -177,6 +179,7 @@ typedef struct s_cub
 	t_texture		*wall_s;
 	t_texture		*wall_w;
 	t_texture		*wall_e;
+	t_texture		*door_t;
 
 	t_texture		*sprite_texture;
 	
@@ -217,6 +220,7 @@ void		init_doors(t_cub *c);
 void		locate_doors(t_cub *c);
 void		open_doors(t_cub *c);
 void		detect_doors(t_cub *c, t_ray *r);
+void		update_doors(t_cub *c);
 
 //exit
 void		c_error(char *str, t_cub *c);
