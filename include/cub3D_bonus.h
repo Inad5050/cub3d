@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/07 20:40:38 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 21:44:06 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@
 # include <stdint.h>
 
 //sizes
-# define WIN_WIDHT 2000
+# define WIN_WIDTH 2000
 # define WIN_HEIGHT 1000
 # define PLAYER_SIZE 10
 # define PI 3.14159265
 # define ANGLE_ROTATION_SIZE 5
 # define FRAMES 30 
 # define TILE_SIZE 1000
-# define NUM_RAYS WIN_WIDHT
+# define NUM_RAYS WIN_WIDTH
 
 //bools
 # define FALSE 0
@@ -81,6 +81,7 @@ typedef struct s_door
 	int				y_door;
 	int				is_closed;
 	int				opening;
+	int				closing;
 }	t_door;
 
 
@@ -158,7 +159,7 @@ typedef struct s_ray
 	int				sprite_bottom_pixel;
 
 	int				im_door;
-	int				im_door_number;
+	int				door_number;
 } t_ray;
 
 typedef struct s_cub
@@ -181,7 +182,7 @@ typedef struct s_cub
 	t_texture		*wall_e;
 	t_texture		*door_t;
 
-	t_texture		*sprite_texture;
+	t_texture		*sprite_t;
 	
 	float			p_fov; //init_game. valor estatico. Lo usamos durante el casteo para determinar el angulo de los rayos
 	float			p_turnspeed; //velocidad a la que rota el jugador cada vez que pulsamos MLX_KEY_LEFT y MLX_KEY_RIGHT
@@ -213,6 +214,7 @@ typedef struct s_cub
 
 	t_door 			*doors;
 	int 			door_number;
+	int				door_closing;
 } t_cub;
 
 //doors

@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 13:21:58 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/07 20:44:56 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 21:26:53 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	init_data_render(t_cub *c, t_ray *r) //inicializamos las variables que vamos
 	if (r->distance == 0) //la distancia no puede ser 0, la ponemos a un minimo
 		r->distance = 0.1;
 	r->perp_distance = r->distance * cos(r->rayangle - c->p_rotationangle); //perp_distance es la distancia perpendicular desde el jugador hasta la pared golpeada por el rayo. Es una corrección necesaria para evitar la distorsión en la perspectiva causada por los rayos no perpendiculares. Todos los rayos salen desde el centro horizontal de la pantalla. Los rayos tienen un angulo que va desde -FOV/2 a FOV/2. Todos los rayos que no tengan un angulo de cero recorren más distancia de la necesaria para llegar hasta su pared. Esta variable es la distancia corregida.
-	r->distance_proj_plane = (WIN_WIDHT / 2) / tan(c->p_fov / 2); //distance_proj_plane es la distancia desde la cámara del jugador hasta el plano de proyección, osease: (WIN_WIDHT / 2) el meridiano central de la patalla sobre el que se proyectaran todos los rayos. p_fov / 2 es el angulo del triangulo formado por el merdiano central (opuesto), la hipotenusa formada por el limite del FieldOfView, y el adyaccente, que sera la ditancia al plano de proyeccion
+	r->distance_proj_plane = (WIN_WIDTH / 2) / tan(c->p_fov / 2); //distance_proj_plane es la distancia desde la cámara del jugador hasta el plano de proyección, osease: (WIN_WIDTH / 2) el meridiano central de la patalla sobre el que se proyectaran todos los rayos. p_fov / 2 es el angulo del triangulo formado por el merdiano central (opuesto), la hipotenusa formada por el limite del FieldOfView, y el adyaccente, que sera la ditancia al plano de proyeccion
 	r->wall_strip_height = (TILE_SIZE / r->perp_distance) * r->distance_proj_plane; //calcula la altura de la pared	
 	r->wall_top_pixel = (WIN_HEIGHT / 2) - (r->wall_strip_height / 2); //calcula el punto mas alto de la pared desde el ecuador de la pantalla
 	r->wall_bottom_pixel = (WIN_HEIGHT / 2) + (r->wall_strip_height / 2); //""
@@ -87,8 +87,8 @@ void	calculate_wall_strip(t_cub *c, t_ray *r, t_texture *t, int x)
 	while (y < r->wall_bottom_pixel && y < WIN_HEIGHT) //el valor de y empieza en r->wall_top_pixel
 	{
 		img_y = ((y - anti_y) * t->height) / (r->wall_bottom_pixel - r->wall_top_pixel); //el valor de img_y solo cambia cada varias iteracciones de y. A un ritmo de t->height / (r->wall_bottom_pixel - r->wall_top_pixel). t->height (que es 128 para un PNG de 128 pixeles) es bastante más pequeño que (r->wall_bottom_pixel - r->wall_top_pixel)
-		if (r->im_door && c->doors[r->im_door_number].is_closed && 
-		c->doors[r->im_door_number].opening)
+		if ((r->im_door && c->doors[r->door_number].is_closed && 
+		c->doors[r->door_number].opening))
 			c->strip[y++] = BLACK; //DOORS
 		else if (img_y >= 0 && img_y < t->height && img_x >= 0 && img_x < t->width)
 			c->strip[y++] = t->pixels[img_y][img_x];
@@ -102,20 +102,6 @@ void	draw_wall_strip(t_cub *c, int x)
 	int	y;
 
 	y = 0;
-/* 	if (r->im_door && c->doors[r->im_door_number].is_closed && 
-	c->doors[r->im_door_number].opening)
-	{
-		printf("y %d < r->wall_top_pixel %d\n", y, r->wall_top_pixel);
-		while (y < r->wall_top_pixel)
-			mlx_put_pixel(c->win_mlx3D, x, y++, c->ceiling);
-		printf("y %d < r->wall_bottom_pixel %d\n", y, r->wall_bottom_pixel);
-		while (y < r->wall_bottom_pixel)
-			mlx_put_pixel(c->win_mlx3D, x, y++, BLACK);
-		printf("y %d < WIN_HEIGHT %d\n", y, WIN_HEIGHT);
-		while (y < WIN_HEIGHT)
-			mlx_put_pixel(c->win_mlx3D, x, y++, c->floor);
-		return;
-	} */
 	while (y < WIN_HEIGHT)
 	{
 		mlx_put_pixel(c->win_mlx3D, x, y, c->strip[y]);

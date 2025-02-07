@@ -58,20 +58,20 @@ void	mouse_hook(t_cub *c)
 	mlx_get_mouse_pos(c->mlx, &x, &y);
 	if (y < 0 || WIN_HEIGHT <= y)
 		return;
-	if (0 < x && x <= WIN_WIDHT * 0.45)
+	if (0 < x && x <= WIN_WIDTH * 0.45)
 	{
 		c->p_turndirection = -1;
-		if (WIN_WIDHT * 0.3 < x && x <= WIN_WIDHT * 0.45)
+		if (WIN_WIDTH * 0.3 < x && x <= WIN_WIDTH * 0.45)
 			c->p_turnspeed *= 0.35;
-		if (WIN_WIDHT * 0.15 < x && x <= WIN_WIDHT * 0.3)
+		if (WIN_WIDTH * 0.15 < x && x <= WIN_WIDTH * 0.3)
 			c->p_turnspeed *= 0.6;		
 	}
-	if (WIN_WIDHT * 0.55 < x && x < WIN_WIDHT)
+	if (WIN_WIDTH * 0.55 < x && x < WIN_WIDTH)
 	{
 		c->p_turndirection = 1;
-		if (WIN_WIDHT * 0.55 < x && x <= WIN_WIDHT * 0.7)
+		if (WIN_WIDTH * 0.55 < x && x <= WIN_WIDTH * 0.7)
 			c->p_turnspeed *= 0.35;
-		if (WIN_WIDHT * 0.7 < x && x <= WIN_WIDHT * 0.85)
+		if (WIN_WIDTH * 0.7 < x && x <= WIN_WIDTH * 0.85)
 			c->p_turnspeed *= 0.6;
 	}
 }
@@ -117,7 +117,7 @@ int	check_wall_collision(t_cub *c, float new_x, float new_y)
 			if (map_y >= 0 && map_x >= 0 && map_y < c->map_max_y && \
 			map_x < (int)ft_strlen(c->map[map_y])) //comprobamos si las nuevas coordenadas estan en los limites del mapa
 			{
-				if (c->map[map_y][map_x] != '0') //comprobamos si las nuevas coordenadas son accesibles
+				if (c->map[map_y][map_x] != '0' || c->door_closing) //comprobamos si las nuevas coordenadas son accesibles
 					return (1); //si alguna de las tres coordenadas (offset -1, 0, 1) no es accesible, devolvemos error (1)
 			}
 			offset_x++;

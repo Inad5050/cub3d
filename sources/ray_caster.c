@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:52:48 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/06 15:43:45 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 21:25:29 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ray_caster(t_cub *c) //inicializa el algoritmo para cada uno de los rayos
 
 	rayAngle = c->p_rotationangle - (c->p_fov / 2); //inicializa el angulo del primer rayo como el angulo del jugador - la mitad del FOV (30 grados). Este sera el angulo de cada rayo con respecto al angulo del jugador
 	ray_index = 0;
-	while (ray_index < NUM_RAYS) //NUM_RAYS = WIN_WIDHT proyectamos un rayo en cada linea vertical de la pantalla
+	while (ray_index < NUM_RAYS) //NUM_RAYS = WIN_WIDTH proyectamos un rayo en cada linea vertical de la pantalla
 	{
 		r = &(c->rays[ray_index]);		
 		cast_ray(c, r, ray_index, rayAngle); //funcion para manjar los rayos		
@@ -33,7 +33,7 @@ void	ray_caster(t_cub *c) //inicializa el algoritmo para cada uno de los rayos
 //ray_index: indice de cada rayo
 //player.rotationangle: se inicializa como PI/2 = 90 grados = horientacion norte
 //game->player.fov: el angulo de vision del jugador. Se inicializa como (60 * PI / 180). Hasta donde entiendo su valor no cambia durante la ejecucion del programa
-//NUM_RAYS = WIN_WIDHT = 2000
+//NUM_RAYS = WIN_WIDTH = 2000
 //game: estructura
 
 void	cast_ray(t_cub *c, t_ray *r, int ray_index, float rayAngle)

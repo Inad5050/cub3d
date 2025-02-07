@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:24:06 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/07 17:17:10 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 21:44:06 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	sprite_render(t_cub *c)
 		if (r->sprite_distance == 0)
 			r->sprite_distance = 0.1;
 		r->sprite_perp_distance = r->sprite_distance * cos(r->rayangle - c->p_rotationangle);
-		r->sprite_distance_proj_plane = (WIN_WIDHT / 2) / tan(c->p_fov / 2);
+		r->sprite_distance_proj_plane = (WIN_WIDTH / 2) / tan(c->p_fov / 2);
 		r->sprite_strip_height = (TILE_SIZE / r->sprite_perp_distance) * r->sprite_distance_proj_plane;
 		r->sprite_top_pixel = (WIN_HEIGHT / 2) - (r->sprite_strip_height / 2);
 		r->sprite_bottom_pixel = (WIN_HEIGHT / 2) + (r->sprite_strip_height / 2);
@@ -60,16 +60,16 @@ void	sprite_render_aux(t_cub *c, t_ray *r)
 /* 	if (!r->sprite_was_hit_vertical)
 	{
 		if (r->rayangle < PI && r->rayangle > 0) */
-			calculate_sprite_strip(c, r, c->sprite_texture, TILE_SIZE - 1 - ((int)(r->sprite_hit_x + r->sprite_hit_y) % TILE_SIZE)); //muro sur, el rayo viene desde abajo
+			calculate_sprite_strip(c, r, c->sprite_t, TILE_SIZE - 1 - ((int)(r->sprite_hit_x + r->sprite_hit_y) % TILE_SIZE)); //muro sur, el rayo viene desde abajo
 /* 		else
-			calculate_sprite_strip(c, r, c->sprite_texture, (int)(r->sprite_hit_x + r->sprite_hit_y) % TILE_SIZE); //muro norte
+			calculate_sprite_strip(c, r, c->sprite_t, (int)(r->sprite_hit_x + r->sprite_hit_y) % TILE_SIZE); //muro norte
 	}
 	else
 	{
 		if (r->rayangle > PI * 1 / 2 && r->rayangle < PI * 3 / 2)
-			calculate_sprite_strip(c, r, c->sprite_texture, TILE_SIZE - 1 - ((int)(r->sprite_hit_x + r->sprite_hit_y) % TILE_SIZE)); //muro oeste, el rayo viene desde la derecha
+			calculate_sprite_strip(c, r, c->sprite_t, TILE_SIZE - 1 - ((int)(r->sprite_hit_x + r->sprite_hit_y) % TILE_SIZE)); //muro oeste, el rayo viene desde la derecha
 		else 
-			calculate_sprite_strip(c, r, c->sprite_texture, (int)(r->sprite_hit_x + r->sprite_hit_y) % TILE_SIZE); //muro este
+			calculate_sprite_strip(c, r, c->sprite_t, (int)(r->sprite_hit_x + r->sprite_hit_y) % TILE_SIZE); //muro este
 	} */
 }
 

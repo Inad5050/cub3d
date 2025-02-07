@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 17:35:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/06 15:07:24 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 21:25:29 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	init_game(t_cub *c)
 {
-	c->mlx = mlx_init(WIN_WIDHT, WIN_HEIGHT, "CUB3D", true); //inicializa la MLX
+	c->mlx = mlx_init(WIN_WIDTH, WIN_HEIGHT, "CUB3D", true); //inicializa la MLX
 	if (!c->mlx)
 		return (c_error("Couldn't mlx_init init_game", c), EXIT_FAILURE);
-	c->win_mlx3D = mlx_new_image(c->mlx, WIN_WIDHT, WIN_HEIGHT); //inicializa la ventana
+	c->win_mlx3D = mlx_new_image(c->mlx, WIN_WIDTH, WIN_HEIGHT); //inicializa la ventana
 	if (!c->win_mlx3D)
 		return (c_error("Couldn't mlx_new_image in init_game", c), EXIT_FAILURE);
 	c->map = c->parse_struct->map;

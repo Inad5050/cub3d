@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:55:44 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/06 14:11:04 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 21:25:29 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,9 @@ void	minimap_print_player(t_cub *c)
 
 void	init_minimap(t_cub *c)
 {
-	c->minimap_start_x = WIN_WIDHT * 0.02;
+	c->minimap_start_x = WIN_WIDTH * 0.02;
 	c->minimap_start_y = WIN_HEIGHT * 0.02;
-	c->minimap_area_x = 0.3 * WIN_WIDHT;
+	c->minimap_area_x = 0.3 * WIN_WIDTH;
 	c->minimap_area_y = 0.3 * WIN_HEIGHT;
 	c->minimap_tile_size = c->minimap_area_x / (c->map_max_x / TILE_SIZE);
 	if (c->minimap_area_y / (c->map_max_y / TILE_SIZE) < c->minimap_tile_size)  

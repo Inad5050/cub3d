@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 13:21:58 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/06 17:31:23 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 21:25:29 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	init_data_render(t_cub *c, t_ray *r) //inicializamos las variables que vamos
 	if (r->distance == 0) //la distancia no puede ser 0, la ponemos a un minimo
 		r->distance = 0.1;
 	r->perp_distance = r->distance * cos(r->rayangle - c->p_rotationangle); //perp_distance es la distancia perpendicular desde el jugador hasta la pared golpeada por el rayo. Es una corrección necesaria para evitar la distorsión en la perspectiva causada por los rayos no perpendiculares. Todos los rayos salen desde el centro horizontal de la pantalla. Los rayos tienen un angulo que va desde -FOV/2 a FOV/2. Todos los rayos que no tengan un angulo de cero recorren más distancia de la necesaria para llegar hasta su pared. Esta variable es la distancia corregida.
-	r->distance_proj_plane = (WIN_WIDHT / 2) / tan(c->p_fov / 2); //distance_proj_plane es la distancia desde la cámara del jugador hasta el plano de proyección, osease: (WIN_WIDHT / 2) el meridiano central de la patalla sobre el que se proyectaran todos los rayos. p_fov / 2 es el angulo del triangulo formado por el merdiano central (opuesto), la hipotenusa formada por el limite del FieldOfView, y el adyaccente, que sera la ditancia al plano de proyeccion
+	r->distance_proj_plane = (WIN_WIDTH / 2) / tan(c->p_fov / 2); //distance_proj_plane es la distancia desde la cámara del jugador hasta el plano de proyección, osease: (WIN_WIDTH / 2) el meridiano central de la patalla sobre el que se proyectaran todos los rayos. p_fov / 2 es el angulo del triangulo formado por el merdiano central (opuesto), la hipotenusa formada por el limite del FieldOfView, y el adyaccente, que sera la ditancia al plano de proyeccion
 	r->wall_strip_height = (TILE_SIZE / r->perp_distance) * r->distance_proj_plane; //calcula la altura de la pared	
 	r->wall_top_pixel = (WIN_HEIGHT / 2) - (r->wall_strip_height / 2); //calcula el punto mas alto de la pared desde el ecuador de la pantalla
 	r->wall_bottom_pixel = (WIN_HEIGHT / 2) + (r->wall_strip_height / 2); //""

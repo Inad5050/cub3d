@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/06 15:59:16 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 21:25:29 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@
 # include <stdint.h>
 
 //sizes
-# define WIN_WIDHT 2000
+# define WIN_WIDTH 2000
 # define WIN_HEIGHT 1000
 # define PLAYER_SIZE 10
 # define PI 3.14159265
 # define ANGLE_ROTATION_SIZE 5
 # define FRAMES 30 
 # define TILE_SIZE 1000
-# define NUM_RAYS WIN_WIDHT
+# define NUM_RAYS WIN_WIDTH
 
 //bools
 # define FALSE 0

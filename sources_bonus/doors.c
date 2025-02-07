@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 18:13:00 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/07 20:52:12 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 21:34:05 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,12 @@ void	open_doors(t_cub *c)
 		d->x_door * TILE_SIZE, d->y_door * TILE_SIZE);
 		if (distance <= OPEN_DISTANCE && d->is_closed && !d->opening)
 			d->opening = 1;
-/* 		if (distance <= OPEN_DISTANCE && !d->is_closed && !d->opening && c->map[d->y_door][d->x_door] == 0)
-			d->closing = 1; */
+		if (distance <= 2 * OPEN_DISTANCE && distance > OPEN_DISTANCE && 
+		!d->is_closed && !d->opening && c->map[d->y_door][d->x_door] == '0')
+		{
+			d->closing = 1;
+			c->door_closing = 1;
+		}
 		door_index++;
 	}
 }
@@ -86,14 +90,10 @@ void	detect_doors(t_cub *c, t_ray *r)
 	while (door_index < c->door_number)
 	{
 		d = &c->doors[door_index];
-
-		/* printf("d->x_door %d map_grid_index_x - 1 %d d->y_door %d map_grid_index_y %d\n", d->x_door, map_grid_index_x - 1, d->y_door, map_grid_index_y); */
-		
 		if (d->x_door == map_grid_index_x - 1 && d->y_door == map_grid_index_y)
 		{
-			/* printf("d->x_door %d map_grid_index_x - 1 %d d->y_door %d map_grid_index_y %d\n", d->x_door, map_grid_index_x - 1, d->y_door, map_grid_index_y); */
 			r->im_door = 1;
-			r->im_door_number = door_index;
+			r->door_number = door_index;
 		}
 		door_index++;
 	}
@@ -101,21 +101,28 @@ void	detect_doors(t_cub *c, t_ray *r)
 
 void	update_doors(t_cub *c)
 {
-	int		door_index;
-	t_door	*d;
+	int		i;
 
-	door_index = 0;
-	while (door_index < c->door_number)
+	i = 0;
+	while (i < c->door_number)
 	{
-		d = &c->doors[door_index];
-		if(d->opening)
-			d->opening++;
-		if (d->opening >= OPEN_TIME)
+		if(c->doors[i].opening)
+			c->doors[i].opening++;
+		if (c->doors[i].opening >= OPEN_TIME)
 		{
-			d->opening = 0;
-			d->is_closed = FALSE;
-			c->map[d->y_door][d->x_door] = '0';
+			c->doors[i].opening = 0;
+			c->doors[i].is_closed = FALSE;
+			c->map[c->doors[i].y_door][c->doors[i].x_door] = '0';
 		}
-		door_index++;
+		if(c->doors[i].closing)
+			c->doors[i].closing++;
+		if (c->doors[i].closing >= OPEN_TIME / 4)
+		{
+			c->doors[i].closing = 0;
+			c->doors[i].is_closed = TRUE;
+			c->door_closing = 0;
+			c->map[c->doors[i].y_door][c->doors[i].x_door] = '1';
+		}
+		i++;
 	}
 }
