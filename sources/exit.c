@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 20:30:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/03 18:05:14 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 18:06:53 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	free_memory(t_cub *c) //libera toda la memoria
 	if (c->wall_w)
 		free_t_texture(c->wall_w);
 	if (c->rays)
-		free(c->rays);	
+		free(c->rays);
 	if (c)
 		free(c);
 }

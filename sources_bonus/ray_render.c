@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 13:21:58 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/06 19:05:35 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 17:12:30 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,6 @@ void	ray_render(t_cub *c)
 		init_data_render(c, r);
 		render(c, r);
 		draw_wall_strip(c, index_ray);
-		if (r->is_sprite)
-		{
-			sprite_render(c, r);
-			draw_sprite_strip(c, r, index_ray);
-		}
 		index_ray++;
 	}
 }

@@ -6,13 +6,13 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:24:06 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/06 19:14:57 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 17:17:10 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D_bonus.h"
 
-void	choose_sprite_hit(t_cub *c, t_ray *r)
+/* void	choose_sprite_hit(t_cub *c, t_ray *r)
 {
 	r->sprite_horizontal_hit_distance = distance_between_points(c->p_x, c->p_y, r->horizontal_sprite_hit_x, r->horizontal_sprite_hit_y);
 	r->sprite_vertical_hit_distance = distance_between_points(c->p_x, c->p_y, r->vertical_sprite_hit_x, r->vertical_sprite_hit_y);
@@ -29,18 +29,29 @@ void	choose_sprite_hit(t_cub *c, t_ray *r)
 		r->sprite_hit_y = r->vertical_sprite_hit_y;
 		r->sprite_was_hit_vertical = 1;
 	}
-}
+} */
 
-void	sprite_render(t_cub *c, t_ray *r)
+void	sprite_render(t_cub *c)
 {
-	if (r->sprite_distance == 0)
-		r->sprite_distance = 0.1;
-	r->sprite_perp_distance = r->sprite_distance * cos(r->rayangle - c->p_rotationangle);
-	r->sprite_distance_proj_plane = (WIN_WIDHT / 2) / tan(c->p_fov / 2);
-	r->sprite_strip_height = (TILE_SIZE / r->sprite_perp_distance) * r->sprite_distance_proj_plane;
-	r->sprite_top_pixel = (WIN_HEIGHT / 2) - (r->sprite_strip_height / 2);
-	r->sprite_bottom_pixel = (WIN_HEIGHT / 2) + (r->sprite_strip_height / 2);
-	sprite_render_aux(c, r);
+	int		index_ray;
+	t_ray	*r;
+
+	index_ray = 0;
+	while (index_ray < NUM_RAYS) //por cada rayo renderizalo
+	{
+		r = &c->rays[index_ray];
+		if (!r->is_sprite)
+			return;
+		if (r->sprite_distance == 0)
+			r->sprite_distance = 0.1;
+		r->sprite_perp_distance = r->sprite_distance * cos(r->rayangle - c->p_rotationangle);
+		r->sprite_distance_proj_plane = (WIN_WIDHT / 2) / tan(c->p_fov / 2);
+		r->sprite_strip_height = (TILE_SIZE / r->sprite_perp_distance) * r->sprite_distance_proj_plane;
+		r->sprite_top_pixel = (WIN_HEIGHT / 2) - (r->sprite_strip_height / 2);
+		r->sprite_bottom_pixel = (WIN_HEIGHT / 2) + (r->sprite_strip_height / 2);
+		sprite_render_aux(c, r);
+		draw_sprite_strip(c, r, index_ray);
+	}
 	
 }
 

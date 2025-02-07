@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/06 19:06:36 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 19:08:28 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@
 # define WHITE 0xFFFFFFFF
 # define BLACK 0x000000FF
 
+//door
+# define OPEN_TIME 5
+
 //sprite
 # define SPRITE_ROUTE "./texture/cocodemon.png"
 # define WHITE_DECIMAL 4294967295
@@ -69,6 +72,15 @@ typedef struct s_cube
     int         	max_x_size;          // Max X size of the map
     char       		*raw_map;            // Temporary raw map
 } t_cube;
+
+typedef struct s_door
+{
+	int				x_door;
+	int				y_door;
+	int				is_closed;
+	int				opening;
+}	t_door;
+
 
 typedef struct s_texture //buffer para renderizar PNGs
 {
@@ -142,6 +154,9 @@ typedef struct s_ray
 	float			sprite_strip_height;
 	int				sprite_top_pixel;
 	int				sprite_bottom_pixel;
+
+	int				im_door;
+	int				im_door_number;
 } t_ray;
 
 typedef struct s_cub
@@ -192,7 +207,16 @@ typedef struct s_cub
 	float			minimap_player_size;
 
 	unsigned int	sprite_strip[WIN_HEIGHT];
+
+	t_door 			*doors;
+	int 			door_number;
 } t_cub;
+
+//doors
+void		init_doors(t_cub *c);
+void		locate_doors(t_cub *c);
+void		open_doors(t_cub *c);
+void		detect_doors(t_cub *c, t_ray *r);
 
 //exit
 void		c_error(char *str, t_cub *c);
@@ -287,7 +311,7 @@ void		draw_wall_strip(t_cub *c, int x);
 
 //sprite_render
 void		choose_sprite_hit(t_cub *c, t_ray *r);
-void		sprite_render(t_cub *c, t_ray *r);
+void		sprite_render(t_cub *c);
 void		sprite_render_aux(t_cub *c, t_ray *r);
 void		calculate_sprite_strip(t_cub *c, t_ray *r, t_texture *t, int x);
 void		draw_sprite_strip(t_cub *c, t_ray *r, int x);

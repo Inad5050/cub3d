@@ -45,6 +45,7 @@ void	process_player_input(void *param)
 		c->p_turndirection = 1;
 	mouse_hook(c);
 	update_player_position(c);
+	open_doors(c);
 }
 
 void	mouse_hook(t_cub *c)

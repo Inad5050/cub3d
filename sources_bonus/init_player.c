@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:55:16 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/06 16:00:16 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 18:22:26 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	init_player(t_cub *c)
 	c->p_turnspeed_original = c->p_turnspeed;
 	c->p_walkspeed = TILE_SIZE / 10;
 	locate_player(c);
+	init_doors(c);
 }
 
 int	locate_player(t_cub *c) //localiza la posición inicial del jugador y coloca suelo '0' en su lugar
@@ -32,6 +33,8 @@ int	locate_player(t_cub *c) //localiza la posición inicial del jugador y coloca
 		x = 0;
 		while (c->map[y][x])
 		{
+			if (c->map[y][x] == 'D')
+				c->door_number++;
 			if (c->map[y][x] == 'N' || c->map[y][x] == 'S' || \
 			c->map[y][x] == 'W' || c->map[y][x] == 'E')
 				return (set_player_position(y, x, c), c->map[y][x] = '0', 0);

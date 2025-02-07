@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:52:48 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/06 16:24:40 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 18:53:23 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ void	cast_ray(t_cub *c, t_ray *r, int ray_index, float rayAngle)
 	find_horizontal_hit(c, r, rayAngle);
 	find_vertical_hit(c, r, rayAngle);	
 	select_ray_hit(c, r);
-	if (r->is_sprite)
-		choose_sprite_hit(c, r);
+	detect_doors(c, r);
+/* 	if (r->is_sprite)
+		choose_sprite_hit(c, r); */
 }
 
 void	init_ray_struct(t_ray *r, int ray_index, float rayAngle) //pone a cero todos los valores de la estructura para que podamos volver a usarla. Almacena el valor del actual angulo del rayo y les da valor a las flags que indican el cuadrante del angulo del rayo

@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 17:19:39 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/06 18:01:23 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/07 18:58:17 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ void	find_horizontal_hit_loop(t_cub *c, t_ray *r)
 			r->found_horizontal_wall_hit = TRUE;
 			break;		
 		}
-		if (has_wall_at(c, r->x_to_check, r->y_to_check) == 2)
+/* 		if (has_wall_at(c, r->x_to_check, r->y_to_check) == 2)
 		{
 			r->horizontal_sprite_hit_x = r->next_horz_touch_x; 
 			r->horizontal_sprite_hit_y = r->next_horz_touch_y;
 			r->is_sprite = 1;
-		}
+		} */
 		r->next_horz_touch_x += r->xstep;
 		r->next_horz_touch_y += r->ystep;
 	}
@@ -105,12 +105,12 @@ void	find_vertical_hit_loop(t_cub *c, t_ray *r)
 			r->found_vertical_wall_hit = TRUE;
 			break;		
 		}
-		if (has_wall_at(c, r->x_to_check, r->y_to_check) == 2)
+/* 		if (has_wall_at(c, r->x_to_check, r->y_to_check) == 2)
 		{
 			r->vertical_sprite_hit_x = r->next_horz_touch_x; 
 			r->vertical_sprite_hit_y = r->next_horz_touch_y;
 			r->is_sprite = 1;
-		}
+		} */
 		r->next_vertical_touch_x += r->xstep;
 		r->next_vertical_touch_y += r->ystep;
 	}
@@ -136,3 +136,4 @@ int	has_wall_at(t_cub *c, float x, float y) //detecta si la coordenada es suelo 
 		return (1);
 	return (0); //si la casilla de las coordenadas no es suelo devolvemos 1
 }
+
