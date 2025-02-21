@@ -6,14 +6,14 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 18:13:00 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/21 15:32:15 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:44:24 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D_bonus.h"
 
 void	init_doors(t_cub *c)
-{	
+{
 	if (!c->door_number)
 		return ;
 	c->doors = ft_calloc(c->door_number, sizeof(t_door));
@@ -30,10 +30,10 @@ void	locate_doors(t_cub *c)
 
 	door_index = 0;
 	y = 0;
-	while(c->map[y])
+	while (c->map[y])
 	{
 		x = 0;
-		while(c->map[y][x])
+		while (c->map[y][x])
 		{
 			if (c->map[y][x] == 'D' && door_index < c->door_number)
 			{
@@ -45,8 +45,8 @@ void	locate_doors(t_cub *c)
 			}
 			x++;
 		}
-		y++;		
-	}	
+		y++;
+	}
 }
 
 void	open_doors(t_cub *c)
@@ -54,19 +54,19 @@ void	open_doors(t_cub *c)
 	int		door_index;
 	float	distance;
 	t_door	*d;
-	
+
 	if (!c->door_number || !mlx_is_key_down(c->mlx, MLX_KEY_SPACE))
 		return ;
 	door_index = 0;
 	while (door_index < c->door_number)
 	{
 		d = &c->doors[door_index];
-		distance = distance_between_points(c->p_x, c->p_y, 
-		d->x_door * TILE_SIZE, d->y_door * TILE_SIZE);
+		distance = distance_between_points(c->p_x, c->p_y,
+				d->x_door * TILE_SIZE, d->y_door * TILE_SIZE);
 		if (distance <= OPEN_DISTANCE && d->is_closed && !d->opening)
 			d->opening = 1;
-		if (distance <= OPEN_DISTANCE * 1.5 && distance > TILE_SIZE && 
-		!d->is_closed && !d->opening && c->map[d->y_door][d->x_door] == '0')
+		if (distance <= OPEN_DISTANCE * 1.5 && distance > TILE_SIZE && \
+			!d->is_closed && !d->opening && c->map[d->y_door][d->x_door] == '0')
 		{
 			d->closing = 1;
 			c->door_closing = 1;
@@ -79,30 +79,16 @@ void	detect_doors(t_cub *c, t_ray *r)
 {
 	int		door_index;
 	t_door	*d;
-	int		map_grid_index_x;
-	int		map_grid_index_y;
-	
+
 	if (!c->door_number)
-		return ;	
+		return ;
 	door_index = 0;
-	map_grid_index_x = ((int)r->wall_hit_x / TILE_SIZE); //cuando casteamos un float a int perdemos los valores decimales, redondeando el valor de las coordenadas al borde de la casilla actual
-	map_grid_index_y = ((int)r->wall_hit_y / TILE_SIZE);
+	c->map_grid_index_x = ((int)r->wall_hit_x / TILE_SIZE);
+	c->map_grid_index_y = ((int)r->wall_hit_y / TILE_SIZE);
 	while (door_index < c->door_number)
 	{
 		d = &c->doors[door_index];
-
-		if (r->ray_index == 0)
-			printf("d->x_door %d == map_grid_index_x - 1 %d && d->y_door %d == map_grid_index_y %d\n", d->x_door, map_grid_index_x - 1, d->y_door, map_grid_index_y);
-
-		if ((r->was_hit_vertical && (r->rayangle > PI * 1 / 2 && r->rayangle < PI * 3 / 2) && (d->x_door == map_grid_index_x - 1 && d->y_door == map_grid_index_y)) || //oeste
-		(r->was_hit_vertical && !(r->rayangle > PI * 1 / 2 && r->rayangle < PI * 3 / 2) && (d->x_door == map_grid_index_x && d->y_door == map_grid_index_y)) ||
-		(!r->was_hit_vertical && ((r->rayangle < PI && r->rayangle > 0)) && (d->x_door == map_grid_index_x && d->y_door == map_grid_index_y)) ||
-		(!r->was_hit_vertical && !((r->rayangle < PI && r->rayangle > 0)) && (d->x_door == map_grid_index_x && d->y_door == map_grid_index_y - 1))		
-		
-		
-		
-		)
-		
+		if (detect_doors_aux(c, r, d))
 		{
 			r->im_door = 1;
 			r->door_number = door_index;
@@ -118,7 +104,7 @@ void	update_doors(t_cub *c)
 	i = 0;
 	while (i < c->door_number)
 	{
-		if(c->doors[i].opening)
+		if (c->doors[i].opening)
 			c->doors[i].opening++;
 		if (c->doors[i].opening >= OPEN_TIME)
 		{
@@ -126,7 +112,7 @@ void	update_doors(t_cub *c)
 			c->doors[i].is_closed = FALSE;
 			c->map[c->doors[i].y_door][c->doors[i].x_door] = '0';
 		}
-		if(c->doors[i].closing)
+		if (c->doors[i].closing)
 			c->doors[i].closing++;
 		if (c->doors[i].closing >= OPEN_TIME / 4)
 		{

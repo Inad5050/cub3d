@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_map_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otboumeh <otboumeh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 10:40:13 by otboumeh          #+#    #+#             */
-/*   Updated: 2025/02/03 14:39:41 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:25:57 by otboumeh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ static int	validate_line(char **map, int x, int y,
 		t_player_position *player_position)
 {
 	char	*line;
-	player_position->orientation = 0;
 
+	player_position->orientation = 0;
 	line = map[y];
 	while (line[++x] && space_verification(line[x]))
 		;

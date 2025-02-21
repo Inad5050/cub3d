@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 20:39:42 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/09/27 20:40:10 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:00:20 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,5 @@ char	*ft_strstr(char *hay, char *ndle)
 			return (&hay[i]);
 		i++;
 	}
-	return (NULL);	
+	return (NULL);
 }

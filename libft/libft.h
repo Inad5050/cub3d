@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: otboumeh <otboumeh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:16:24 by dangonz3          #+#    #+#             */
-/*   Updated: 2024/11/26 09:44:18 by otboumeh         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:01:14 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int			ft_memcmp(const void *s1, const void *s2, size_t n);
 void		*ft_memcpy(void *dest, const void *src, size_t n);
 void		*ft_memset(void *ptr, int initial_value, size_t size);
 char		*ft_strchr(const char *str, char character);
-int 		ft_strcmp(const char *s1, const char *s2);
+int			ft_strcmp(const char *s1, const char *s2);
 char		*ft_strdup(const char *str);
 size_t		ft_strlcat(char *dest, const char *src, size_t size);
 size_t		ft_strlcpy(char *dest, const char *src, size_t size);
@@ -54,7 +54,6 @@ char		*ft_puthexa_str(size_t n);
 char		*ft_putaddress_str(unsigned long p);
 char		*str_or_null(const char *str);
 char		*ft_sprintf(char const *container, ...);
-
 
 /* PART 2 */
 
@@ -93,10 +92,8 @@ t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), \
 
 int			ft_printf(char const *s, ...);
 int			ptf_selection(char const *s, int i, va_list args);
-
 int			ptf_putnbr(int n, int count);
 int			ptf_putnbr_u(unsigned int n, int count);
-
 int			ptf_print_d(int arg, char format);
 int			ptf_print_x(size_t arg, char format, int count);
 int			ptf_print_s(char *arg);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   p_map_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otboumeh <otboumeh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 10:40:13 by otboumeh          #+#    #+#             */
-/*   Updated: 2025/02/07 17:54:36 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:25:24 by otboumeh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ int	validate_neighbors(char **map, int x, int y)
 }
 
 static int	validate_line(char **map, int x, int y,
-		t_player_position *player_position)
+t_player_position *player_position)
 {
 	char	*line;
-	player_position->orientation = 0;
 
+	player_position->orientation = 0;
 	line = map[y];
 	while (line[++x] && space_verification(line[x]))
 		;
@@ -72,7 +72,7 @@ static int	validate_line(char **map, int x, int y,
 		return (ft_printf("Invalid map line:\n\t%s\n", line), 1);
 	while (line[++x])
 	{
-		if (!ft_strchr(" 01MD", line[x])) //he cambiado esta linea para que incluya la 'M' de monster para el bonus sprite
+		if (!ft_strchr(" 01MD", line[x]))
 		{
 			if (ft_strchr("NSWE", line[x]))
 			{
