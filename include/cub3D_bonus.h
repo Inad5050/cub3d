@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:31:01 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/07 21:44:06 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:11:30 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,13 @@
 # define BLUE 0x0000FFFF
 # define WHITE 0xFFFFFFFF
 # define BLACK 0x000000FF
+# define TRANSPARENT 0x00000000
 
 //door
-# define OPEN_TIME 60
+# define OPEN_TIME 20
 # define OPEN_DISTANCE TILE_SIZE * 2
 # define DOOR_ROUTE "./texture/doom_door.png"
+# define ENEMY_ROUTE "./texture/cocodemon.png"
 
 //sprite
 # define SPRITE_ROUTE "./texture/cocodemon.png"
@@ -181,6 +183,7 @@ typedef struct s_cub
 	t_texture		*wall_w;
 	t_texture		*wall_e;
 	t_texture		*door_t;
+	t_texture		*enemy_t;
 
 	t_texture		*sprite_t;
 	
@@ -311,7 +314,7 @@ void		select_ray_hit(t_cub *c, t_ray *r);
 //ray_render
 void		ray_render(t_cub *c);
 int			init_data_render(t_cub *c, t_ray *r);
-void		render(t_cub *c, t_ray *r);
+int			render(t_cub *c, t_ray *r);
 void		calculate_wall_strip(t_cub *c, t_ray *r, t_texture *text, int x);
 void		draw_wall_strip(t_cub *c, int x);
 

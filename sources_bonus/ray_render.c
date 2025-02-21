@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 13:21:58 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/07 21:26:53 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:32:55 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,29 +40,55 @@ int	init_data_render(t_cub *c, t_ray *r) //inicializamos las variables que vamos
 	return (0);
 }
 
-void	render(t_cub *c, t_ray *r) //identificamos la direccion cardinal del muro, y le adjudicamos su textura correspondiente
+int	render(t_cub *c, t_ray *r) //identificamos la direccion cardinal del muro, y le adjudicamos su textura correspondiente
 {	
 	if (!r->was_hit_vertical)
 	{
-		if (r->rayangle < PI && r->rayangle > 0 && r->im_door) //DOOR
-			calculate_wall_strip(c, r, c->door_t, TILE_SIZE - 1 - ((int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE)); //muro sur, el rayo viene desde abajo
-		else if (r->im_door) //DOOR
-			calculate_wall_strip(c, r, c->door_t, (int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE); //muro norte
+/* 		if (r->ray_index == 0)
+			printf("muro VERTICAL r->im_door = %d r->rayangle < PI = %d\n", r->im_door, r->rayangle < PI);
+ */		if (r->im_door)
+		{
+			if (r->rayangle < PI && r->rayangle > 0) //DOOR
+			{
+/* 				if (r->ray_index == 0)
+					printf("muro norte r->im_door = %d r->rayangle < PI = %d\n", r->im_door, r->rayangle < PI);
+ */				return (calculate_wall_strip(c, r, c->door_t, TILE_SIZE - 1 - ((int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE)), 0); //muro norte, el rayo viene desde arriba
+			}
+			else
+			{
+/* 				if (r->ray_index == 0)
+					printf("muro sur r->im_door = %d r->rayangle  < PI = %d\n", r->im_door, r->rayangle < PI);
+ */				return (calculate_wall_strip(c, r, c->door_t, (int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE), 0); //muro sur
+			}
+		}
 		else if (r->rayangle < PI && r->rayangle > 0)
-			calculate_wall_strip(c, r, c->wall_s, TILE_SIZE - 1 - ((int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE)); //muro sur, el rayo viene desde abajo
+			return (calculate_wall_strip(c, r, c->wall_s, TILE_SIZE - 1 - ((int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE)), 0); //muro sur, el rayo viene desde abajo
 		else
-			calculate_wall_strip(c, r, c->wall_n, (int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE); //muro norte
+			return (calculate_wall_strip(c, r, c->wall_n, (int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE), 0); //muro norte
 	}
 	else
 	{
-		if (r->rayangle > PI * 1 / 2 && r->rayangle < PI * 3 / 2 && r->im_door) //DOOR
-			calculate_wall_strip(c, r, c->door_t, TILE_SIZE - 1 - ((int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE)); //muro oeste, el rayo viene desde la derecha
-		else if (r->im_door) //DOOR
-			calculate_wall_strip(c, r, c->door_t, (int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE); //muro este
+/* 		if (r->ray_index == 0)
+			printf("muro HORIZONTAL r->im_door = %d r->rayangle < PI * 3 / 2 = %d\n", r->im_door, r->rayangle < PI * 3 / 2);
+ */		if (r->im_door)
+		{
+			if (r->rayangle > PI * 1 / 2 && r->rayangle < PI * 3 / 2) //DOOR
+			{
+/* 				if (r->ray_index == 0)
+					printf("muro oeste r->im_door = %d r->rayangle < PI * 3 / 2 = %d\n", r->im_door, r->rayangle < PI * 3 / 2);
+ */				return (calculate_wall_strip(c, r, c->door_t, TILE_SIZE - 1 - ((int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE)), 0); //muro oeste, el rayo viene desde la derecha
+			}
+			else //DOOR
+			{
+/* 				if (r->ray_index == 0)
+					printf("muro este r->im_door = %d r->rayangle < PI * 3 / 2 = %d\n", r->im_door, r->rayangle < PI * 3 / 2);
+ */				return (calculate_wall_strip(c, r, c->door_t, (int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE), 0); //muro este
+			}
+		}
 		else if (r->rayangle > PI * 1 / 2 && r->rayangle < PI * 3 / 2)
-			calculate_wall_strip(c, r, c->wall_w, TILE_SIZE - 1 - ((int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE)); //muro oeste, el rayo viene desde la derecha
+			return (calculate_wall_strip(c, r, c->wall_w, TILE_SIZE - 1 - ((int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE)), 0); //muro oeste, el rayo viene desde la derecha
 		else 
-			calculate_wall_strip(c, r, c->wall_e, (int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE); //muro este
+			return (calculate_wall_strip(c, r, c->wall_e, (int)(r->wall_hit_x + r->wall_hit_y) % TILE_SIZE), 0); //muro este
 	}
 }
 
@@ -89,7 +115,7 @@ void	calculate_wall_strip(t_cub *c, t_ray *r, t_texture *t, int x)
 		img_y = ((y - anti_y) * t->height) / (r->wall_bottom_pixel - r->wall_top_pixel); //el valor de img_y solo cambia cada varias iteracciones de y. A un ritmo de t->height / (r->wall_bottom_pixel - r->wall_top_pixel). t->height (que es 128 para un PNG de 128 pixeles) es bastante más pequeño que (r->wall_bottom_pixel - r->wall_top_pixel)
 		if ((r->im_door && c->doors[r->door_number].is_closed && 
 		c->doors[r->door_number].opening))
-			c->strip[y++] = BLACK; //DOORS
+			c->strip[y++] = WHITE; //DOORS
 		else if (img_y >= 0 && img_y < t->height && img_x >= 0 && img_x < t->width)
 			c->strip[y++] = t->pixels[img_y][img_x];
 	}

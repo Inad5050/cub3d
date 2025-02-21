@@ -62,17 +62,17 @@ void	mouse_hook(t_cub *c)
 	{
 		c->p_turndirection = -1;
 		if (WIN_WIDTH * 0.3 < x && x <= WIN_WIDTH * 0.45)
-			c->p_turnspeed *= 0.35;
+			c->p_turnspeed *= 0.20;
 		if (WIN_WIDTH * 0.15 < x && x <= WIN_WIDTH * 0.3)
-			c->p_turnspeed *= 0.6;		
+			c->p_turnspeed *= 0.4;		
 	}
 	if (WIN_WIDTH * 0.55 < x && x < WIN_WIDTH)
 	{
 		c->p_turndirection = 1;
 		if (WIN_WIDTH * 0.55 < x && x <= WIN_WIDTH * 0.7)
-			c->p_turnspeed *= 0.35;
+			c->p_turnspeed *= 0.2;
 		if (WIN_WIDTH * 0.7 < x && x <= WIN_WIDTH * 0.85)
-			c->p_turnspeed *= 0.6;
+			c->p_turnspeed *= 0.4;
 	}
 }
 

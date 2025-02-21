@@ -6,7 +6,7 @@
 /*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 17:35:49 by dangonz3          #+#    #+#             */
-/*   Updated: 2025/02/07 21:44:06 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:54:39 by dangonz3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	init_game(t_cub *c)
 	load_texture(c, &c->wall_w, c->parse_struct->west_texture);
 	load_texture(c, &c->wall_e, c->parse_struct->east_texture);
 	load_texture(c, &c->door_t, DOOR_ROUTE);
+	load_texture(c, &c->enemy_t, ENEMY_ROUTE);
 
 	load_texture(c, &c->sprite_t, SPRITE_ROUTE);
 
