@@ -3,25 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   p_parsing.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otboumeh <otboumeh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 13:47:40 by otboumeh          #+#    #+#             */
-/*   Updated: 2025/02/06 16:00:42 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:30:06 by otboumeh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D_bonus.h"
 
-/* This function delete the unecessary white spaces founded in the line and
-return a clean line*/
 char	*line_verification(char *line)
 {
 	int		i;
 	char	*tmp;
 	char	*content;
-	
-	if(!line)
-		return NULL;
+
+	if (!line)
+		return (NULL);
 	i = 3;
 	while (line[i])
 	{
@@ -30,10 +28,10 @@ char	*line_verification(char *line)
 		i++;
 	}
 	tmp = ft_substr(line, i, ft_strlen(line) - i);
-	if(!tmp)
+	if (!tmp)
 		return (NULL);
 	content = ft_strtrim(tmp, "\n");
-	if(!content)
+	if (!content)
 	{
 		free(tmp);
 		return (NULL);
@@ -41,8 +39,7 @@ char	*line_verification(char *line)
 	free(tmp);
 	return (content);
 }
-/* this function parses a line of text representing RGB color values 
- into an integer array color[3]. It performs validation to ensure the values are within the RGB range (0-255)*/
+
 int	parse_colors(char *line, int color[3])
 {
 	char	*tmp;
@@ -50,7 +47,7 @@ int	parse_colors(char *line, int color[3])
 	int		i;
 
 	tmp = ft_strtrim(line, " ");
-	printf("%s\n",tmp);
+	printf("%s\n", tmp);
 	colors = ft_split(tmp, ',');
 	free(tmp);
 	if (array_len(colors) != 3)
@@ -71,9 +68,7 @@ int	parse_colors(char *line, int color[3])
 	array_free(colors);
 	return (0);
 }
-/* This function verify line per line to verify the existance of the structure and send the information 
-to the correspendent function if all struct is found start analizing the map if the variable flag is 
-positif free the program */
+
 static int	parse_texture_or_color(char *line, char *trimmed_line, t_cube *cube)
 {
 	if (ft_strncmp("NO ", trimmed_line, 3) == 0)
@@ -118,6 +113,7 @@ void	parse_map(char *line, t_cube *cube)
 	int		map_size;
 	char	**tmp;
 	int		i;
+
 	if (cube->map != NULL)
 		map_size = array_len(cube->map);
 	else

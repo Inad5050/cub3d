@@ -1,7 +1,7 @@
-NO ./texture/xpm/wolfestein/blue_wall.xpm
-SO ./texture/xpm/wolfestein/brick_wall.xpm
-WE ./texture/xpm/wolfestein/grey_wall.xpm
-EA ./texture/xpm/wolfestein/steel_wall.xpm
+NO ./texture/doom1.png
+SO 	./texture/doom2.png
+WE 	./texture/doom3.png
+EA ./texture/doom4.png
 
 C 0,255,255
 F 160,160,160

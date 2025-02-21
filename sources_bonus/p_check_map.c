@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   p_check_map.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dangonz3 <dangonz3@student.42.fr>          +#+  +:+       +#+        */
+/*   By: otboumeh <otboumeh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 12:35:49 by otboumeh          #+#    #+#             */
-/*   Updated: 2025/02/06 16:00:26 by dangonz3         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:24:20 by otboumeh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../include/cub3D_bonus.h"
 
-/* verificating the format of the file if its end with .cub .*/
 void	check_extension(char *argv1)
 {
 	int	i;
@@ -23,9 +21,9 @@ void	check_extension(char *argv1)
 	{
 		printf("\nError\n Map file must have .cub extension. \n");
 		exit(1);
-	}	
+	}
 }
-/* reading the file.cub and analizing every line by calling the function parse_line */ 
+
 int	read_file(char *file, t_cube *cube)
 {
 	int		fd;
@@ -50,6 +48,5 @@ int	read_file(char *file, t_cube *cube)
 		free(line);
 	}
 	close(fd);
-
 	return (0);
 }
