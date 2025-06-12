@@ -1,7 +1,0 @@
-/home/otboumeh/Desktop/Cub3d-main/mlx/build/CMakeFiles/mlx42.dir
-/home/otboumeh/Desktop/Cub3d-main/mlx/build/CMakeFiles/edit_cache.dir
-/home/otboumeh/Desktop/Cub3d-main/mlx/build/CMakeFiles/rebuild_cache.dir
-/home/otboumeh/Desktop/Cub3d-main/mlx/build/CMakeFiles/list_install_components.dir
-/home/otboumeh/Desktop/Cub3d-main/mlx/build/CMakeFiles/install.dir
-/home/otboumeh/Desktop/Cub3d-main/mlx/build/CMakeFiles/install/local.dir
-/home/otboumeh/Desktop/Cub3d-main/mlx/build/CMakeFiles/install/strip.dir
