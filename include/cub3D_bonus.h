@@ -212,10 +212,10 @@ void		free_memory(t_cub *c);
 void		free_t_texture(t_texture *t);
 
 //init_game
-int			init_game(t_cub *c);
-int			load_texture(t_cub *c, t_texture **strc, char *route);
+int			init_game(t_cub *c, t_parse *p);
+int			load_texture(t_cub *c, t_texture *t_text, char *route);
 int			load_texture_aux(t_cub *c, t_texture *texture, mlx_texture_t *png);
-void		get_map_max_x(t_cub *c);
+int			get_map_max_x(t_cub *c);
 
 //init_player
 void		init_player(t_cub *c);
