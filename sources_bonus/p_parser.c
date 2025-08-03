@@ -21,7 +21,7 @@ void	check_arg_number(int argc)
 	}
 }
 
-int	verification_start(t_cube *cube, \
+int	verification_start(t_parse *cube, \
 		t_player_position *player_position, char **argv)
 {
 	if (read_file(argv[1], cube) == 1)

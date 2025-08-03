@@ -70,7 +70,7 @@ typedef struct s_cube
 	int				max_y_size;
 	int				max_x_size;
 	char			*raw_map;
-}					t_cube;
+}					t_parse;
 
 typedef struct s_door
 {
@@ -147,7 +147,7 @@ typedef struct s_cub
 	void			*mlx;
 	mlx_image_t		*win_mlx3d;
 
-	t_cube			*parse_struct;
+	t_parse			*parse_struct;
 
 	char			**map;
 	int				player_direction;
@@ -232,28 +232,28 @@ void		minimap_print_player(t_cub *c);
 void		init_minimap(t_cub *c);
 
 void		check_extension(char *argv1);
-int			read_file(char *file, t_cube *cube);
+int			read_file(char *file, t_parse *cube);
 
-void		free_line(char *line, t_cube *cube);
-void		free_content(t_cube *cube);
+void		free_line(char *line, t_parse *cube);
+void		free_content(t_parse *cube);
 void		array_free(char **array);
 
-int			validate_map(t_cube *cube, t_player_position *player_position);
+int			validate_map(t_parse *cube, t_player_position *player_position);
 
 void		check_arg_number(int argc);
-int			verification_start(t_cube *cube, \
+int			verification_start(t_parse *cube, \
 			t_player_position *player_position, char **argv);
 int			parser(int argc, char **argv);
 void		reach_last_character(const char *file_path);
 
-int			parse_line(char *line, t_cube *cube);
+int			parse_line(char *line, t_parse *cube);
 char		*line_verification(char *line);
 int			parse_colors(char *line, int color[3]);
-void		parse_map(char *line, t_cube *cube);
+void		parse_map(char *line, t_parse *cube);
 
 void		delete_tab(char ***map, int i);
-int			last_verification(t_cube *cube, t_player_position *player_position);
-int			validate_file(t_cube *cube);
+int			last_verification(t_parse *c, t_player_position *player_position);
+int			validate_file(t_parse *cube);
 
 int			space_verification(char c);
 int			array_len(char **array);

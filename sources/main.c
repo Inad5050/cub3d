@@ -14,12 +14,12 @@
 
 int	main(int argc, char **argv)
 {
-	t_cube				cube;
+	t_parse				cube;
 	t_player_position	player_position;
 	t_cub				*c;
 
 	check_arg_number(argc);
-	ft_bzero(&cube, sizeof(t_cube));
+	ft_bzero(&cube, sizeof(t_parse));
 	check_extension(argv[1]);
 	if (verification_start(&cube, &player_position, argv))
 		return (1);

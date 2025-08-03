@@ -89,7 +89,7 @@ t_player_position *player_position)
 	return (0);
 }
 
-int	validate_map(t_cube *cube_data, t_player_position *player_position)
+int	validate_map(t_parse *cube_data, t_player_position *player_position)
 {
 	int	idx;
 	int	max_y_size;

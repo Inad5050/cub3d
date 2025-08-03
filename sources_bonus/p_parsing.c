@@ -69,26 +69,26 @@ int	parse_colors(char *line, int color[3])
 	return (0);
 }
 
-static int	parse_texture_or_color(char *line, char *trimmed_line, t_cube *cube)
+static int	parse_texture_or_color(char *line, char *trimmed_line, t_parse *c)
 {
 	if (ft_strncmp("NO ", trimmed_line, 3) == 0)
-		cube->north_texture = line_verification(trimmed_line);
+		c->north_texture = line_verification(trimmed_line);
 	else if (ft_strncmp("SO ", trimmed_line, 3) == 0)
-		cube->south_texture = line_verification(trimmed_line);
+		c->south_texture = line_verification(trimmed_line);
 	else if (ft_strncmp("WE ", trimmed_line, 3) == 0)
-		cube->west_texture = line_verification(trimmed_line);
+		c->west_texture = line_verification(trimmed_line);
 	else if (ft_strncmp("EA ", trimmed_line, 3) == 0)
-		cube->east_texture = line_verification(trimmed_line);
+		c->east_texture = line_verification(trimmed_line);
 	else if (ft_strncmp("F ", trimmed_line, 2) == 0)
-		return (parse_colors(trimmed_line + 1, cube->floor_color));
+		return (parse_colors(trimmed_line + 1, c->floor_color));
 	else if (ft_strncmp("C ", trimmed_line, 2) == 0)
-		return (parse_colors(trimmed_line + 1, cube->ceiling_color));
+		return (parse_colors(trimmed_line + 1, c->ceiling_color));
 	else
-		parse_map(line, cube);
+		parse_map(line, c);
 	return (0);
 }
 
-int	parse_line(char *line, t_cube *cube)
+int	parse_line(char *line, t_parse *cube)
 {
 	int		flag;
 	char	*trimmed_line;
@@ -108,7 +108,7 @@ int	parse_line(char *line, t_cube *cube)
 	return (0);
 }
 
-void	parse_map(char *line, t_cube *cube)
+void	parse_map(char *line, t_parse *cube)
 {
 	int		map_size;
 	char	**tmp;

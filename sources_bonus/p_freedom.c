@@ -12,7 +12,7 @@
 
 #include "../include/cub3D_bonus.h"
 
-void	free_line(char *line, t_cube *cube)
+void	free_line(char *line, t_parse *cube)
 {
 	printf("Error parsing; wrong content\n");
 	free(line);
@@ -21,7 +21,7 @@ void	free_line(char *line, t_cube *cube)
 	exit(1);
 }
 
-void	free_content(t_cube *cube)
+void	free_content(t_parse *cube)
 {
 	int	i;
 

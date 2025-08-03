@@ -14,12 +14,12 @@
 
 int	main(int argc, char **argv)
 {
-	t_cube				cube;
+	t_parse				cube;
 	t_player_position	player_position;
 	t_cub				*c;
 
 	check_arg_number(argc);
-	ft_bzero(&cube, sizeof(t_cube));
+	ft_bzero(&cube, sizeof(t_parse));
 	check_extension(argv[1]);
 	if (verification_start(&cube, &player_position, argv))
 		return (1);
@@ -27,7 +27,7 @@ int	main(int argc, char **argv)
 	if (!c)
 		return (ft_printf("Couldn`t alloc c"), EXIT_FAILURE);
 	c->parse_struct = &cube;
-	init_game(c);
+	init_game(c, );
 	init_player(c);
 	mlx_image_to_window(c->mlx, c->win_mlx3d, 0, 0);
 	mlx_loop_hook(c->mlx, game_loop, c);

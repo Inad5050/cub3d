@@ -24,7 +24,7 @@ void	check_extension(char *argv1)
 	}
 }
 
-int	read_file(char *file, t_cube *cube)
+int	read_file(char *file, t_parse *cube)
 {
 	int		fd;
 	char	*line;

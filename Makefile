@@ -18,15 +18,17 @@ CCFLAGS = -Wall -Wextra -Werror
 COLOR_GREEN = \033[0;32m
 COLOR_RESET = \033[0m
 
-SRC_DIR = sources/
+SRC_DIR = sources
+OBJ_DIR = obj
 SRC = $(shell find ./$(SRC_DIR) -iname "*.c")
-OBJ = $(SRC:.c=.o)
+OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-SRC_DIR_BONUS = sources_bonus/
+SRC_DIR_BONUS = sources_bonus
+OBJ_DIR_BONUS = obj_bonus
 SRC_BONUS = $(shell find ./$(SRC_DIR_BONUS) -iname "*.c")
-OBJ_BONUS = $(SRC_BONUS:.c=.o)
+OBJ_BONUS = $(SRC:$(SRC_DIR_BONUS)/%.c=$(OBJ_DIR_BONUS)/%.o)
 
-HEADERS = -I ./include -I $(MLX_DIR)/include
+HEADERS = -I./include -I$(MLX_DIR)/include
 
 LIBFT_DIR = ./libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
@@ -40,8 +42,19 @@ all: $(NAME)
 $(NAME): $(OBJ) libmlx $(LIBFT_LIB)
 	$(CC) $(OBJ) $(MLX_LIB) $(MLX_FLAGS) $(LIBFT_LIB) -o $(NAME)
 
-%.o: %.c
-	$(CC) $(CCFLAGS) -c $< $(HEADERS) -o $@
+$(OBJ_DIR)/%.o: $(SRC_DIR)%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CCFLAGS) $(HEADERS) -c $< -o $@
+	@echo "$(COLOR_GREEN)------------ MESSAGE: $@ COMPILED ------------ $(COLOR_RESET)"
+
+bonus: $(NAME_BONUS)
+
+$(NAME_BONUS): $(OBJ_BONUS) libmlx $(LIBFT_LIB)
+	$(CC) $(OBJ_BONUS) $(MLX_LIB) $(MLX_FLAGS) $(LIBFT_LIB) -o $(NAME_BONUS)
+
+$(OBJ_DIR_BONUS)/%.o: $(SRC_DIR_BONUS)%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CCFLAGS) $(HEADERS) -c $< -o $@
 	@echo "$(COLOR_GREEN)------------ MESSAGE: $@ COMPILED ------------ $(COLOR_RESET)"
 
 libmlx:
@@ -50,11 +63,6 @@ libmlx:
 
 $(LIBFT_LIB):
 	@make -C $(LIBFT_DIR) -s
-
-bonus: $(NAME_BONUS)
-
-$(NAME_BONUS): $(OBJ_BONUS) libmlx $(LIBFT_LIB)
-	$(CC) $(OBJ_BONUS) $(MLX_LIB) $(MLX_FLAGS) $(LIBFT_LIB) -o $(NAME_BONUS)
 
 clean:
 	@rm -f $(OBJ)

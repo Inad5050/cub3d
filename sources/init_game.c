@@ -61,14 +61,14 @@ int	load_texture_aux(t_cub *c, t_texture *texture, mlx_texture_t *png)
 	texture->width = png->width;
 	texture->pixels = ft_calloc(texture->height, sizeof(unsigned int *));
 	if (!texture->pixels)
-		return (mlx_delete_texture(png), c_error("Couldn  aloc it_img", c),
+		return (mlx_delete_texture(png), c_error("Couldn alloc t_img", c),
 			EXIT_FAILURE);
 	y = 0;
 	while (y < texture->height)
 	{
 		texture->pixels[y] = ft_calloc(texture->width, sizeof(unsigned int));
 		if (!texture->pixels[y])
-			return (mlx_delete_texture(png), c_error("Couldn  aloc it_img", c),
+			return (mlx_delete_texture(png), c_error("Couldn  alloc t_img", c),
 				EXIT_FAILURE);
 		x = -1;
 		while (++x < texture->width)

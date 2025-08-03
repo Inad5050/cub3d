@@ -50,7 +50,7 @@ void	delete_tab(char ***map, int i)
 	}
 }
 
-int	last_verification(t_cube *cube, t_player_position *player_position)
+int	last_verification(t_parse *cube, t_player_position *player_position)
 {
 	if (validate_file(cube))
 	{
@@ -65,7 +65,7 @@ int	last_verification(t_cube *cube, t_player_position *player_position)
 	return (0);
 }
 
-int	validate_file(t_cube *cube)
+int	validate_file(t_parse *cube)
 {
 	if (!cube->north_texture || !cube->south_texture
 		|| !cube->west_texture || !cube->east_texture)
