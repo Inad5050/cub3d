@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D_bonus.h"
+#include "cub3D_bonus.h"
 
 void	find_horizontal_hit(t_cub *c, t_ray *r, float rayAngle)
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D_bonus.h"
+#include "cub3D_bonus.h"
 
 void	draw_wall_strip(t_cub *c, int x)
 {

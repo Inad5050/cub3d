@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D_bonus.h"
+#include "cub3D_bonus.h"
 
 void	check_arg_number(int argc)
 {

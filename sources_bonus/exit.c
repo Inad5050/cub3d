@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D_bonus.h"
+#include "cub3D_bonus.h"
 
 void	c_error(char *str, t_cub *c)
 {

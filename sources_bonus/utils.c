@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D_bonus.h"
+#include "cub3D_bonus.h"
 
 float	normalize_angle(float angle)
 {

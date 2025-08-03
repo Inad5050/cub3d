@@ -10,25 +10,27 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = cub3D
-NAME_BONUS = cub3D_bonus
-CC = gcc
-CCFLAGS = -Wall -Wextra -Werror
+NAME =			cub3D
+NAME_BONUS =	cub3D_bonus
+CC =			gcc
+CCFLAGS =		-Wall -Wextra -Werror
 
-COLOR_GREEN = \033[0;32m
-COLOR_RESET = \033[0m
+COLOR_GREEN =	\033[0;32m
+COLOR_RESET =	\033[0m
 
-SRC_DIR = sources
-OBJ_DIR = obj
-SRC = $(shell find ./$(SRC_DIR) -iname "*.c")
+SRC_DIR =		./sources
+OBJ_DIR =		./obj
+SRC_DIR_BONUS =	./sources_bonus
+OBJ_DIR_BONUS =	./obj_bonus
+INC_DIR =		./include
+
+SRC = $(shell find $(SRC_DIR) -iname "*.c")
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-SRC_DIR_BONUS = sources_bonus
-OBJ_DIR_BONUS = obj_bonus
-SRC_BONUS = $(shell find ./$(SRC_DIR_BONUS) -iname "*.c")
-OBJ_BONUS = $(SRC:$(SRC_DIR_BONUS)/%.c=$(OBJ_DIR_BONUS)/%.o)
+SRC_BONUS = $(shell find $(SRC_DIR_BONUS) -iname "*.c")
+OBJ_BONUS = $(SRC_BONUS:$(SRC_DIR_BONUS)/%.c=$(OBJ_DIR_BONUS)/%.o)
 
-HEADERS = -I./include -I$(MLX_DIR)/include
+HEADERS = -I$(INC_DIR) -I$(MLX_DIR)/include
 
 LIBFT_DIR = ./libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
@@ -42,7 +44,7 @@ all: $(NAME)
 $(NAME): $(OBJ) libmlx $(LIBFT_LIB)
 	$(CC) $(OBJ) $(MLX_LIB) $(MLX_FLAGS) $(LIBFT_LIB) -o $(NAME)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CCFLAGS) $(HEADERS) -c $< -o $@
 	@echo "$(COLOR_GREEN)------------ MESSAGE: $@ COMPILED ------------ $(COLOR_RESET)"
@@ -52,7 +54,7 @@ bonus: $(NAME_BONUS)
 $(NAME_BONUS): $(OBJ_BONUS) libmlx $(LIBFT_LIB)
 	$(CC) $(OBJ_BONUS) $(MLX_LIB) $(MLX_FLAGS) $(LIBFT_LIB) -o $(NAME_BONUS)
 
-$(OBJ_DIR_BONUS)/%.o: $(SRC_DIR_BONUS)%.c
+$(OBJ_DIR_BONUS)/%.o: $(SRC_DIR_BONUS)/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CCFLAGS) $(HEADERS) -c $< -o $@
 	@echo "$(COLOR_GREEN)------------ MESSAGE: $@ COMPILED ------------ $(COLOR_RESET)"
@@ -65,15 +67,15 @@ $(LIBFT_LIB):
 	@make -C $(LIBFT_DIR) -s
 
 clean:
-	@rm -f $(OBJ)
-	@rm -f $(OBJ_BONUS)
+	@rm -fr $(OBJ_DIR)
+	@rm -fr $(OBJ_DIR_BONUS)
 	@make -C $(LIBFT_DIR) clean -s
 	@rm -rf $(MLX_DIR)/build
 	@echo "$(COLOR_GREEN)------------ MESSAGE: CLEANING COMPLETED ------------ $(COLOR_RESET)"
 	
 fclean:
-	@rm -f $(OBJ)
-	@rm -f $(OBJ_BONUS)
+	@rm -fr $(OBJ_DIR)
+	@rm -fr $(OBJ_DIR_BONUS)
 	@make -C $(LIBFT_DIR) fclean -s
 	@rm -rf $(MLX_DIR)/build
 	@rm -f $(NAME)

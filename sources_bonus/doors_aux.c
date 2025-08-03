@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D_bonus.h"
+#include "cub3D_bonus.h"
 
 int	detect_doors_aux(t_cub *c, t_ray *r, t_door *d)
 {

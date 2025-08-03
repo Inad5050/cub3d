@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D_bonus.h"
+#include "cub3D_bonus.h"
 
 void	mlx_cursor_hook(mlx_t *mlx, mlx_cursorfunc func, void *param);
 void	mlx_get_mouse_pos(mlx_t *mlx, int32_t *x, int32_t *y);
