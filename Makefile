@@ -13,7 +13,7 @@
 NAME =			cub3D
 NAME_BONUS =	cub3D_bonus
 CC =			gcc
-CCFLAGS =		-Wall -Wextra -Werror
+CCFLAGS =		-Wall -Wextra -Werror -g
 
 COLOR_GREEN =	\033[0;32m
 COLOR_RESET =	\033[0m

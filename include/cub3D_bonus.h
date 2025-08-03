@@ -21,8 +21,9 @@
 # include <stdint.h>
 
 //sizes
-# define WIN_WIDTH 2000
-# define WIN_HEIGHT 1000
+# define WIN_WIDTH	2000
+# define WIN_HEIGHT	1000
+# define FOV 60 
 # define PLAYER_SIZE 10
 # define PI 3.14159265
 # define ANGLE_ROTATION_SIZE 5

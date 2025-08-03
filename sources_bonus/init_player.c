@@ -14,7 +14,7 @@
 
 void	init_player(t_cub *c)
 {
-	c->p_fov = (60 * PI / 180);
+	c->p_fov = (FOV * PI / 180);
 	c->p_turnspeed = ANGLE_ROTATION_SIZE * (PI / 180);
 	c->p_turnspeed_original = c->p_turnspeed;
 	c->p_walkspeed = TILE_SIZE / MOVESPEED_MOD;
