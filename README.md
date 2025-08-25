@@ -28,7 +28,7 @@ You can find more details in the official project subject: ![subject](subjectCB.
 
 ## Structure
 
-1. Map Parsing and Validation
+**1. Map Parsing and Validation**
 
 * The program takes a .cub file as an argument, which contains all the necessary information about the scene.
 
@@ -36,7 +36,7 @@ You can find more details in the official project subject: ![subject](subjectCB.
 
 * Map Validation: The map itself is thoroughly checked to ensure it is valid. This includes verifying that it is completely enclosed by walls ('1') to prevent the player from escaping the defined area.
 
-2. Ray-casting Engine
+**2. Ray-casting Engine**
 
 * The 3D effect is achieved by casting rays from the player's position across their field of view (FOV).
 
@@ -46,7 +46,7 @@ You can find more details in the official project subject: ![subject](subjectCB.
 
 * The engine also determines which texture to apply based on whether the ray hit a wall facing North, South, East, or West.
 
-3. Player Controls and Rendering
+**3. Player Controls and Rendering**
 
 * The game is rendered in real-time using the MLX42 library.
 
@@ -82,7 +82,7 @@ To compile and run this project, you will need:
 
 ## Instructions
 
-1. Compile the Project
+**1. Compile the Project**
 
 To compile the mandatory cub3D program:
 ```$ make```
@@ -92,7 +92,7 @@ To compile the cub3D_bonus program:
 
 The Makefile will automatically build the included libft and MLX42 libraries.
 
-2. Clean Files
+**2. Clean Files**
 
 To remove the object files (.o):
 ```$ make clean```
@@ -103,7 +103,7 @@ To remove object files and the executables:
 To clean and recompile everything:
 ```$ make re```
 
-3. How to Run
+**3. How to Run**
 
 Run the game with a map file as an argument. Several valid maps are included in the maps/ and maps_bonus/ directories.
 
