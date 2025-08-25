@@ -1,5 +1,7 @@
 <h1 align="center">School 42 cub3D</h1>
 
+![image1](ScreenshotCB1.png)
+
 Collaborators: ![otboumeh](https://github.com/otboumeh)
 
 This repository contains my implementation of the cub3D project from the 42 cursus. The goal is to create a 3D maze from a first-person perspective using the Ray-casting technique, inspired by the iconic game Wolfenstein 3D.
@@ -107,3 +109,5 @@ Run the game with a map file as an argument. Several valid maps are included in 
 
 Example: 
 ```$ ./cub3D_bonus maps_bonus/valid/valid_map.cub```
+
+![image2](ScreenshotCB2.png)
